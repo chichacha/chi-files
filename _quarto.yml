@@ -11,6 +11,10 @@ website:
         href: https://github.com/chichacha
       - icon: x
         href: https://x.com/chisatini
+  sidebar:
+    style: "docked" 
+    search: true
+
 format:
   html:
     theme: cyborg

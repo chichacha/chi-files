@@ -1,9 +1,15 @@
 ---
 title: "Post With Code"
-author: "Harlow Malloc"
+author: "Chisato den Engelsen"
 date: "2024-12-21"
 categories: [news, code, analysis]
 image: "image.jpg"
 ---
 
-This is a post with executable code.
+Welcome to my post about ggplot2! Here’s an example plot:
+
+```{r}
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
+  geom_point()
+```

@@ -1,8 +1,8 @@
 ---
-title: "About"
+title: "About Me"
 image: profile.jpg
 about:
-  template: jolla
+  template: trestles
   links:
     - icon: twitter
       text: Twitter
@@ -13,7 +13,38 @@ about:
     - icon: github
       text: Github
       href: https://github.com
-
 ---
 
-About this blog
+### 🌌 Welcome to the Chi-Files!
+
+This blog is a reflection of my journey as a data enthusiast, tech explorer, and creative thinker. I embrace the philosophy that **data is the new water**—essential, clean, and something that everyone can consume. 💧
+
+### 🧑‍💻 Who Am I?
+
+By profession, I am a Data Visualization Specialist, but my role often extends into the realms of data science, analytics, and storytelling. My passion lies in transforming raw data into meaningful insights that drive impactful decisions. I thrive at the intersection of tech and creativity, where I delight in exploring tools like R (with a particular affection for ggplot2), SQL, Databricks, and even tranformating mundane Microsoft PowerPoints into storytelling platforms.
+
+I’m a curious explorer, balancing my technical skills with the art of data storytelling. Whether it’s diving into complex datasets or creating visual art with ggplot2, I aim to turn data into a source of inspiration and knowledge.
+
+### A Few Fun Facts
+
+-   🐱 I consider myself a non-domesticated "cat"—independent, curious, and constantly exploring, but trying not to get killed by curiosity.
+
+-   🌊 I love the energy of waves, from the ocean’s surf to the intrigue of radio waves.
+
+-   🐶 Dogs hold a special place in my heart, and my furry companion is always nearby.
+
+-   💧 I’m a proud advocate for making data accessible, clean, and essential—just like water.
+
+-   🛸 The blog name, "Chi-Files," hints at my love for mystery, exploration, and a touch of the unknown.
+
+### ✍️ Why This Blog?
+
+I created this space to share my learnings, experiments, and discoveries in **data, visualization, and technology**. You’ll find a mix of professional insights, personal reflections, and creative projects—sometimes with a dash of abstract art or intriguing **ggplot2** visuals. 🎨📊
+
+This blog is also a space to inspire others, showcasing how data can be both **functional and beautiful**, **analytical and artistic**. 💡
+
+### 🌊 Join the Journey
+
+Feel free to explore, share, and connect. Whether you’re a fellow data enthusiast, a curious learner, or someone looking for inspiration, I hope you find value in the Chi-Files.
+
+Let’s ride the waves of data and discovery together! 🌊✨

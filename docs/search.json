@@ -2,9 +2,9 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "About this blog"
+    "text": "🌌 Welcome to the Chi-Files!\nThis blog is a reflection of my journey as a data enthusiast, tech explorer, and creative thinker. I embrace the philosophy that data is the new water—essential, clean, and something that everyone can consume. 💧\n\n\n🧑‍💻 Who Am I?\nBy profession, I am a Data Visualization Specialist, but my role often extends into the realms of data science, analytics, and storytelling. My passion lies in transforming raw data into meaningful insights that drive impactful decisions. I thrive at the intersection of tech and creativity, where I delight in exploring tools like R (with a particular affection for ggplot2), SQL, Databricks, and even tranformating mundane Microsoft PowerPoints into storytelling platforms.\nI’m a curious explorer, balancing my technical skills with the art of data storytelling. Whether it’s diving into complex datasets or creating visual art with ggplot2, I aim to turn data into a source of inspiration and knowledge.\n\n\nA Few Fun Facts\n\n🐱 I consider myself a non-domesticated “cat”—independent, curious, and constantly exploring, but trying not to get killed by curiosity.\n🌊 I love the energy of waves, from the ocean’s surf to the intrigue of radio waves.\n🐶 Dogs hold a special place in my heart, and my furry companion is always nearby.\n💧 I’m a proud advocate for making data accessible, clean, and essential—just like water.\n🛸 The blog name, “Chi-Files,” hints at my love for mystery, exploration, and a touch of the unknown.\n\n\n\n✍️ Why This Blog?\nI created this space to share my learnings, experiments, and discoveries in data, visualization, and technology. You’ll find a mix of professional insights, personal reflections, and creative projects—sometimes with a dash of abstract art or intriguing ggplot2 visuals. 🎨📊\nThis blog is also a space to inspire others, showcasing how data can be both functional and beautiful, analytical and artistic. 💡\n\n\n🌊 Join the Journey\nFeel free to explore, share, and connect. Whether you’re a fellow data enthusiast, a curious learner, or someone looking for inspiration, I hope you find value in the Chi-Files.\nLet’s ride the waves of data and discovery together! 🌊✨"
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -18,13 +18,13 @@
     "href": "posts/post-with-code/index.html",
     "title": "Post With Code",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "Welcome to my post about ggplot2! Here’s an example plot:\n\nlibrary(ggplot2)\nggplot(mtcars, aes(x = wt, y = mpg)) + \n  geom_point()"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "chi-files",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nDec 21, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nDec 18, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nDec 21, 2024\n\n\nChisato den Engelsen\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nDec 18, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   }
 ]
