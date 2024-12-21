@@ -3,18 +3,22 @@ project:
   output-dir: docs
 
 website:
-  title: "chi-files"
+  title: "CHI-FILES"
+  open-graph: true # https:quarto.org.docs/websites/website-tools.html#open-graph
+  page-footer: "Made with 💗 and ☕️ and Quarto"
   navbar:
     right:
       - about.qmd
       - icon: github
         href: https://github.com/chichacha
-      - icon: x
-        href: https://x.com/chisatini
+  sidebar:
+    contents: auto
 
 format:
   html:
-    theme: darkly
+    theme:  # https://github.com/quarto-dev/quarto-cli/tree/main/src/resources/formats/html/bootstrap/themes
+      light: flatly
+      dark: darkly
     css: styles.css
 
 
