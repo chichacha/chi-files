@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: docs
+  
+author: "Chisato"
+date-format: "long"  # Options: "short", "long", "relative"
+
 
 website:
   title: "CHI-FILES"
@@ -17,9 +21,19 @@ website:
 format:
   html:
     theme:  # https://github.com/quarto-dev/quarto-cli/tree/main/src/resources/formats/html/bootstrap/themes
-      light: flatly
       dark: darkly
+      light: flatly
     css: styles.css
+    
+page-layout: full
+
+execute:
+  echo: false       # Hide code chunks by default
+  warning: false    # Suppress warnings
+  message: false    # Suppress messages
+
+
+
 
 
 

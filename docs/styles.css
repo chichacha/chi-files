@@ -1,1 +1,19 @@
 /* css styles */
+
+h1, h2, h3 {
+  font-family: 'Orbitron', sans-serif;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.navbar {
+  background-color: #432E54;
+  color: #fffffe;
+}
+  
+.quarto-title-banner {
+    margin-bottom: 1em;
+    color: #ECDFCe;
+    background: #4B4376;
+}

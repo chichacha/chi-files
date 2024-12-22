@@ -1,0 +1,17 @@
+{
+  "hash": "529b8a8b748c0124deceb386bff0835c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Hello World! The First Post! \"\ndate: \"2024-12-21\"\ncategories: [news]\ntags: [introduction, welcome]\ndescription: \"An introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.\"\nimage: \"thumbnail.png\"\npage-layout: full\nformat:\n  html:\n    toc: true\n    toc-depth: 2\n---\n\n\n\n\n## 👋 Welcome to the Chi-Files!\n\nEvery great journey begins with a single step—or in this case, a single post. Really I'm just trying to learn how to use Quarto...\n\n### 🌟 Why the \"Chi-Files\"?\n\nThe blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.\n\n![X-Files](thumbnail.png){fig-align=\"center\" width=\"600\"}\n\n### The Chi-Square Test: Solving Data Mysteries 🛸\n\nIn the Chi-Files, every dataset is a puzzle, and the **chi-square statistic** is our investigative tool to uncover hidden relationships.\n\nThe formula for the chi-square statistic is:\n\n$$\n\\chi^2 = \\sum \\frac{(O_i - E_i)^2}{E_i}\n$$\n\nWhere: - $O_i$ = Observed frequency - $E_i$ = Expected frequency - $\\sum$ = The summation symbol, meaning we sum across all categories.\n\n### **An X-Files Twist**\n\nSuppose we’re investigating sightings of UFOs 👽 across regions:\n\n| **Region** | **Observed Sightings** ($O_i$) | **Expected Sightings** ($E_i$) |\n|------------------|--------------------------|----------------------------|\n| Area 51    | 50                             | 40                             |\n| Roswell    | 70                             | 60                             |\n| Pine Gap   | 30                             | 50                             |\n\nUsing the chi-square formula, we calculate:\n\n$$\n\\chi^2 = \\frac{(50 - 40)^2}{40} + \\frac{(70 - 60)^2}{60} + \\frac{(30 - 50)^2}{50}\n$$\n\nThis leads to:\n\n$$\n\\chi^2 = \\frac{100}{40} + \\frac{100}{60} + \\frac{400}{50} = 2.5 + 1.67 + 8 = 12.17\n$$\n\nIf this value exceeds the critical value, we may conclude there's **something strange going on in these regions**... but the truth is out there! 🛸\n\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n\n\n\n\n::: {.callout-important}\nThe chi-square test reveals mysteries hidden in plain data. Use it wisely, and remember: **the truth is out there!** 🛸\n:::\n\n\n[Visit Quarto](https://quarto.org)\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

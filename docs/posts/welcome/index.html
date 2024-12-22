@@ -6,10 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Chisato den Engelsen">
+<meta name="author" content="Chisato">
 <meta name="dcterms.date" content="2024-12-21">
+<meta name="description" content="An introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.">
 
-<title>Hello World! – CHI-FILES</title>
+<title>Hello World! The First Post! – CHI-FILES</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -38,11 +39,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b2511bcbb01c2159fd96a78deb42ffd9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,15 +72,44 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Hello World! – CHI-FILES">
-<meta property="og:description" content="">
+<meta property="og:title" content="Hello World! The First Post! – CHI-FILES">
+<meta property="og:description" content="An introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.">
 <meta property="og:image" content="thumbnail.png">
 <meta property="og:site_name" content="CHI-FILES">
 </head>
 
-<body class="nav-sidebar floating nav-fixed fullcontent">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -117,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/post-with-code/index.html">Posts</a></li><li class="breadcrumb-item"><a href="../../posts/welcome/index.html">Hello World!</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/post-with-code/index.html">Posts</a></li><li class="breadcrumb-item"><a href="../../posts/welcome/index.html">Hello World! The First Post!</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -126,21 +156,26 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/post-with-code/index.html">Posts</a></li><li class="breadcrumb-item"><a href="../../posts/welcome/index.html">Hello World!</a></li></ol></nav>
-      <h1 class="title">Hello World!</h1>
-                                <div class="quarto-categories">
+    <div class="quarto-title column-body"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/post-with-code/index.html">Posts</a></li><li class="breadcrumb-item"><a href="../../posts/welcome/index.html">Hello World! The First Post!</a></li></ol></nav>
+      <h1 class="title">Hello World! The First Post!</h1>
+                  <div>
+        <div class="description">
+          An introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">news</div>
               </div>
                   </div>
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-body">
 
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Chisato den Engelsen </p>
+               <p>Chisato </p>
             </div>
     </div>
       
@@ -155,7 +190,7 @@ ul.task-list li input[type="checkbox"] {
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
@@ -178,13 +213,13 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../posts/post-with-code/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Post With Code</span></a>
+ <span class="menu-text">Testing out Post with Code</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../posts/welcome/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Hello World!</span></a>
+ <span class="menu-text">Hello World! The First Post!</span></a>
   </div>
 </li>
       </ul>
@@ -194,23 +229,113 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#welcome-to-the-chi-files" id="toc-welcome-to-the-chi-files" class="nav-link active" data-scroll-target="#welcome-to-the-chi-files">👋 Welcome to the Chi-Files!</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-body" id="quarto-document-content">
 
 
 
 
 
-<section id="welcome-to-the-chi-files" class="level3">
-<h3 class="anchored" data-anchor-id="welcome-to-the-chi-files">👋 Welcome to the Chi-Files!</h3>
+<section id="welcome-to-the-chi-files" class="level2">
+<h2 class="anchored" data-anchor-id="welcome-to-the-chi-files">👋 Welcome to the Chi-Files!</h2>
 <p>Every great journey begins with a single step—or in this case, a single post. Really I’m just trying to learn how to use Quarto…</p>
-<p>🌟 Why the “Chi-Files”?</p>
+<section id="why-the-chi-files" class="level3">
+<h3 class="anchored" data-anchor-id="why-the-chi-files">🌟 Why the “Chi-Files”?</h3>
 <p>The blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.</p>
-<p><img src="thumbnail.png" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="thumbnail.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>X-Files</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-chi-square-test-solving-data-mysteries" class="level3">
+<h3 class="anchored" data-anchor-id="the-chi-square-test-solving-data-mysteries">The Chi-Square Test: Solving Data Mysteries 🛸</h3>
+<p>In the Chi-Files, every dataset is a puzzle, and the <strong>chi-square statistic</strong> is our investigative tool to uncover hidden relationships.</p>
+<p>The formula for the chi-square statistic is:</p>
+<p><span class="math display">\[
+\chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}
+\]</span></p>
+<p>Where: - <span class="math inline">\(O_i\)</span> = Observed frequency - <span class="math inline">\(E_i\)</span> = Expected frequency - <span class="math inline">\(\sum\)</span> = The summation symbol, meaning we sum across all categories.</p>
+</section>
+<section id="an-x-files-twist" class="level3">
+<h3 class="anchored" data-anchor-id="an-x-files-twist"><strong>An X-Files Twist</strong></h3>
+<p>Suppose we’re investigating sightings of UFOs 👽 across regions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 36%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Region</strong></th>
+<th><strong>Observed Sightings</strong> (<span class="math inline">\(O_i\)</span>)</th>
+<th><strong>Expected Sightings</strong> (<span class="math inline">\(E_i\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Area 51</td>
+<td>50</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td>Roswell</td>
+<td>70</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>Pine Gap</td>
+<td>30</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>Using the chi-square formula, we calculate:</p>
+<p><span class="math display">\[
+\chi^2 = \frac{(50 - 40)^2}{40} + \frac{(70 - 60)^2}{60} + \frac{(30 - 50)^2}{50}
+\]</span></p>
+<p>This leads to:</p>
+<p><span class="math display">\[
+\chi^2 = \frac{100}{40} + \frac{100}{60} + \frac{400}{50} = 2.5 + 1.67 + 8 = 12.17
+\]</span></p>
+<p>If this value exceeds the critical value, we may conclude there’s <strong>something strange going on in these regions</strong>… but the truth is out there! 🛸</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The chi-square test reveals mysteries hidden in plain data. Use it wisely, and remember: <strong>the truth is out there!</strong> 🛸</p>
+</div>
+</div>
+<p><a href="https://quarto.org">Visit Quarto</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -350,7 +475,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  const darkModeDefault = false;
+  const darkModeDefault = true;
   let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {

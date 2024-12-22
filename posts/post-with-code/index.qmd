@@ -1,8 +1,7 @@
 ---
-title: "Post With Code"
-author: "Chisato den Engelsen"
+title: "Testing out Post with Code"
 date: "2024-12-21"
-categories: [news, code, analysis]
+categories: [r, ggplot]
 image: "image.jpg"
 ---
 

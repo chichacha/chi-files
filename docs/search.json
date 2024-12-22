@@ -12,25 +12,37 @@
   {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
-    "title": "Hello World!",
+    "title": "Hello World! The First Post!",
     "section": "",
-    "text": "👋 Welcome to the Chi-Files!\nEvery great journey begins with a single step—or in this case, a single post. Really I’m just trying to learn how to use Quarto…\n🌟 Why the “Chi-Files”?\nThe blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts.",
+    "text": "Every great journey begins with a single step—or in this case, a single post. Really I’m just trying to learn how to use Quarto…\n\n\nThe blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.\n\n\n\nX-Files\n\n\n\n\n\nIn the Chi-Files, every dataset is a puzzle, and the chi-square statistic is our investigative tool to uncover hidden relationships.\nThe formula for the chi-square statistic is:\n\\[\n\\chi^2 = \\sum \\frac{(O_i - E_i)^2}{E_i}\n\\]\nWhere: - \\(O_i\\) = Observed frequency - \\(E_i\\) = Expected frequency - \\(\\sum\\) = The summation symbol, meaning we sum across all categories.\n\n\n\nSuppose we’re investigating sightings of UFOs 👽 across regions:\n\n\n\n\n\n\n\n\nRegion\nObserved Sightings (\\(O_i\\))\nExpected Sightings (\\(E_i\\))\n\n\n\n\nArea 51\n50\n40\n\n\nRoswell\n70\n60\n\n\nPine Gap\n30\n50\n\n\n\nUsing the chi-square formula, we calculate:\n\\[\n\\chi^2 = \\frac{(50 - 40)^2}{40} + \\frac{(70 - 60)^2}{60} + \\frac{(30 - 50)^2}{50}\n\\]\nThis leads to:\n\\[\n\\chi^2 = \\frac{100}{40} + \\frac{100}{60} + \\frac{400}{50} = 2.5 + 1.67 + 8 = 12.17\n\\]\nIf this value exceeds the critical value, we may conclude there’s something strange going on in these regions… but the truth is out there! 🛸\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThe chi-square test reveals mysteries hidden in plain data. Use it wisely, and remember: the truth is out there! 🛸\n\n\nVisit Quarto",
     "crumbs": [
       "About",
       "Posts",
-      "Hello World!"
+      "Hello World! The First Post!"
+    ]
+  },
+  {
+    "objectID": "posts/welcome/index.html#welcome-to-the-chi-files",
+    "href": "posts/welcome/index.html#welcome-to-the-chi-files",
+    "title": "Hello World! The First Post!",
+    "section": "",
+    "text": "Every great journey begins with a single step—or in this case, a single post. Really I’m just trying to learn how to use Quarto…\n\n\nThe blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.\n\n\n\nX-Files\n\n\n\n\n\nIn the Chi-Files, every dataset is a puzzle, and the chi-square statistic is our investigative tool to uncover hidden relationships.\nThe formula for the chi-square statistic is:\n\\[\n\\chi^2 = \\sum \\frac{(O_i - E_i)^2}{E_i}\n\\]\nWhere: - \\(O_i\\) = Observed frequency - \\(E_i\\) = Expected frequency - \\(\\sum\\) = The summation symbol, meaning we sum across all categories.\n\n\n\nSuppose we’re investigating sightings of UFOs 👽 across regions:\n\n\n\n\n\n\n\n\nRegion\nObserved Sightings (\\(O_i\\))\nExpected Sightings (\\(E_i\\))\n\n\n\n\nArea 51\n50\n40\n\n\nRoswell\n70\n60\n\n\nPine Gap\n30\n50\n\n\n\nUsing the chi-square formula, we calculate:\n\\[\n\\chi^2 = \\frac{(50 - 40)^2}{40} + \\frac{(70 - 60)^2}{60} + \\frac{(30 - 50)^2}{50}\n\\]\nThis leads to:\n\\[\n\\chi^2 = \\frac{100}{40} + \\frac{100}{60} + \\frac{400}{50} = 2.5 + 1.67 + 8 = 12.17\n\\]\nIf this value exceeds the critical value, we may conclude there’s something strange going on in these regions… but the truth is out there! 🛸\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThe chi-square test reveals mysteries hidden in plain data. Use it wisely, and remember: the truth is out there! 🛸\n\n\nVisit Quarto",
+    "crumbs": [
+      "About",
+      "Posts",
+      "Hello World! The First Post!"
     ]
   },
   {
     "objectID": "posts/post-with-code/index.html",
     "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "title": "Testing out Post with Code",
     "section": "",
     "text": "Welcome to my post about ggplot2! Here’s an example plot:\n\nlibrary(ggplot2)\nggplot(mtcars, aes(x = wt, y = mpg)) + \n  geom_point()",
     "crumbs": [
       "About",
       "Posts",
-      "Post With Code"
+      "Testing out Post with Code"
     ]
   },
   {
@@ -38,6 +50,6 @@
     "href": "index.html",
     "title": "chi-files",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nDec 21, 2024\n\n\nChisato den Engelsen\n\n\n\n\n\n\n\n\n\n\n\n\nHello World!\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nDec 21, 2024\n\n\nChisato den Engelsen\n\n\n\n\n\n\nNo matching items"
+    "text": "Testing out Post with Code\n\n\n\n\n\n\nr\n\n\nggplot\n\n\n\n\n\n\n\n\n\nDecember 21, 2024\n\n\nChisato\n\n\n\n\n\n\n\n\n\n\n\n\nHello World! The First Post!\n\n\n\n\n\n\nnews\n\n\n\nAn introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.\n\n\n\n\n\nDecember 21, 2024\n\n\nChisato\n\n\n\n\n\n\nNo matching items"
   }
 ]
