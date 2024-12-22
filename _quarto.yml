@@ -21,9 +21,11 @@ website:
 format:
   html:
     theme:  # https://github.com/quarto-dev/quarto-cli/tree/main/src/resources/formats/html/bootstrap/themes
-      dark: darkly
+      #dark: darkly
       light: flatly
     css: styles.css
+    toc: true
+    toc-depth: 3
     
 page-layout: full
 

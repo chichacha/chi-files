@@ -9,7 +9,7 @@ page-layout: full
 format:
   html:
     toc: true
-    toc-depth: 2
+    toc-depth: 3
 ---
 
 ## 👋 Welcome to the Chi-Files!
