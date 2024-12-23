@@ -1,0 +1,217 @@
+---
+title: "Fish-Eye Lens Effect with ggplot2"
+date: "2024-12-22"
+categories: [r, ggplot]
+format:
+  html:
+    code-fold: true
+execute:
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Fascination with "Warping" ...
+
+The "fish-eye" lens has always fascinated me. It was my gateway into photography—its quirky, distorted charm never failed to add whimsy to my shots. Some of my favourite memories are capturing our furry friends🐶🐽🐄. 
+
+Recently, I started wondering why not bring that same fish-eye🐟👁️ magic into my data visualizations. While it may not suit business dashboards, it's perfect for artistic visualizations.  With ggplot2’s [`coord_trans()`](https://ggplot2.tidyverse.org/reference/coord_trans.html) and its [`"pseudo_log"`](https://scales.r-lib.org/reference/log_trans.html) transformation as inspiration, I decied to push the boundaries and create my first custom transformation.
+
+### Digression : The Seigaha Motif as a Canvas 🎨
+
+To test this idea, I used a Seigaha motif I created the other day.  It's a geometric design with overlapping circles that naturally lends itself to experimentation.  I introduced randomness to the colors using irrational numbers as denominators, leveraging R's modulo operation for real numbers.  Just another attempt at creating "pseudo-randomness" in the design. 
+
+
+$$
+x \mod y = x - \text{floor}\left(\frac{x}{y}\right) \times y
+$$
+
+#### Famous "Irrational" Numbers in Math
+
+##### Golden Ratio
+
+The [Golden Ratio](https://en.wikipedia.org/wiki/Golden_ratio) is often represented by the Greek letter $\phi$ and is defined as: $$
+\phi = \frac{1 + \sqrt{5}}{2}
+$$
+
+##### Silver Ratio
+
+The lesser-known [Silver Ratio](https://mathworld.wolfram.com/SilverRatio.html), represented by $\delta_s$, is defined as: $$
+\delta_s = 1 + \sqrt{2}
+$$
+
+##### Euler's Number
+
+Euler's number, represented by $e$, is a fundamental constant in mathematics: $$
+e = \exp(1)
+$$ It is approximately $e \approx 2.718$.
+
+```{r}
+
+library(tidyverse) # Easily Install and Load the 'Tidyverse' 
+library(ggforce) # Accelerating 'ggplot2'   
+library(cowplot) # Streamlined Plot Theme and Plot Annotations for 'ggplot2'  
+library(gt) # Easily Create Presentation-Ready Display Tables 
+
+### just declaring the colour palette here
+col10 <- str_split("001219-005f73-0a9396-94d2bd-e9d8a6-ee9b00-ca6702-bb3e03-ae2012-9b2226","-")
+col10_pal <-str_c("#",col10 |> unlist())
+
+### Creating data frame that is basis of layout
+df <- expand_grid(x = seq(-12, 12, by = 2), 
+                  y = seq(-8, 8, by = 1)) |>
+  arrange(y,x) |>
+  mutate(y_odd=(y%%2==1)) |>
+  mutate(idx=row_number()-1) |>
+  mutate(x=if_else(y_odd,x+1,x))
+
+### For each grid location, I want 6 concentric circles
+r_values <- seq(0.1,1,length.out=6)
+
+### Just defining some "Irregular Numbers" that I can use with Modulo 
+gr <- (1 + sqrt(5)) / 2 ## the golden ratio 
+sr <- (1 + sqrt(2)) ##. lesser known silver ratio
+euler_num <- exp(1)
+
+df_long <- df |> expand_grid(r=r_values) |>
+  mutate(r_var=r*(idx%%sr)+1) ## I'm experimenting here with modulo with pi 
+
+
+```
+
+### Cartesian Coordinates:  The Baseline
+
+Here's the unaltered design using `coord_fixed`, maintaining regular Cartesian coordinates.  
+
+```{r}
+
+df_long |>
+  arrange(-y,idx, desc(r)) |>
+  ggplot() +
+  geom_circle(aes(x0=x,y0=y,r=r,fill=r_var),
+              linewidth=0.1,color="#fffff3de", linetype=1) +
+  coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme_nothing() +
+  scale_fill_gradientn(colors=col10_pal) +
+  scale_color_gradientn(colors=col10_pal) +
+  #coord_trans(x="pseudo_log",y="pseudo_log",clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme(plot.margin=unit(c(0,0,0,0),"mm"))
+
+```
+
+### Entering the World of Distortion
+
+#### Pseudo-Log Transformation 
+
+Warping begins with using `pseudo_log` transformation with  [`coord_trans`](https://ggplot2-book.org/coord#transformations-with-coord_trans) creates an intriguing distortion:
+
+```{r}
+
+df_long |>
+  arrange(-y,idx, desc(r)) |>
+  ggplot() +
+  geom_circle(aes(x0=x,y0=y,r=r,fill=r_var),
+              linewidth=0.1,color="#fffff3de", linetype=1) +
+  #coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme_nothing() +
+  scale_fill_gradientn(colors=col10_pal) +
+  scale_color_gradientn(colors=col10_pal) +
+  coord_trans(x="pseudo_log",y="pseudo_log",clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme(plot.margin=unit(c(0,0,0,0),"mm"))
+
+```
+
+#### Custom Fisheye Transformation
+
+Inspired by radial distortion formula, I've attempt to write a custom fisheye transformation.  
+
+
+k controls the intensity of the distortion.
+
+-   Positive k = Barrel Distortion (like Fisheye)
+-   Negative k = Pincusion Distortion (Inverse Fisheye).
+-   r' is pronouced as "r prime" 
+$$
+    r′=r⋅(1+k*r^2)
+$$
+Here's the implementation: 
+
+```{r}
+library(scales)
+
+# Define a fisheye transformation using trans_new
+fisheye_trans <- function(k = 0.01) {
+  trans_new(
+    name = "fisheye",
+    transform = function(r) r * (1 + k * r^2),        # Forward transformation
+    inverse = function(r_prime) r_prime / (1 + k * r_prime^2)  # Inverse transformation
+  )
+}
+
+# Create the fisheye transformation object
+fisheye <- fisheye_trans(k = 0.03)
+
+df_long |>
+  arrange(-y,idx, desc(r)) |>
+  ggplot() +
+  geom_circle(aes(x0=x,y0=y,r=r,fill=r_var),
+              linewidth=0.1,color="#fffff3de", linetype=1) +
+  #coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme_nothing() +
+  scale_fill_gradientn(colors=col10_pal) +
+  scale_color_gradientn(colors=col10_pal) +
+  #coord_trans(x="pseudo_log",y="pseudo_log",clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  coord_trans(x=fisheye, y=fisheye) +
+  theme(plot.margin=unit(c(0,0,0,0),"mm"))
+
+
+```
+
+The result didn't quite meet my expectations.. 😅🥹, but it's a start...! 
+
+### Experimenting with Modulus Transformation in `scales` package 📦
+
+I also explored transformations like modulus, which yielded effects closer to the fish-eye look I envisioned:
+
+```{r}
+
+# Define the modulus transformation with a specific parameter (e.g., p = 0.5)
+mod_trans_y <- modulus_trans(p = 0.01)
+
+
+df_long |>
+  arrange(-y,idx, desc(r)) |>
+  ggplot() +
+  geom_circle(aes(x0=x,y0=y,r=r,fill=r_var),
+              linewidth=0.1,color="#fffff3de", linetype=1) +
+  #coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme_nothing() +
+  scale_fill_gradientn(colors=col10_pal) +
+  scale_color_gradientn(colors=col10_pal) +
+  coord_trans(x=mod_trans_y ,y=mod_trans_y ,clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme(plot.margin=unit(c(0,0,0,0),"mm"))
+
+
+```
+
+
+```{r}
+
+mod_trans_x <- modulus_trans(p = 1.5)
+df_long |>
+  arrange(-y,idx, desc(r)) |>
+  ggplot() +
+  geom_circle(aes(x0=x,y0=y,r=r,fill=r_var),
+              linewidth=0.1,color="#fffff3de", linetype=1) +
+  #coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme_nothing() +
+  scale_fill_gradientn(colors=col10_pal) +
+  scale_color_gradientn(colors=col10_pal) +
+  coord_trans(x=mod_trans_x ,y=mod_trans_y ,clip="on", xlim=c(-11,11),ylim=c(-7,7)) +
+  theme(plot.margin=unit(c(0,0,0,0),"mm"))
+
+```
+
+### Final Thoughts
+
+Experimenting with warping in ggplot2 opens up a playful avenue for some quirky visualizations.  I'm now thinking what to distort next! 
