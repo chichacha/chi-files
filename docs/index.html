@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chisato">
+<meta name="description" content="Exploring the irrational, the visual, and the unexpected">
 
-<title>chi-files – CHI-FILES</title>
+<title>CHI(χ)-Files – CHI-FILES</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -130,7 +131,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
-</head>
+<link rel="alternate" type="application/rss+xml" title="CHI-FILES" href="index.xml" data-external="1"></head>
 
 <body class="nav-sidebar floating nav-fixed">
 
@@ -169,7 +170,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">chi-files</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">CHI(χ)-Files</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -179,8 +180,13 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">chi-files</h1>
-                      </div>
+      <h1 class="title">CHI(χ)-Files</h1>
+                  <div>
+        <div class="description">
+          Exploring the irrational, the visual, and the unexpected
+        </div>
+      </div>
+                </div>
   </div>
     
   
@@ -257,112 +263,91 @@ window.Quarto = {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ciUyQ2dncGxvdA==" data-listing-date-sort="1734854400000" data-listing-file-modified-sort="1734940189317" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="852">
-<div class="thumbnail">
-<p><a href="./posts/2024_12/index.html" class="no-external"></a></p><a href="./posts/2024_12/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/2024_12/index_files/figure-html/unnamed-chunk-2-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/2024_12/index.html" class="no-external"></a></p>
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
 </div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024_12/index.html" class="no-external">Fish-Eye Lens Effect with ggplot2</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024_12/index.html" class="no-external"></a>
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="ciUyQ2dncGxvdA==" data-listing-date-sort="1734854400000" data-listing-file-modified-sort="1734940189317" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="852">
+<a href="./posts/2024_12/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="posts/2024_12/index_files/figure-html/unnamed-chunk-2-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Fish-Eye Lens Effect with ggplot2
+</h5>
+<div class="card-text listing-description">
+The “fish-eye” lens has always fascinated me. It was my gateway into photography—its quirky, distorted charm never failed to add whimsy to my shots. Some of my favourite…
 </div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('cg=='); return false;">
-r
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Z2dwbG90'); return false;">
-ggplot
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024_12/index.html" class="no-external">The “fish-eye” lens has always fascinated me. It was my gateway into photography—its quirky, distorted charm never failed to add whimsy to my shots. Some of my favourite…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024_12/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 December 22, 2024
 </div>
-<div class="listing-author">
-Chisato
+</div>
+</div>
 </div>
 </a>
 </div>
+<div class="g-col-1" data-index="1" data-categories="ciUyQ2dncGxvdA==" data-listing-date-sort="1734768000000" data-listing-file-modified-sort="1734855463286" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="511">
+<a href="./posts/post-with-code/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="posts/post-with-code/index_files/figure-html/unnamed-chunk-4-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Creating a Seigaha Motif with ggplot2
+</h5>
+<div class="card-text listing-description">
+The Seigaiha (青海波) motif, literally translated as “blue ocean waves” is a classic Japanese pattern used in textiles, ceramics, kimono and art. It features stylized waves…
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="ciUyQ2dncGxvdA==" data-listing-date-sort="1734768000000" data-listing-file-modified-sort="1734855463286" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="511">
-<div class="thumbnail">
-<p><a href="./posts/post-with-code/index.html" class="no-external"></a></p><a href="./posts/post-with-code/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/post-with-code/index_files/figure-html/unnamed-chunk-4-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/post-with-code/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/post-with-code/index.html" class="no-external">Creating a Seigaha Motif with ggplot2</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/post-with-code/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('cg=='); return false;">
-r
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Z2dwbG90'); return false;">
-ggplot
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/post-with-code/index.html" class="no-external">The Seigaiha (青海波) motif, literally translated as “blue ocean waves” is a classic Japanese pattern used in textiles, ceramics, kimono and art. It features stylized waves…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/post-with-code/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 December 21, 2024
 </div>
-<div class="listing-author">
-Chisato
+</div>
+</div>
 </div>
 </a>
 </div>
+<div class="g-col-1" data-index="2" data-categories="bmV3cw==" data-listing-date-sort="1734768000000" data-listing-file-modified-sort="1734854994793" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="535">
+<a href="./posts/welcome/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./posts/welcome/thumbnail.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Hello World! The First Post!
+</h5>
+<div class="card-text listing-description">
+An introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="bmV3cw==" data-listing-date-sort="1734768000000" data-listing-file-modified-sort="1734854994793" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="535">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html" class="no-external"></a></p><a href="./posts/welcome/index.html" class="no-external">
-<p><img loading="lazy" src="./posts/welcome/thumbnail.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/welcome/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Hello World! The First Post!</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/welcome/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('bmV3cw=='); return false;">
-news
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/welcome/index.html" class="no-external">An introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 December 21, 2024
 </div>
-<div class="listing-author">
-Chisato
+</div>
+</div>
 </div>
 </a>
-</div>
 </div>
 </div>
 <div class="listing-no-matching d-none">
@@ -459,7 +444,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/chichacha\.github\.io\/chi-files");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

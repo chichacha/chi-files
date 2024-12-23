@@ -1,0 +1,2029 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>CHI-FILES</title>
+<link>https://chichacha.github.io/chi-files/</link>
+<atom:link href="https://chichacha.github.io/chi-files/index.xml" rel="self" type="application/rss+xml"/>
+<description>Exploring the irrational, the visual, and the unexpected</description>
+<generator>quarto-1.6.39</generator>
+<lastBuildDate>Sun, 22 Dec 2024 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Fish-Eye Lens Effect with ggplot2</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/2024_12/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="fascination-with-warping" class="level3">
+<h3 class="anchored" data-anchor-id="fascination-with-warping">Fascination with “Warping” …</h3>
+<p>The “fish-eye” lens has always fascinated me. It was my gateway into photography—its quirky, distorted charm never failed to add whimsy to my shots. Some of my favourite memories are capturing our furry friends🐶🐽🐄.</p>
+<p>Recently, I started wondering why not bring that same fish-eye🐟👁️ magic into my data visualizations. While it may not suit business dashboards, it’s perfect for artistic visualizations. With ggplot2’s <a href="https://ggplot2.tidyverse.org/reference/coord_trans.html"><code>coord_trans()</code></a> and its <a href="https://scales.r-lib.org/reference/log_trans.html"><code>"pseudo_log"</code></a> transformation as inspiration, I decied to push the boundaries and create my first custom transformation.</p>
+</section>
+<section id="digression-the-seigaha-motif-as-a-canvas" class="level3">
+<h3 class="anchored" data-anchor-id="digression-the-seigaha-motif-as-a-canvas">Digression : The Seigaha Motif as a Canvas 🎨</h3>
+<p>To test this idea, I used a Seigaha motif I created the other day. It’s a geometric design with overlapping circles that naturally lends itself to experimentation. I introduced randomness to the colors using irrational numbers as denominators, leveraging R’s modulo operation for real numbers. Just another attempt at creating “pseudo-randomness” in the design.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax%20%5Cmod%20y%20=%20x%20-%20%5Ctext%7Bfloor%7D%5Cleft(%5Cfrac%7Bx%7D%7By%7D%5Cright)%20%5Ctimes%20y%0A"></p>
+<section id="famous-irrational-numbers-in-math" class="level4">
+<h4 class="anchored" data-anchor-id="famous-irrational-numbers-in-math">Famous “Irrational” Numbers in Math</h4>
+<section id="golden-ratio" class="level5">
+<h5 class="anchored" data-anchor-id="golden-ratio">Golden Ratio</h5>
+<p>The <a href="https://en.wikipedia.org/wiki/Golden_ratio">Golden Ratio</a> is often represented by the Greek letter <img src="https://latex.codecogs.com/png.latex?%5Cphi"> and is defined as: <img src="https://latex.codecogs.com/png.latex?%0A%5Cphi%20=%20%5Cfrac%7B1%20+%20%5Csqrt%7B5%7D%7D%7B2%7D%0A"></p>
+</section>
+<section id="silver-ratio" class="level5">
+<h5 class="anchored" data-anchor-id="silver-ratio">Silver Ratio</h5>
+<p>The lesser-known <a href="https://mathworld.wolfram.com/SilverRatio.html">Silver Ratio</a>, represented by <img src="https://latex.codecogs.com/png.latex?%5Cdelta_s">, is defined as: <img src="https://latex.codecogs.com/png.latex?%0A%5Cdelta_s%20=%201%20+%20%5Csqrt%7B2%7D%0A"></p>
+</section>
+<section id="eulers-number" class="level5">
+<h5 class="anchored" data-anchor-id="eulers-number">Euler’s Number</h5>
+<p>Euler’s number, represented by <img src="https://latex.codecogs.com/png.latex?e">, is a fundamental constant in mathematics: <img src="https://latex.codecogs.com/png.latex?%0Ae%20=%20%5Cexp(1)%0A"> It is approximately <img src="https://latex.codecogs.com/png.latex?e%20%5Capprox%202.718">.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Easily Install and Load the 'Tidyverse' </span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggforce) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Accelerating 'ggplot2'   </span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(cowplot) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Streamlined Plot Theme and Plot Annotations for 'ggplot2'  </span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(gt) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Easily Create Presentation-Ready Display Tables </span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### just declaring the colour palette here</span></span>
+<span id="cb1-7">col10 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_split</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"001219-005f73-0a9396-94d2bd-e9d8a6-ee9b00-ca6702-bb3e03-ae2012-9b2226"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>)</span>
+<span id="cb1-8">col10_pal <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#"</span>,col10 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unlist</span>())</span>
+<span id="cb1-9"></span>
+<span id="cb1-10"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Creating data frame that is basis of layout</span></span>
+<span id="cb1-11">df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), </span>
+<span id="cb1-12">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(y,x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y_odd=</span>(y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">idx=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(y_odd,x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,x))</span>
+<span id="cb1-17"></span>
+<span id="cb1-18"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### For each grid location, I want 6 concentric circles</span></span>
+<span id="cb1-19">r_values <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">length.out=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Just defining some "Irregular Numbers" that I can use with Modulo </span></span>
+<span id="cb1-22">gr <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## the golden ratio </span></span>
+<span id="cb1-23">sr <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)) <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">##. lesser known silver ratio</span></span>
+<span id="cb1-24">euler_num <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-25"></span>
+<span id="cb1-26">df_long <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> df <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r_values) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-27">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r_var=</span>r<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(idx<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span>sr)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## I'm experimenting here with modulo with pi </span></span></code></pre></div>
+</details>
+</div>
+</section>
+</section>
+</section>
+<section id="cartesian-coordinates-the-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="cartesian-coordinates-the-baseline">Cartesian Coordinates: The Baseline</h3>
+<p>Here’s the unaltered design using <code>coord_fixed</code>, maintaining regular Cartesian coordinates.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y,idx, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(r)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_circle</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0=</span>x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0=</span>y,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>r_var),</span>
+<span id="cb2-5">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3de"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_fixed</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">clip=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"on"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-10">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#coord_trans(x="pseudo_log",y="pseudo_log",clip="on", xlim=c(-11,11),ylim=c(-7,7)) +</span></span>
+<span id="cb2-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.margin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mm"</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="entering-the-world-of-distortion" class="level3">
+<h3 class="anchored" data-anchor-id="entering-the-world-of-distortion">Entering the World of Distortion</h3>
+<section id="pseudo-log-transformation" class="level4">
+<h4 class="anchored" data-anchor-id="pseudo-log-transformation">Pseudo-Log Transformation</h4>
+<p>Warping begins with using <code>pseudo_log</code> transformation with <a href="https://ggplot2-book.org/coord#transformations-with-coord_trans"><code>coord_trans</code></a> creates an intriguing distortion:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y,idx, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(r)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_circle</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0=</span>x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0=</span>y,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>r_var),</span>
+<span id="cb3-5">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3de"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-6">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +</span></span>
+<span id="cb3-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pseudo_log"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pseudo_log"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">clip=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"on"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.margin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mm"</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="custom-fisheye-transformation" class="level4">
+<h4 class="anchored" data-anchor-id="custom-fisheye-transformation">Custom Fisheye Transformation</h4>
+<p>Inspired by radial distortion formula, I’ve attempt to write a custom fisheye transformation.</p>
+<p>k controls the intensity of the distortion.</p>
+<ul>
+<li>Positive k = Barrel Distortion (like Fisheye)</li>
+<li>Negative k = Pincusion Distortion (Inverse Fisheye).</li>
+<li>r’ is pronouced as “r prime” <img src="https://latex.codecogs.com/png.latex?%0Ar%E2%80%B2=r%E2%8B%85(1+k*r%5E2)%0A"> Here’s the implementation:</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(scales)</span>
+<span id="cb4-2"></span>
+<span id="cb4-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define a fisheye transformation using trans_new</span></span>
+<span id="cb4-4">fisheye_trans <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">k =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>) {</span>
+<span id="cb4-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">trans_new</span>(</span>
+<span id="cb4-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"fisheye"</span>,</span>
+<span id="cb4-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">transform =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(r) r <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> r<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Forward transformation</span></span>
+<span id="cb4-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inverse =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(r_prime) r_prime <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> r_prime<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Inverse transformation</span></span>
+<span id="cb4-9">  )</span>
+<span id="cb4-10">}</span>
+<span id="cb4-11"></span>
+<span id="cb4-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the fisheye transformation object</span></span>
+<span id="cb4-13">fisheye <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisheye_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">k =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.03</span>)</span>
+<span id="cb4-14"></span>
+<span id="cb4-15">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y,idx, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(r)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_circle</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0=</span>x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0=</span>y,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>r_var),</span>
+<span id="cb4-19">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3de"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-20">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +</span></span>
+<span id="cb4-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-24">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#coord_trans(x="pseudo_log",y="pseudo_log",clip="on", xlim=c(-11,11),ylim=c(-7,7)) +</span></span>
+<span id="cb4-25">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>fisheye, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>fisheye) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.margin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mm"</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The result didn’t quite meet my expectations.. 😅🥹, but it’s a start…!</p>
+</section>
+</section>
+<section id="experimenting-with-modulus-transformation-in-scales-package" class="level3">
+<h3 class="anchored" data-anchor-id="experimenting-with-modulus-transformation-in-scales-package">Experimenting with Modulus Transformation in <code>scales</code> package 📦</h3>
+<p>I also explored transformations like modulus, which yielded effects closer to the fish-eye look I envisioned:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define the modulus transformation with a specific parameter (e.g., p = 0.5)</span></span>
+<span id="cb5-2">mod_trans_y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">modulus_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)</span>
+<span id="cb5-3"></span>
+<span id="cb5-4"></span>
+<span id="cb5-5">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y,idx, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(r)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_circle</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0=</span>x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0=</span>y,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>r_var),</span>
+<span id="cb5-9">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3de"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-10">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +</span></span>
+<span id="cb5-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>mod_trans_y ,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>mod_trans_y ,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">clip=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"on"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.margin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mm"</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">mod_trans_x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">modulus_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>)</span>
+<span id="cb6-2">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y,idx, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(r)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_circle</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0=</span>x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0=</span>y,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>r_var),</span>
+<span id="cb6-6">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3de"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-7">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#coord_fixed(clip="on", xlim=c(-11,11),ylim=c(-7,7)) +</span></span>
+<span id="cb6-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors=</span>col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_trans</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>mod_trans_x ,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>mod_trans_y ,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">clip=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"on"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.margin=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mm"</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-thoughts" class="level3">
+<h3 class="anchored" data-anchor-id="final-thoughts">Final Thoughts</h3>
+<p>Experimenting with warping in ggplot2 opens up a playful avenue for some quirky visualizations. I’m now thinking what to distort next!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>ggplot</category>
+  <guid>https://chichacha.github.io/chi-files/posts/2024_12/</guid>
+  <pubDate>Sun, 22 Dec 2024 08:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Creating a Seigaha Motif with ggplot2</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/post-with-code/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="seigaiha-青海波" class="level2">
+<h2 class="anchored" data-anchor-id="seigaiha-青海波">Seigaiha 青海波 🌊</h2>
+<p>The Seigaiha (青海波) motif, literally translated as “blue ocean waves” is a classic Japanese pattern used in textiles, ceramics, kimono and art. It features stylized waves created with concentric circles forming arches. I just learned that it symbolizes surges of good luck - delightful and thought great start to have it for blog post.</p>
+<ul>
+<li>青 = Blue</li>
+<li>海 = Ocean</li>
+<li>波 = Wave</li>
+</ul>
+<p>Using <code>ggplot2</code> and additional packages like <code>ggforce</code> and c<code>owplot,</code> I was able to recreate this timeless design programmatically.</p>
+<section id="walk-through-of-how-i-created-the-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="walk-through-of-how-i-created-the-pattern">Walk Through of How I Created the Pattern</h3>
+<p>First need to load up the required libraries. Recently, I discovered package called <a href="https://annotater.liomys.mx/"><code>annotater</code></a> , which let you add annotation to the packages you use in script! It’s such a useful tool - future me (and anyone collaborating on my code) will likely thank me for using it.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Easily Install and Load the 'Tidyverse' </span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggforce) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Accelerating 'ggplot2'   </span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(cowplot) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Streamlined Plot Theme and Plot Annotations for 'ggplot2'  </span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(gt) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Easily Create Presentation-Ready Display Tables </span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6">col10 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_split</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"012a4a-013a63-01497c-014f86-2a6f97-2c7da0-468faf-61a5c2-89c2d9-a9d6e5"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">col10_pal <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#"</span>,col10 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unlist</span>())</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="generating-the-grid-data" class="level3">
+<h3 class="anchored" data-anchor-id="generating-the-grid-data">Generating the Grid Data</h3>
+<p>We create a grid of coordinates to serve as the base for our motif. To archieve the characteristic offset of Seigaiha waves, we adjust the <code>x</code> coordinates for odd rows:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), </span>
+<span id="cb2-2">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(y,x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y_odd=</span>(y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">idx=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(y_odd,x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,x))</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="expanding-for-circle-sizes" class="level3">
+<h3 class="anchored" data-anchor-id="expanding-for-circle-sizes">Expanding for Circle Sizes</h3>
+<p>The radii of the circles vary in five steps. It could be smaller or larger. I could’ve also add randomness to it too, but I just kept it constant for now.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">r_values <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">length.out=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb3-2">df_long <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> df <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r=</span>r_values)</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"></span>
+<span id="cb3-5">df_long <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r_var=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(idx<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(r),r))</span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#range(df_long$x)</span></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#range(df_long$y)</span></span>
+<span id="cb3-10"></span>
+<span id="cb3-11">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gt</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="drshbmwswg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#drshbmwswg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#drshbmwswg thead, #drshbmwswg tbody, #drshbmwswg tfoot, #drshbmwswg tr, #drshbmwswg td, #drshbmwswg th {
+  border-style: none;
+}
+
+#drshbmwswg p {
+  margin: 0;
+  padding: 0;
+}
+
+#drshbmwswg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#drshbmwswg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#drshbmwswg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#drshbmwswg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#drshbmwswg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#drshbmwswg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#drshbmwswg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#drshbmwswg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#drshbmwswg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#drshbmwswg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#drshbmwswg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#drshbmwswg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#drshbmwswg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#drshbmwswg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#drshbmwswg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#drshbmwswg .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#drshbmwswg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#drshbmwswg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#drshbmwswg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#drshbmwswg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#drshbmwswg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#drshbmwswg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#drshbmwswg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#drshbmwswg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#drshbmwswg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#drshbmwswg .gt_left {
+  text-align: left;
+}
+
+#drshbmwswg .gt_center {
+  text-align: center;
+}
+
+#drshbmwswg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#drshbmwswg .gt_font_normal {
+  font-weight: normal;
+}
+
+#drshbmwswg .gt_font_bold {
+  font-weight: bold;
+}
+
+#drshbmwswg .gt_font_italic {
+  font-style: italic;
+}
+
+#drshbmwswg .gt_super {
+  font-size: 65%;
+}
+
+#drshbmwswg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#drshbmwswg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#drshbmwswg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#drshbmwswg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#drshbmwswg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#drshbmwswg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#drshbmwswg .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#drshbmwswg .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#drshbmwswg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="x" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">x</th>
+<th id="y" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">y</th>
+<th id="y_odd" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">y_odd</th>
+<th id="idx" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">idx</th>
+<th id="r" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">r</th>
+<th id="r_var" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">r_var</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right" headers="x">-16</td>
+<td class="gt_row gt_right" headers="y">-10</td>
+<td class="gt_row gt_center" headers="y_odd">FALSE</td>
+<td class="gt_row gt_right" headers="idx">0</td>
+<td class="gt_row gt_right" headers="r">0.3</td>
+<td class="gt_row gt_right" headers="r_var">0.5477226</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="x">-16</td>
+<td class="gt_row gt_right" headers="y">-10</td>
+<td class="gt_row gt_center" headers="y_odd">FALSE</td>
+<td class="gt_row gt_right" headers="idx">0</td>
+<td class="gt_row gt_right" headers="r">0.5</td>
+<td class="gt_row gt_right" headers="r_var">0.7071068</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="x">-16</td>
+<td class="gt_row gt_right" headers="y">-10</td>
+<td class="gt_row gt_center" headers="y_odd">FALSE</td>
+<td class="gt_row gt_right" headers="idx">0</td>
+<td class="gt_row gt_right" headers="r">0.7</td>
+<td class="gt_row gt_right" headers="r_var">0.8366600</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="x">-16</td>
+<td class="gt_row gt_right" headers="y">-10</td>
+<td class="gt_row gt_center" headers="y_odd">FALSE</td>
+<td class="gt_row gt_right" headers="idx">0</td>
+<td class="gt_row gt_right" headers="r">0.9</td>
+<td class="gt_row gt_right" headers="r_var">0.9486833</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right" headers="x">-16</td>
+<td class="gt_row gt_right" headers="y">-10</td>
+<td class="gt_row gt_center" headers="y_odd">FALSE</td>
+<td class="gt_row gt_right" headers="idx">0</td>
+<td class="gt_row gt_right" headers="r">1.1</td>
+<td class="gt_row gt_right" headers="r_var">1.0488088</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right" headers="x">-14</td>
+<td class="gt_row gt_right" headers="y">-10</td>
+<td class="gt_row gt_center" headers="y_odd">FALSE</td>
+<td class="gt_row gt_right" headers="idx">1</td>
+<td class="gt_row gt_right" headers="r">0.3</td>
+<td class="gt_row gt_right" headers="r_var">0.3000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-the-seigaiha-motif" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-the-seigaiha-motif">Plotting the Seigaiha Motif</h3>
+<p>Using <code>geom_circle</code> from <code>ggforce</code>, we layer circles over the grid. We map the fill colour to the adjusted radius (r_var) for a slight gradeient effect:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y, idx, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(r)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_circle</span>(</span>
+<span id="cb4-5">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(</span>
+<span id="cb4-6">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0 =</span> x,</span>
+<span id="cb4-7">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0 =</span> y,</span>
+<span id="cb4-8">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r =</span> r,</span>
+<span id="cb4-9">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> r_var <span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## just wanted to give bit of variance</span></span>
+<span id="cb4-10">    ),</span>
+<span id="cb4-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,</span>
+<span id="cb4-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3de"</span>,</span>
+<span id="cb4-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb4-14">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_fixed</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">clip =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"on"</span>,</span>
+<span id="cb4-16">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">14.5</span>),</span>
+<span id="cb4-17">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors =</span> col10_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors =</span> col10_pal)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/post-with-code/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-touch" class="level3">
+<h3 class="anchored" data-anchor-id="final-touch">Final Touch</h3>
+<p>The <code>theme_nothing()</code> from <code>cowplot</code> removes all unnecessary visual elements (axes, labels etc.), leaving only the motif. I’ve adjusted <code>xlim</code> and <code>ylim</code> so that I’m clipping out the extra circles.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>ggplot</category>
+  <guid>https://chichacha.github.io/chi-files/posts/post-with-code/</guid>
+  <pubDate>Sat, 21 Dec 2024 08:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Hello World! The First Post!</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="welcome-to-the-chi-files" class="level2">
+<h2 class="anchored" data-anchor-id="welcome-to-the-chi-files">👋 Welcome to the Chi-Files!</h2>
+<p>Every great journey begins with a single step—or in this case, a single post. Really I’m just trying to learn how to use Quarto…</p>
+<section id="why-the-chi-files" class="level3">
+<h3 class="anchored" data-anchor-id="why-the-chi-files">🌟 Why the “Chi-Files”?</h3>
+<p>The blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/welcome/thumbnail.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>X-Files</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-chi-square-test-solving-data-mysteries" class="level3">
+<h3 class="anchored" data-anchor-id="the-chi-square-test-solving-data-mysteries">The Chi-Square Test: Solving Data Mysteries 🛸</h3>
+<p>In the Chi-Files, every dataset is a puzzle, and the <strong>chi-square statistic</strong> is our investigative tool to uncover hidden relationships.</p>
+<p>The formula for the chi-square statistic is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cchi%5E2%20=%20%5Csum%20%5Cfrac%7B(O_i%20-%20E_i)%5E2%7D%7BE_i%7D%0A"></p>
+<p>Where: - <img src="https://latex.codecogs.com/png.latex?O_i"> = Observed frequency - <img src="https://latex.codecogs.com/png.latex?E_i"> = Expected frequency - <img src="https://latex.codecogs.com/png.latex?%5Csum"> = The summation symbol, meaning we sum across all categories.</p>
+</section>
+<section id="an-x-files-twist" class="level3">
+<h3 class="anchored" data-anchor-id="an-x-files-twist"><strong>An X-Files Twist</strong></h3>
+<p>Suppose we’re investigating sightings of UFOs 👽 across regions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 36%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Region</strong></th>
+<th><strong>Observed Sightings</strong> (<img src="https://latex.codecogs.com/png.latex?O_i">)</th>
+<th><strong>Expected Sightings</strong> (<img src="https://latex.codecogs.com/png.latex?E_i">)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Area 51</td>
+<td>50</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td>Roswell</td>
+<td>70</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>Pine Gap</td>
+<td>30</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>Using the chi-square formula, we calculate:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cchi%5E2%20=%20%5Cfrac%7B(50%20-%2040)%5E2%7D%7B40%7D%20+%20%5Cfrac%7B(70%20-%2060)%5E2%7D%7B60%7D%20+%20%5Cfrac%7B(30%20-%2050)%5E2%7D%7B50%7D%0A"></p>
+<p>This leads to:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cchi%5E2%20=%20%5Cfrac%7B100%7D%7B40%7D%20+%20%5Cfrac%7B100%7D%7B60%7D%20+%20%5Cfrac%7B400%7D%7B50%7D%20=%202.5%20+%201.67%20+%208%20=%2012.17%0A"></p>
+<p>If this value exceeds the critical value, we may conclude there’s <strong>something strange going on in these regions</strong>… but the truth is out there! 🛸</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/welcome/index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The chi-square test reveals mysteries hidden in plain data. Use it wisely, and remember: <strong>the truth is out there!</strong> 🛸</p>
+</div>
+</div>
+<p><a href="https://quarto.org">Visit Quarto</a></p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://chichacha.github.io/chi-files/posts/welcome/</guid>
+  <pubDate>Sat, 21 Dec 2024 08:00:00 GMT</pubDate>
+  <media:content url="https://chichacha.github.io/chi-files/posts/welcome/thumbnail.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+</channel>
+</rss>

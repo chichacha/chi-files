@@ -1,12 +1,15 @@
 ---
-title: "chi-files"
+title: "CHI(χ)-Files"
+description: "Exploring the irrational, the visual, and the unexpected"
 listing:
   contents: posts
+  feed: true
   sort: "date desc"
-  type: default
+  type: grid
   categories: true
-  sort-ui: false
-  filter-ui: false
+  sort-ui: true
+  filter-ui: true
+  fields: [image, date, title, description]
 page-layout: full
 title-block-banner: true
 ---
