@@ -8,5 +8,14 @@
 .quarto-title-banner {
     margin-bottom: 1em;
     color: #ECDFCe;
-    background: #4B4376;
+    background: rgb(67,46,84);
+    background: linear-gradient(135deg, rgba(67,46,84,1) 0%, rgba(108,91,146,1) 35%, rgba(43,185,189,1) 100%);
 }
+
+/* Hover effect for the banner */
+.quarto-title-banner:hover {
+  background: linear-gradient(315deg, rgba(67,46,84,1) 0%, rgba(108,91,146,1) 65%, rgba(43,185,189,1) 100%);
+  color: #FFFFFe; /* Pure white text on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow for hover effect */
+}
+

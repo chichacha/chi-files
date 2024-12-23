@@ -7,7 +7,7 @@ date-format: "long"  # Options: "short", "long", "relative"
 
 
 website:
-  title: "CHI-FILES"
+  title: "CHI(χ)-Files"
   site-url: "https://chichacha.github.io/chi-files"
   open-graph: false # https:quarto.org.docs/websites/website-tools.html#open-graph
   page-footer: "Made with 💗 and ☕️ and Quarto"
@@ -16,8 +16,6 @@ website:
       - about.qmd
       - icon: github
         href: https://github.com/chichacha
-  sidebar:
-    contents: auto
 
 format:
   html:
