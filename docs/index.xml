@@ -10,7 +10,85 @@
 <atom:link href="https://chichacha.github.io/chi-files/index.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Sun, 22 Dec 2024 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 26 Dec 2024 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Geometic Art Generator with Shiny</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/2024_12/geometric_pattern_ggplot.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">🌟 Introduction</h3>
+<p><code>ggplot2</code>—the trusty workhorse of R. It’s definitely have been the go-to package for creating stunning visualizations for years. And it’s not going anywhere anytime soon. 🎉</p>
+<p>But I’ve always wondered: What if my ggplot2 creations could come to life? What if I could tweak a slider and instantly see my charts morph? Enter Shiny—a magical tool to make R interactive.</p>
+<p>I procrastinated for years. I finally jumped in. Thanks to tools like <a href="https://www.shinyapps.io/">shinyapps.io</a> and <a href="https://rstudio.github.io/shinythemes/">shinythemes</a>, the process was much smoother than I imagined. These tools took away the stress of deployment and styling, making Shiny approachable even for a beginner like me.</p>
+</section>
+<section id="geometric-generative-art---shiny-app-experimentation" class="level3">
+<h3 class="anchored" data-anchor-id="geometric-generative-art---shiny-app-experimentation">🎨 Geometric Generative Art - Shiny App Experimentation</h3>
+<div class="cell" data-layout-align="default">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1">graph LR</span>
+<span id="cb1-2">    A[Static ggplot2 Plot] --&gt; B[Dynamic Shiny App]</span>
+<span id="cb1-3">    B --&gt; C[Published on shinyapps.io]</span>
+<span id="cb1-4">    C --&gt; D[Embedded in Blog Post]</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    A[Static ggplot2 Plot] --&gt; B[Dynamic Shiny App]
+    B --&gt; C[Published on shinyapps.io]
+    C --&gt; D[Embedded in Blog Post]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>To dip my toes into Shiny, I created an app that lets you experiment with geometric generative art. Adjust sliders to tweak parameters like rotation, scale, and color, and transformation on coordinate system to see how patterns come to life in real time!</p>
+<div class="callout callout-style-simple callout-warning no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This app is more of a personal playground for exploring patterns than a polished product. Feel free to experiment!</p>
+</div>
+</div>
+</div>
+<iframe src="https://chichacha.shinyapps.io/geometric_generative_art/" width="100%" height="1000px" style="border: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</iframe>
+</section>
+<section id="from-interactivity-to-animation" class="level3">
+<h3 class="anchored" data-anchor-id="from-interactivity-to-animation">🎥 From Interactivity to Animation</h3>
+<p>As I played with the app, I wanted to see how parameter changes would look as a sequence. I automated the process to generate frames and stitched them into this animated gif:</p>
+<p><img src="https://imgur.com/I4ZgOOO.png" class="img-fluid"></p>
+<p><img src="https://imgur.com/InH8xtj.png" class="img-fluid"></p>
+</section>
+<section id="key-takeaways" class="level3">
+<h3 class="anchored" data-anchor-id="key-takeaways">✍️ Key Takeaways</h3>
+<p><a href="https://shiny.posit.co/">Shiny</a> brings interactivity to static ggplot2 visualizations—perfect for both data exploration and presentation.</p>
+<p>Tools like <code>shinyapps.io</code> and <code>shinythemes</code> make the process approachable and stylish! I’ve also started exploring newer options like <a href="https://rstudio.github.io/bslib/"><code>bslib</code></a> and <a href="https://rstudio.github.io/thematic/"><code>thematic</code></a>, which seem promising for even more customization and polished visuals. ✨</p>
+<p>This one’s probably obvious to seasoned Shiny users. But for me, it was a total lightbulb 💡 moment. Decoupling Shiny app development from the blog itself made everything so much easier, and I wish I’d known this sooner!</p>
+<p>Start with something fun to learn Shiny—because jumping straight into building a business dashboard feels like a much higher hurdle. Experimenting with something playful, like geometric art, makes the learning curve way less intimidating.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>ggplot</category>
+  <category>shiny</category>
+  <guid>https://chichacha.github.io/chi-files/posts/2024_12/geometric_pattern_ggplot.html</guid>
+  <pubDate>Thu, 26 Dec 2024 08:00:00 GMT</pubDate>
+  <media:content url="https://chichacha.github.io/chi-files/posts/2024_12/pattern_angle_3_32.svg" medium="image" type="image/svg+xml"/>
+</item>
 <item>
   <title>Fish-Eye Lens Effect with ggplot2</title>
   <dc:creator>Chisato </dc:creator>

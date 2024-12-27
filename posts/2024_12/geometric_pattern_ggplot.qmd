@@ -1,0 +1,58 @@
+---
+title: "Geometic Art Generator with Shiny"
+date: "2024-12-26"
+categories: [r, ggplot, shiny]
+image: "pattern_angle_3_32.svg"
+format:
+  html:
+    code-fold: true
+execute:
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### 🌟 Introduction
+
+`ggplot2`—the trusty workhorse of R. It’s definitely have been the go-to package for creating stunning visualizations for years. And it’s not going anywhere anytime soon. 🎉
+
+But I’ve always wondered: What if my ggplot2 creations could come to life? What if I could tweak a slider and instantly see my charts morph? Enter Shiny—a magical tool to make R interactive.
+
+I procrastinated for years. I finally jumped in. Thanks to tools like [shinyapps.io](https://www.shinyapps.io/) and [shinythemes](https://rstudio.github.io/shinythemes/), the process was much smoother than I imagined. These tools took away the stress of deployment and styling, making Shiny approachable even for a beginner like me.
+
+### 🎨 Geometric Generative Art - Shiny App Experimentation
+
+```{mermaid}
+graph LR
+    A[Static ggplot2 Plot] --> B[Dynamic Shiny App]
+    B --> C[Published on shinyapps.io]
+    C --> D[Embedded in Blog Post]
+```
+
+To dip my toes into Shiny, I created an app that lets you experiment with geometric generative art. Adjust sliders to tweak parameters like rotation, scale, and color, and transformation on coordinate system to see how patterns come to life in real time!
+
+::: {.callout-warning appearance="minimal"}
+This app is more of a personal playground for exploring patterns than a polished product. Feel free to experiment!
+:::
+
+<iframe src="https://chichacha.shinyapps.io/geometric_generative_art/" width="100%" height="1000px" style="border: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+</iframe>
+
+### 🎥 From Interactivity to Animation
+
+As I played with the app, I wanted to see how parameter changes would look as a sequence. I automated the process to generate frames and stitched them into this animated gif:
+
+![](https://imgur.com/I4ZgOOO)
+
+![](https://imgur.com/InH8xtj)
+
+### ✍️ Key Takeaways
+
+[Shiny](https://shiny.posit.co/) brings interactivity to static ggplot2 visualizations—perfect for both data exploration and presentation.
+
+Tools like `shinyapps.io` and `shinythemes` make the process approachable and stylish! I’ve also started exploring newer options like [`bslib`](https://rstudio.github.io/bslib/) and [`thematic`](https://rstudio.github.io/thematic/), which seem promising for even more customization and polished visuals. ✨
+
+This one’s probably obvious to seasoned Shiny users. But for me, it was a total lightbulb 💡 moment. Decoupling Shiny app development from the blog itself made everything so much easier, and I wish I’d known this sooner!
+
+Start with something fun to learn Shiny—because jumping straight into building a business dashboard feels like a much higher hurdle. Experimenting with something playful, like geometric art, makes the learning curve way less intimidating.
