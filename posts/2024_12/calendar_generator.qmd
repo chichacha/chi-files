@@ -1,8 +1,7 @@
 ---
-title: "Calendar"
+title: "Visualizing 445 Calendar in R"
 date: "2024-12-29"
-categories: [r, ggplot, shiny]
-image: 
+categories: [r, ggplot, calendar]
 format:
   html:
     code-fold: true
@@ -15,13 +14,15 @@ editor_options:
 ```{r}
 #| label: setup
 #| include: false
+
 library(tidyverse) # Easily Install and Load the 'Tidyverse'
 library(lubridate) # Make Dealing with Dates a Little Easier
 library(ggthemes) # Extra Themes, Scales and Geoms for 'ggplot2'
 library(colourvalues) # Assigns Colours to Values
 
 # Source your custom function
-source("R/create_calendar.R")
+source(fs::path(here::here(),"R","create_calendar.R"))
+
 
 ```
 
@@ -31,12 +32,95 @@ If you’ve worked in retail, you might already know that time isn’t always me
 
 ### Why Use a 4-4-5 Calendar?
 
-Traditional calendars often lead to reporting headaches, especially when months have varying lengths. The 4-4-5 calendar solves this by:
+Traditional calendars often lead to reporting headaches🤕, especially when months have varying lengths. The 4-4-5 calendar solves this by:
 
 -   Aligning periods to weeks, making year-over-year comparisons simpler.
 -   Standardizing reporting cycles, especially for weekly-driven industries like retail.
 -   Providing flexibility with alternative formats, such as the 4-5-4 calendar, for specific business needs.
 
-There's also a sibling version, the 4-5-4 calendar, which I personally prefer because it ensures that American Thanksgiving 🦃🎁 always falls within Period 11. In contrast, the 4-4-5 calendar may place Thanksgiving in Period 11 or 12, depending on the year.
+There's also a sibling version👧🏻, the 4-5-4 calendar, which I personally prefer because it ensures that American Thanksgiving 🦃🎁 always falls within Period 11. In contrast, the 4-4-5 calendar may place Thanksgiving in Period 11 or 12, depending on the year.
 
-### 
+### Building a Custom 4-4-5 Calendar in R
+
+To create a reusable tool, I developed the create_calendar function. This function takes a year and a calendar type ("445" or "454") and returns a detailed tibble with dates, weeks, periods, and quarters. Function takes the year, and returns calendar as data frame.
+
+``` R
+create_calendar <- function(year, calendar_type = "445", col_pal = NULL, ...) {
+  if (is.null(col_pal)) {
+    col_pal <- ggthemes::tableau_color_pal("Hue Circle")(19)[c(1:13)]
+  }
+  
+  cal <- tibble(
+    dt = seq.Date(ymd(paste0(year-1, "-12-01")), ymd(paste0(year, "-12-31")), by = "day")
+  )
+  
+  wpq <- switch(calendar_type,
+                "445" = tibble(
+                  wk = 1:53,
+                  p = sort(c(rep(1:12, each = 4), c(3, 6, 9, 12, 12))),
+                  q = sort(c(rep(1:4, each = 13), c(4)))
+                ),
+                "454" = tibble(
+                  wk = 1:53,
+                  p = sort(c(rep(1:12, each=4), c(2, 5, 8, 11, 12))),
+                  q = sort(c(rep(1:4, each = 13), c(4)))
+                ),
+                stop("Invalid calendar type. Choose '445' or '454'.")
+  )
+  
+  cal <- cal |>
+    mutate(
+      yr = isoyear(dt),
+      wk = isoweek(dt),
+      wday = wday(dt, label = TRUE)
+    ) |>
+    left_join(wpq, by = "wk") |>
+    mutate(color_num=wk + p + q) |>
+    mutate(color_wk = colourvalues::color_values(color_num, 
+                                                 palette=farver::decode_colour(col_pal))) |>
+    filter(yr==year)
+  
+  return(cal)
+}
+```
+
+### Making the Visual Calendar
+
+::: panel-tabset
+#### 445 Calendar for 2025
+
+```{r}
+#| fig-width: 8
+#| fig-height: 7
+
+create_calendar(year=2025, calendar_type="445") |>
+  ggplot(aes(x=wday,y=color_num)) +
+  geom_tile(aes(fill=I(color_wk)), color="#ffffffde") +
+  geom_text(aes(label=day(dt)), color="#ffffff", family="Roboto Condensed") +
+  scale_y_reverse() +
+  scale_x_discrete(labels=~str_sub(.,1L,2L)) +
+  facet_wrap(~p,ncol=3, scales="free") +
+  cowplot::theme_minimal_grid(font_family="Roboto Condensed",line_size=0) +
+  labs(x="",y="")
+
+
+```
+
+#### 454 Calendar for 2025
+
+```{r}
+#| fig-width: 8
+#| fig-height: 7
+
+create_calendar(year=2025, calendar_type="454") |>
+  ggplot(aes(x=wday,y=color_num)) +
+  geom_tile(aes(fill=I(color_wk)), color="#ffffffde") +
+  geom_text(aes(label=day(dt)), color="#ffffff", family="Roboto Condensed") +
+  scale_y_reverse() +
+  scale_x_discrete(labels=~str_sub(.,1L,2L)) +
+  facet_wrap(~p,ncol=3, scales="free") +
+  cowplot::theme_minimal_grid(font_family="Roboto Condensed",line_size=0) +
+  labs(x="",y="")
+
+```
+:::
