@@ -54,11 +54,12 @@ create_calendar <- function(year, calendar_type = "445", col_pal = NULL, ...) {
                 stop("Invalid calendar type. Choose '445' or '454'.")
   )
   
+  ?wday
   cal <- cal |>
     mutate(
       yr = isoyear(dt),
       wk = isoweek(dt),
-      wday = wday(dt, label = TRUE)
+      wday = wday(dt, label = TRUE,week_start = getOption("lubridate.week.start", 1))
     ) |>
     left_join(wpq, by = "wk") |>
     mutate(color_num=wk + p + q) |>

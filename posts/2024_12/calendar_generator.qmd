@@ -28,11 +28,11 @@ source(fs::path(here::here(),"R","create_calendar.R"))
 
 ### Have You Heard of the 4-4-5 Calendar? 📆
 
-If you’ve worked in retail, you might already know that time isn’t always measured in standard months. Enter the 4-4-5 calendar: a reporting tool that divides a year into 12 periods, each organized into quarters of 4, 4, and 5 weeks. This structure ensures comparability across years by standardizing the length of each reporting period.
+If you’ve worked in retail, you might already know that time isn’t always measured in standard months. Enter the 4-4-5 calendar: a reporting tool that divides a year into 12 periods, each organized into quarters of 4, 4, and 5 weeks (i.e. 13 weeks in each quarter). This structure ensures comparability across years by standardizing the length of each reporting period. (But yes, this isn’t perfect either—every 5-6 years, this produces a year with 53 weeks.)
 
 ### Why Use a 4-4-5 Calendar?
 
-Traditional calendars often lead to reporting headaches🤕, especially when months have varying lengths. The 4-4-5 calendar solves this by:
+Standard Gregorian calendars often lead to reporting headaches🤕, especially when months have varying lengths or different counts of weekends. The 4-4-5 calendar solves this by:
 
 -   Aligning periods to weeks, making year-over-year comparisons simpler.
 -   Standardizing reporting cycles, especially for weekly-driven industries like retail.
@@ -72,7 +72,7 @@ create_calendar <- function(year, calendar_type = "445", col_pal = NULL, ...) {
     mutate(
       yr = isoyear(dt),
       wk = isoweek(dt),
-      wday = wday(dt, label = TRUE)
+      wday = wday(dt, label = TRUE,week_start = getOption("lubridate.week.start", 1))
     ) |>
     left_join(wpq, by = "wk") |>
     mutate(color_num=wk + p + q) |>
@@ -86,27 +86,35 @@ create_calendar <- function(year, calendar_type = "445", col_pal = NULL, ...) {
 
 ### Making the Visual Calendar
 
+Using `ggplot2`, we can create a visual representation of the calendar. The plot organizes weeks within periods and highlights each period in a grid layout. 
+
 ::: panel-tabset
-#### 445 Calendar for 2025
+#### 2025 - 445 🗓️
 
 ```{r}
 #| fig-width: 8
 #| fig-height: 7
 
+#create_calendar(year=2025, calendar_type="445")
+
 create_calendar(year=2025, calendar_type="445") |>
   ggplot(aes(x=wday,y=color_num)) +
   geom_tile(aes(fill=I(color_wk)), color="#ffffffde") +
-  geom_text(aes(label=day(dt)), color="#ffffff", family="Roboto Condensed") +
-  scale_y_reverse() +
+  geom_text(aes(label=day(dt),color=I(if_else(month(dt)==p,"#ffffff","#e3e3e3"))),  family="Roboto Condensed") +
+  geom_text(aes(label=str_c("W",wk),color=I(color_wk),x=0),
+            family="Roboto Condensed", 
+            data = . %>% count(wk,color_num,color_wk,p,q))+
+  geom_blank(aes(x=-1)) +
+  scale_y_reverse(breaks=NULL) +
   scale_x_discrete(labels=~str_sub(.,1L,2L)) +
   facet_wrap(~p,ncol=3, scales="free") +
   cowplot::theme_minimal_grid(font_family="Roboto Condensed",line_size=0) +
-  labs(x="",y="")
+  labs(x="",y="") 
 
 
 ```
 
-#### 454 Calendar for 2025
+#### 2025 - 454 🗓️
 
 ```{r}
 #| fig-width: 8
@@ -115,12 +123,60 @@ create_calendar(year=2025, calendar_type="445") |>
 create_calendar(year=2025, calendar_type="454") |>
   ggplot(aes(x=wday,y=color_num)) +
   geom_tile(aes(fill=I(color_wk)), color="#ffffffde") +
-  geom_text(aes(label=day(dt)), color="#ffffff", family="Roboto Condensed") +
-  scale_y_reverse() +
+  geom_text(aes(label=day(dt),color=I(if_else(month(dt)==p,"#ffffff","#e3e3e3"))),  family="Roboto Condensed") +
+  geom_text(aes(label=str_c("W",wk),color=I(color_wk),x=0),
+            family="Roboto Condensed", 
+            data = . %>% count(wk,color_num,color_wk,p,q))+
+  geom_blank(aes(x=-1)) +
+  scale_y_reverse(breaks=NULL) +
   scale_x_discrete(labels=~str_sub(.,1L,2L)) +
   facet_wrap(~p,ncol=3, scales="free") +
   cowplot::theme_minimal_grid(font_family="Roboto Condensed",line_size=0) +
   labs(x="",y="")
 
+```
+
+#### 2024 - 445 🗓️
+
+```{r}
+#| fig-width: 8
+#| fig-height: 7
+
+create_calendar(year=2024, calendar_type="445") |>
+  ggplot(aes(x=wday,y=color_num)) +
+  geom_tile(aes(fill=I(color_wk)), color="#ffffffde") +
+  geom_text(aes(label=day(dt),color=I(if_else(month(dt)==p,"#ffffff","#e3e3e3"))),  family="Roboto Condensed") +
+  geom_text(aes(label=str_c("W",wk),color=I(color_wk),x=0),
+            family="Roboto Condensed", 
+            data = . %>% count(wk,color_num,color_wk,p,q))+
+  geom_blank(aes(x=-1)) +
+  scale_y_reverse(breaks=NULL) +
+  scale_x_discrete(labels=~str_sub(.,1L,2L)) +
+  facet_wrap(~p,ncol=3, scales="free") +
+  cowplot::theme_minimal_grid(font_family="Roboto Condensed",line_size=0) +
+  labs(x="",y="")
+
+
+```
+
+#### 2024 - 445 🗓️
+
+```{r}
+#| fig-width: 8
+#| fig-height: 7
+
+create_calendar(year=2024, calendar_type="454") |>
+  ggplot(aes(x=wday,y=color_num)) +
+  geom_tile(aes(fill=I(color_wk)), color="#ffffffde") +
+  geom_text(aes(label=day(dt),color=I(if_else(month(dt)==p,"#ffffff","#e3e3e3"))),  family="Roboto Condensed") +
+  geom_text(aes(label=str_c("W",wk),color=I(color_wk),x=0),
+            family="Roboto Condensed", 
+            data = . %>% count(wk,color_num,color_wk,p,q))+
+  geom_blank(aes(x=-1)) +
+  scale_y_reverse(breaks=NULL) +
+  scale_x_discrete(labels=~str_sub(.,1L,2L)) +
+  facet_wrap(~p,ncol=3, scales="free") +
+  cowplot::theme_minimal_grid(font_family="Roboto Condensed",line_size=0) +
+  labs(x="",y="")
 ```
 :::
