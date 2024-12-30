@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+output:
+  rss: 
+    path: "r.xml"
+    filter: ".categories == 'r'"
+  
   
 author: "Chisato"
 date-format: "long"  # Options: "short", "long", "relative"
