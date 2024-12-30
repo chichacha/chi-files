@@ -15,12 +15,14 @@ website:
   title: "CHI(χ)-Files"
   site-url: "https://chichacha.github.io/chi-files"
   open-graph: false # https:quarto.org.docs/websites/website-tools.html#open-graph
-  page-footer: "Made with 💗 and ☕️ and Quarto"
+  page-footer: "Made with 💗  Powered by 🪄 [Quarto](https://quarto.org/) ✨ and fueled by ☕️ 🍝 and procrastination"
   navbar:
     right:
       - about.qmd
       - icon: github
         href: https://github.com/chichacha
+      - icon: rss
+        href: https://www.r-bloggers.com
 
 format:
   html:
