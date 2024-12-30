@@ -24,7 +24,7 @@ format:
       light: flatly
     css: styles.css
     toc: true
-    toc-depth: 3
+    toc-depth: 4
     
 page-layout: full
 

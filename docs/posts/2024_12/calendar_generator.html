@@ -102,6 +102,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="../../site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="../../site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="../../site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="../../site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="../../site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="../../site_libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="../../site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="../../site_libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -149,6 +161,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 <div class="quarto-category">r</div>
                 <div class="quarto-category">ggplot</div>
                 <div class="quarto-category">calendar</div>
+                <div class="quarto-category">leaflet</div>
+                <div class="quarto-category">suncalc</div>
               </div>
                   </div>
   </div>
@@ -186,6 +200,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#why-use-a-4-4-5-calendar" id="toc-why-use-a-4-4-5-calendar" class="nav-link" data-scroll-target="#why-use-a-4-4-5-calendar">Why Use a 4-4-5 Calendar?</a></li>
   <li><a href="#building-a-custom-4-4-5-calendar-in-r" id="toc-building-a-custom-4-4-5-calendar-in-r" class="nav-link" data-scroll-target="#building-a-custom-4-4-5-calendar-in-r">Building a Custom 4-4-5 Calendar in R</a></li>
   <li><a href="#making-the-visual-calendar" id="toc-making-the-visual-calendar" class="nav-link" data-scroll-target="#making-the-visual-calendar">Making the Visual Calendar</a></li>
+  <li><a href="#up-the-complication-of-timekeeping-by-a-few-notches" id="toc-up-the-complication-of-timekeeping-by-a-few-notches" class="nav-link" data-scroll-target="#up-the-complication-of-timekeeping-by-a-few-notches">Up the Complication of Timekeeping by a Few Notches</a></li>
+  <li><a href="#where-are-these-cities" id="toc-where-are-these-cities" class="nav-link" data-scroll-target="#where-are-these-cities">Where are these cities?</a></li>
+  <li><a href="#timekeeping-a-rabbit-hole-worth-falling-into" id="toc-timekeeping-a-rabbit-hole-worth-falling-into" class="nav-link" data-scroll-target="#timekeeping-a-rabbit-hole-worth-falling-into">Timekeeping: A Rabbit Hole Worth Falling Into 🐰🕳️</a></li>
   </ul>
 </nav>
     </div>
@@ -213,7 +230,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="building-a-custom-4-4-5-calendar-in-r" class="level3">
 <h3 class="anchored" data-anchor-id="building-a-custom-4-4-5-calendar-in-r">Building a Custom 4-4-5 Calendar in R</h3>
 <p>To create a reusable tool, I developed the create_calendar function. This function takes a year and a calendar type (“445” or “454”) and returns a detailed tibble with dates, weeks, periods, and quarters. Function takes the year, and returns calendar as data frame.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>create_calendar <span class="ot">&lt;-</span> <span class="cf">function</span>(year, <span class="at">calendar_type =</span> <span class="st">"445"</span>, <span class="at">col_pal =</span> <span class="cn">NULL</span>, ...) {</span>
+<div class="cell">
+<details class="code-fold">
+<summary>Create Calendar Function</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>create_calendar <span class="ot">&lt;-</span> <span class="cf">function</span>(year, <span class="at">calendar_type =</span> <span class="st">"445"</span>, <span class="at">col_pal =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(col_pal)) {</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    col_pal <span class="ot">&lt;-</span> ggthemes<span class="sc">::</span><span class="fu">tableau_color_pal</span>(<span class="st">"Hue Circle"</span>)(<span class="dv">19</span>)[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">13</span>)]</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  }</span>
@@ -240,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">yr =</span> <span class="fu">isoyear</span>(dt),</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">wk =</span> <span class="fu">isoweek</span>(dt),</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">wday =</span> <span class="fu">wday</span>(dt, <span class="at">label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">wday =</span> <span class="fu">wday</span>(dt, <span class="at">label =</span> <span class="cn">TRUE</span>,<span class="at">week_start =</span> <span class="fu">getOption</span>(<span class="st">"lubridate.week.start"</span>, <span class="dv">1</span>))</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(wpq, <span class="at">by =</span> <span class="st">"wk"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">color_num=</span>wk <span class="sc">+</span> p <span class="sc">+</span> q) <span class="sc">|&gt;</span></span>
@@ -250,9 +270,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(cal)</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="making-the-visual-calendar" class="level3">
 <h3 class="anchored" data-anchor-id="making-the-visual-calendar">Making the Visual Calendar</h3>
+<p>Using <code>ggplot2</code>, we can create a visual representation of the calendar. The plot organizes weeks within periods and highlights each period in a grid layout.</p>
+<p>I’ve turned this ggplot2 as another function.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Plot Calendar Function</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_calendar <span class="ot">&lt;-</span> <span class="cf">function</span>(cal) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  cal <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>wday,<span class="at">y=</span>color_num)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">I</span>(color_wk)), <span class="at">color=</span><span class="st">"#ffffffde"</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">day</span>(dt),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color=</span><span class="fu">I</span>(<span class="fu">if_else</span>(<span class="fu">month</span>(dt)<span class="sc">==</span>p,<span class="st">"#ffffff"</span>,<span class="st">"#e3e3e3"</span>))),  </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">family=</span><span class="st">"Roboto Condensed"</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">str_c</span>(<span class="st">"W"</span>,wk),<span class="at">color=</span><span class="fu">I</span>(color_wk),<span class="at">x=</span><span class="dv">0</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">family=</span><span class="st">"Roboto Condensed"</span>, </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">count</span>(wk,color_num,color_wk,p,q))<span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_blank</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_reverse</span>(<span class="at">breaks=</span><span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="sc">~</span><span class="fu">str_sub</span>(.,<span class="dv">1</span>L,<span class="dv">2</span>L)) <span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>p,<span class="at">ncol=</span><span class="dv">3</span>, <span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    cowplot<span class="sc">::</span><span class="fu">theme_minimal_grid</span>(<span class="at">font_family=</span><span class="st">"Roboto Condensed"</span>,<span class="at">line_size=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">2025 - 445 🗓️</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">2025 - 454 🗓️</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">2024 - 445 🗓️</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">2024 - 445 🗓️</a></li></ul>
 <div class="tab-content">
@@ -260,102 +306,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create_calendar(year=2025, calendar_type="445")</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2025</span>, <span class="at">calendar_type=</span><span class="st">"445"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>wday,<span class="at">y=</span>color_num)) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">I</span>(color_wk)), <span class="at">color=</span><span class="st">"#ffffffde"</span>) <span class="sc">+</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">day</span>(dt),<span class="at">color=</span><span class="fu">I</span>(<span class="fu">if_else</span>(<span class="fu">month</span>(dt)<span class="sc">==</span>p,<span class="st">"#ffffff"</span>,<span class="st">"#e3e3e3"</span>))),  <span class="at">family=</span><span class="st">"Roboto Condensed"</span>) <span class="sc">+</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">str_c</span>(<span class="st">"W"</span>,wk),<span class="at">color=</span><span class="fu">I</span>(color_wk),<span class="at">x=</span><span class="dv">0</span>),</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">family=</span><span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">count</span>(wk,color_num,color_wk,p,q))<span class="sc">+</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks=</span><span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="sc">~</span><span class="fu">str_sub</span>(.,<span class="dv">1</span>L,<span class="dv">2</span>L)) <span class="sc">+</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>p,<span class="at">ncol=</span><span class="dv">3</span>, <span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  cowplot<span class="sc">::</span><span class="fu">theme_minimal_grid</span>(<span class="at">font_family=</span><span class="st">"Roboto Condensed"</span>,<span class="at">line_size=</span><span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="calendar_generator_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2025</span>, <span class="at">calendar_type=</span><span class="st">"454"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>wday,<span class="at">y=</span>color_num)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">I</span>(color_wk)), <span class="at">color=</span><span class="st">"#ffffffde"</span>) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">day</span>(dt),<span class="at">color=</span><span class="fu">I</span>(<span class="fu">if_else</span>(<span class="fu">month</span>(dt)<span class="sc">==</span>p,<span class="st">"#ffffff"</span>,<span class="st">"#e3e3e3"</span>))),  <span class="at">family=</span><span class="st">"Roboto Condensed"</span>) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">str_c</span>(<span class="st">"W"</span>,wk),<span class="at">color=</span><span class="fu">I</span>(color_wk),<span class="at">x=</span><span class="dv">0</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">family=</span><span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">count</span>(wk,color_num,color_wk,p,q))<span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks=</span><span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="sc">~</span><span class="fu">str_sub</span>(.,<span class="dv">1</span>L,<span class="dv">2</span>L)) <span class="sc">+</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>p,<span class="at">ncol=</span><span class="dv">3</span>, <span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  cowplot<span class="sc">::</span><span class="fu">theme_minimal_grid</span>(<span class="at">font_family=</span><span class="st">"Roboto Condensed"</span>,<span class="at">line_size=</span><span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="calendar_generator_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2024</span>, <span class="at">calendar_type=</span><span class="st">"445"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>wday,<span class="at">y=</span>color_num)) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">I</span>(color_wk)), <span class="at">color=</span><span class="st">"#ffffffde"</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">day</span>(dt),<span class="at">color=</span><span class="fu">I</span>(<span class="fu">if_else</span>(<span class="fu">month</span>(dt)<span class="sc">==</span>p,<span class="st">"#ffffff"</span>,<span class="st">"#e3e3e3"</span>))),  <span class="at">family=</span><span class="st">"Roboto Condensed"</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">str_c</span>(<span class="st">"W"</span>,wk),<span class="at">color=</span><span class="fu">I</span>(color_wk),<span class="at">x=</span><span class="dv">0</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">family=</span><span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">count</span>(wk,color_num,color_wk,p,q))<span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks=</span><span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="sc">~</span><span class="fu">str_sub</span>(.,<span class="dv">1</span>L,<span class="dv">2</span>L)) <span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>p,<span class="at">ncol=</span><span class="dv">3</span>, <span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  cowplot<span class="sc">::</span><span class="fu">theme_minimal_grid</span>(<span class="at">font_family=</span><span class="st">"Roboto Condensed"</span>,<span class="at">line_size=</span><span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="calendar_generator_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2024</span>, <span class="at">calendar_type=</span><span class="st">"454"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>wday,<span class="at">y=</span>color_num)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">I</span>(color_wk)), <span class="at">color=</span><span class="st">"#ffffffde"</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">day</span>(dt),<span class="at">color=</span><span class="fu">I</span>(<span class="fu">if_else</span>(<span class="fu">month</span>(dt)<span class="sc">==</span>p,<span class="st">"#ffffff"</span>,<span class="st">"#e3e3e3"</span>))),  <span class="at">family=</span><span class="st">"Roboto Condensed"</span>) <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">str_c</span>(<span class="st">"W"</span>,wk),<span class="at">color=</span><span class="fu">I</span>(color_wk),<span class="at">x=</span><span class="dv">0</span>),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">family=</span><span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">count</span>(wk,color_num,color_wk,p,q))<span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="sc">-</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks=</span><span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="sc">~</span><span class="fu">str_sub</span>(.,<span class="dv">1</span>L,<span class="dv">2</span>L)) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>p,<span class="at">ncol=</span><span class="dv">3</span>, <span class="at">scales=</span><span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  cowplot<span class="sc">::</span><span class="fu">theme_minimal_grid</span>(<span class="at">font_family=</span><span class="st">"Roboto Condensed"</span>,<span class="at">line_size=</span><span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">""</span>,<span class="at">y=</span><span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2025</span>, <span class="at">calendar_type=</span><span class="st">"445"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_calendar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -366,8 +318,374 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2025</span>, <span class="at">calendar_type=</span><span class="st">"454"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_calendar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
 </div>
 </div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2024</span>, <span class="at">calendar_type=</span><span class="st">"445"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_calendar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_calendar</span>(<span class="at">year=</span><span class="dv">2024</span>, <span class="at">calendar_type=</span><span class="st">"454"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_calendar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>While the 4-4-5 calendar does simplifies retail reporting, timekeeping isn’t always that straightforward. I’ve taken things up a notch and explore how sunlight, time zones, and Daylight Saving Time adds extra complexity.</p>
+</section>
+<section id="up-the-complication-of-timekeeping-by-a-few-notches" class="level3">
+<h3 class="anchored" data-anchor-id="up-the-complication-of-timekeeping-by-a-few-notches">Up the Complication of Timekeeping by a Few Notches</h3>
+<p>At first glance, keeping track of time seems simple 💡—but dig deeper, and it’s anything but. Add time zones, daylight saving time (DST), and patterns of sunlight to the mix, and you’ve just cranked the complexity up to expert mode. 😅</p>
+<p>I don’t think I’ve solved this puzzle perfectly yet, but here’s my attempt using R’s <a href="https://cran.r-project.org/web/packages/suncalc/index.html" title="Get sun position, sunlight phases (times for sunrise, sunset, dusk, etc.), moon position and lunar phase for the given location and time.">suncalc</a> package to visualize sunlight data alongside our trusty 4-4-5 calendar.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Sunlight Length Plot Creation</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## install.package if you don't have it installed.  </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(suncalc)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Predefined city list with lat/lon &amp; timezones.  </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># To see full listing of available timezones, OlsonNames()</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">### Creation of cities tibble</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">city =</span> <span class="fu">c</span>(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Vancouver"</span>, <span class="st">"Toronto"</span>, <span class="st">"New York"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tokyo"</span>, <span class="st">"Paris"</span>, <span class="st">"London"</span>, <span class="st">"Munich"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sydney"</span>, <span class="st">"Mumbai"</span>, <span class="st">"Cape Town"</span>, <span class="st">"Moscow"</span>, <span class="st">"São Paulo"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Denpasar"</span>, <span class="st">"Lima"</span>, <span class="st">"Dubai"</span>, <span class="st">"Bangkok"</span>, <span class="st">"Istanbul"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Reykjavik"</span>, <span class="st">"Tromsø"</span>, <span class="st">"Buenos Aires"</span>, <span class="st">"Cairo"</span>, <span class="st">"Anchorage"</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">country =</span> <span class="fu">c</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Canada"</span>, <span class="st">"Canada"</span>, <span class="st">"United States"</span>, <span class="st">"United States"</span>, <span class="st">"United States"</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Japan"</span>, <span class="st">"France"</span>, <span class="st">"United Kingdom"</span>, <span class="st">"Germany"</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Australia"</span>, <span class="st">"India"</span>, <span class="st">"South Africa"</span>, <span class="st">"Russia"</span>, <span class="st">"Brazil"</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Indonesia"</span>, <span class="st">"Peru"</span>, <span class="st">"United Arab Emirates"</span>, <span class="st">"Thailand"</span>, <span class="st">"Turkey"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Iceland"</span>, <span class="st">"Norway"</span>, <span class="st">"Argentina"</span>, <span class="st">"Egypt"</span>, <span class="st">"United States"</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="fl">49.246292</span>, <span class="fl">43.65107</span>, <span class="fl">40.712776</span>, <span class="fl">41.878113</span>, <span class="fl">34.052235</span>, </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="fl">35.689487</span>, <span class="fl">48.856613</span>, <span class="fl">51.507222</span>, <span class="fl">48.135124</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fl">33.868820</span>, <span class="fl">19.076090</span>, <span class="sc">-</span><span class="fl">33.924870</span>, <span class="fl">55.755825</span>, <span class="sc">-</span><span class="fl">23.550520</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fl">8.650000</span>, <span class="sc">-</span><span class="fl">12.046374</span>, <span class="fl">25.276987</span>, <span class="fl">13.756331</span>, <span class="fl">41.008240</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="fl">64.1466</span>, <span class="fl">69.6496</span>, <span class="sc">-</span><span class="fl">34.603722</span>, <span class="fl">30.044420</span>, <span class="fl">61.218056</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fl">123.116226</span>, <span class="sc">-</span><span class="fl">79.347015</span>, <span class="sc">-</span><span class="fl">74.005974</span>, <span class="sc">-</span><span class="fl">87.629799</span>, <span class="sc">-</span><span class="fl">118.243683</span>, </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="fl">139.691711</span>, <span class="fl">2.352222</span>, <span class="sc">-</span><span class="fl">0.1275</span>, <span class="fl">11.581981</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="fl">151.209290</span>, <span class="fl">72.877426</span>, <span class="fl">18.424055</span>, <span class="fl">37.617298</span>, <span class="sc">-</span><span class="fl">46.633308</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="fl">115.216667</span>, <span class="sc">-</span><span class="fl">77.042793</span>, <span class="fl">55.296249</span>, <span class="fl">100.501762</span>, <span class="fl">28.978359</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fl">21.9426</span>, <span class="fl">18.9560</span>, <span class="sc">-</span><span class="fl">58.3816</span>, <span class="fl">31.2357</span>, <span class="sc">-</span><span class="fl">149.900278</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">tz =</span> <span class="fu">c</span>(</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"America/Vancouver"</span>, <span class="st">"America/Toronto"</span>, <span class="st">"America/New_York"</span>, <span class="st">"America/Chicago"</span>, </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"America/Los_Angeles"</span>, <span class="st">"Asia/Tokyo"</span>, <span class="st">"Europe/Paris"</span>, <span class="st">"Europe/London"</span>, </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Europe/Berlin"</span>, <span class="st">"Australia/Sydney"</span>, <span class="st">"Asia/Kolkata"</span>, <span class="st">"Africa/Johannesburg"</span>, </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Europe/Moscow"</span>, <span class="st">"America/Sao_Paulo"</span>, <span class="st">"Asia/Makassar"</span>, <span class="st">"America/Lima"</span>, </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Asia/Dubai"</span>, <span class="st">"Asia/Bangkok"</span>, <span class="st">"Europe/Istanbul"</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Atlantic/Reykjavik"</span>, <span class="st">"Europe/Oslo"</span>, <span class="st">"America/Argentina/Buenos_Aires"</span>, </span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Africa/Cairo"</span>, <span class="st">"America/Anchorage"</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Generalized function </span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>visualize_sunlight <span class="ot">&lt;-</span> <span class="cf">function</span>(city_name, year) {</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Find city details</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">#city_name &lt;- ("Vancouver, BC")</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">#year &lt;- 2025</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>  city <span class="ot">&lt;-</span> cities <span class="sc">%&gt;%</span> <span class="fu">filter</span>(city <span class="sc">==</span> city_name)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(city) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">stop</span>(<span class="st">"City not found in predefined list."</span>)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get sunlight data for the year</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>  sunlight_data <span class="ot">&lt;-</span> <span class="fu">create_calendar</span>(<span class="at">year =</span> year) <span class="sc">%&gt;%</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(dt) <span class="sc">%&gt;%</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_dfr</span>(<span class="sc">~</span> <span class="fu">getSunlightTimes</span>(<span class="at">date =</span> ., <span class="at">lat =</span> city<span class="sc">$</span>lat, <span class="at">lon =</span> city<span class="sc">$</span>lon, <span class="at">tz =</span> city<span class="sc">$</span>tz)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>()  <span class="sc">%&gt;%</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>      <span class="at">daylight_dur =</span> <span class="fu">as.duration</span>(sunrise <span class="sc">%--%</span> sunset),</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>      <span class="fu">across</span>(<span class="fu">where</span>(is.POSIXct), </span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>             <span class="fu">list</span>(<span class="at">time =</span> <span class="sc">~</span> lubridate<span class="sc">::</span><span class="fu">hms</span>(<span class="fu">format</span>(<span class="fu">ymd_hms</span>(.), <span class="st">"%H:%M:%S"</span>))))</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add calendar columns</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>  sunlight_data <span class="ot">&lt;-</span> sunlight_data <span class="sc">%&gt;%</span> <span class="fu">bind_cols</span>(<span class="fu">create_calendar</span>(<span class="at">year =</span> year))</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summarise by Period</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>  p_summary <span class="ot">&lt;-</span> sunlight_data <span class="sc">|&gt;</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(p) <span class="sc">|&gt;</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(dt<span class="sc">:</span>color_num), <span class="fu">list</span>(<span class="at">min =</span> <span class="sc">~</span><span class="fu">min</span>(.), <span class="at">max =</span> <span class="sc">~</span><span class="fu">max</span>(.))),</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_dur =</span> <span class="fu">mean</span>(daylight_dur)</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_dur_seconds =</span> <span class="fu">as.numeric</span>(avg_dur),  <span class="co"># Convert duration to seconds</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_dur_hours =</span> avg_dur_seconds <span class="sc">/</span> <span class="dv">3600</span>,  <span class="co"># Convert seconds to hours</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">descr =</span> <span class="fu">str_glue</span>(</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>      <span class="st">"P{p}</span><span class="sc">\n</span><span class="st">{format(dt_min, '%Y %b %e')} - {format(dt_max, '%Y %b %e')}</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Avg Daylight: {round(avg_dur_hours, 2)} hours"</span></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(p, descr)</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Detect DST start and end</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>  dst_info <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> sunlight_data<span class="sc">$</span>date,</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_dst =</span> <span class="fu">with_tz</span>(<span class="fu">ymd_hms</span>(<span class="fu">paste</span>(date, <span class="st">"00:00:00"</span>)), <span class="at">tzone =</span> city<span class="sc">$</span>tz) <span class="sc">%&gt;%</span> <span class="fu">dst</span>()</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(is_dst) <span class="sc">%&gt;%</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">max</span>(date)<span class="sc">==</span>date<span class="sc">|</span><span class="fu">min</span>(date)<span class="sc">==</span>date)</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Dynamically create subtitle</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(dst_info) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>    subtitle <span class="ot">&lt;-</span> <span class="st">"This location does not observe Daylight Saving Time (DST)."</span></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>    dst_start <span class="ot">&lt;-</span> <span class="fu">if_else</span>(city<span class="sc">$</span>lat<span class="sc">&gt;</span><span class="dv">0</span>,<span class="fu">min</span>(dst_info<span class="sc">$</span>date),<span class="fu">max</span>(dst_info<span class="sc">$</span>date))</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>    dst_end <span class="ot">&lt;-</span> <span class="fu">if_else</span>(city<span class="sc">$</span>lat<span class="sc">&gt;</span><span class="dv">0</span>,<span class="fu">max</span>(dst_info<span class="sc">$</span>date),<span class="fu">min</span>(dst_info<span class="sc">$</span>date))</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>    subtitle <span class="ot">&lt;-</span> <span class="fu">str_glue</span>(<span class="st">"DST Starts: {format(dst_start, '%b %e %a (Week %V)')} | DST Ends: {format(dst_end, '%b %e %a (Week %V)')}"</span>)</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate the plot</span></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(sunlight_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(color_num) <span class="sc">+</span> <span class="fu">as.numeric</span>(wday) <span class="sc">/</span> <span class="dv">7</span>)) <span class="sc">+</span></span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> dawn_time, <span class="at">ymax =</span> dusk_time, <span class="at">fill =</span> <span class="fu">I</span>(colorspace<span class="sc">::</span><span class="fu">lighten</span>(color_wk, <span class="fl">0.7</span>)))) <span class="sc">+</span></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> sunrise_time, <span class="at">ymax =</span> sunset_time, <span class="at">fill =</span> <span class="fu">I</span>(color_wk))) <span class="sc">+</span></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> solarNoon_time), <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    cowplot<span class="sc">::</span><span class="fu">theme_minimal_vgrid</span>(<span class="at">font_family =</span> <span class="st">"Roboto Condensed"</span>) <span class="sc">+</span></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(sunlight_data<span class="sc">$</span>sunrise_time)), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">min</span>(<span class="fu">as.numeric</span>(sunlight_data<span class="sc">$</span>sunrise_time)), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(sunlight_data<span class="sc">$</span>sunset_time)), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">min</span>(<span class="fu">as.numeric</span>(sunlight_data<span class="sc">$</span>sunset_time)), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="sc">~</span> hms<span class="sc">::</span><span class="fu">as_hms</span>(.),</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">24</span> <span class="sc">*</span> <span class="dv">3600</span>, <span class="at">by =</span> <span class="dv">3600</span>), <span class="co"># Hourly breaks</span></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">24</span> <span class="sc">*</span> <span class="dv">3600</span>)</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">""</span>,</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">str_glue</span>(<span class="st">"Sunlight Duration for {city_name} {city$country} ({year}) - 445 Calendar"</span>),</span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> subtitle</span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x=</span>color_num_min, </span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y=</span>avg_dur_seconds, <span class="at">label=</span><span class="fu">str_c</span>(<span class="st">"P"</span>,p,<span class="st">"</span><span class="sc">\n</span><span class="st">avg</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">round</span>(avg_dur_hours,<span class="dv">1</span>),<span class="st">"</span><span class="sc">\n</span><span class="st">hrs"</span>)),</span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> p_summary, <span class="at">family=</span><span class="st">"Roboto Condensed"</span>, </span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>              <span class="at">lineheight=</span><span class="fl">0.8</span>, <span class="at">hjust=</span><span class="dv">0</span>, <span class="at">fill=</span><span class="st">"#ffffff50"</span>)</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Vancouver 🇨🇦</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">New York 🇺🇸</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Munich 🇩🇪</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Tromsø 🇳🇴</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" role="tab" aria-controls="tabset-2-5" aria-selected="false">Sydney 🇦🇺</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-6" role="tab" aria-controls="tabset-2-6" aria-selected="false">Tokyo 🇯🇵</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-7" role="tab" aria-controls="tabset-2-7" aria-selected="false">Denpasar 🇮🇩</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-8" role="tab" aria-controls="tabset-2-8" aria-selected="false">Cairo 🇪🇬</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>Vancouver 🇨🇦🌲⛰️ Daylight Saving Time: DST is observed from March to November. Summer days are long (about 16 hours) while winter days are short (about 8 hours). 👩🏻‍🏫 There are more than twice as many daylight hours on the summer solstice than on the winter one.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Vancouver"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>New York 🇺🇸🗽🏙 Daylight Saving Time: DST is observed from March to November, just like Vancouver. About 15 hours in the summer and about 9.4 hours in the winter, New York’s patterns are slightly less pronounced than Vancouver’s but still notable.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"New York"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<p>Munich 🇩🇪🍺🏰 Daylight Saving Time: Commences in late March and concludes in late October. Sunlight: Summer days last approximately 16 hours, while winter days last approximately 8.5 hours.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Munich"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<p>Tromsø 🇳🇴❄️🌌 **Tromsø’s graph below is broken due to the sun setting after midnight during the summer (a phenomenon called the midnight sun), and I didn’t think through on these edge cases while creating ggplot2!</p>
+<p>Daylight Saving: Starts last Sunday in March, ends last Sunday in October in Norway. That said, Tromsø (and other places in the Arctic Circle) experience midnight sun and polar night - So DST has no actual practical effect??!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Tromsø"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-5-tab">
+<p>Sydney 🇦🇺🌊🐨 Daylight Saving: Starts first Sunday in October, ends first Sunday in April as seen on the glitch on visual below. I didn’t quite get the extraction of DST accurately in my function, so subtitle still isn’t accurate… 😅 🙀Another interesting thing I learned is that Not all states observe DST in Australia 🇦🇺! This creates a patchwork of timezones during the summer in Australia!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Sydney"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-6-tab">
+<p>Tokyo 🇯🇵🏙️🌸 Daylight Saving: Japan doesn’t observe DST (Since 1952). Most of Japan experiences consistent sunrise and sunset times throughout the year, making DST less beneficial.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Tokyo"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-7-tab">
+<p>Denpasar 🇮🇩🌴🌊 Like the rest of Indonesia, Bali does not observe DST. The daylight time remains constant throughout the year due to its tropical, equatorial location thoughout the year. So there’s really no need for DST.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Denpasar"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-8-tab">
+<p>Cairo 🇪🇬🕌🐪 Daylight Saving: Unlike Canada or US, DST transition occurs on Friday in Late April and Thursdays in Late October, instead of more typical Sunday.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_sunlight</span>(<span class="st">"Cairo"</span>, <span class="dv">2025</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="calendar_generator_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="where-are-these-cities" class="level3">
+<h3 class="anchored" data-anchor-id="where-are-these-cities">Where are these cities?</h3>
+<p>Here’s a map of the cities I’ve picked in above.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Interactive Leaflet Map Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>cities <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Tokyo"</span>,<span class="st">"Denpasar"</span>,<span class="st">"Vancouver"</span>,<span class="st">"New York"</span>,<span class="st">"Munich"</span>,<span class="st">"Sydney"</span>,<span class="st">"Cairo"</span>,<span class="st">"Tromsø"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="st">"CartoDB.DarkMatter"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addMarkers</span>(</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="sc">~</span>city,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">popup =</span> <span class="sc">~</span><span class="fu">map</span>(<span class="fu">paste0</span>(</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;b&gt;"</span>, city, <span class="st">", "</span>,country, <span class="st">"&lt;/b&gt;&lt;br&gt;"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lat: "</span>, <span class="fu">round</span>(lat, <span class="dv">2</span>), <span class="st">"&lt;br&gt;"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lon: "</span>, <span class="fu">round</span>(lon, <span class="dv">2</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  ), htmltools<span class="sc">::</span>HTML</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">labelOptions =</span> <span class="fu">labelOptions</span>(</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">list</span>(<span class="st">"font-weight"</span> <span class="ot">=</span> <span class="st">"bold"</span>, <span class="st">"color"</span> <span class="ot">=</span> <span class="st">"white"</span>),</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">direction =</span> <span class="st">"auto"</span>,</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">textsize =</span> <span class="st">"12px"</span>,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">noHide =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">textOnly =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">sticky =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-9e020dab2e0460a12d49" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9e020dab2e0460a12d49">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.DarkMatter",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[49.246292,40.712776,35.689487,48.135124,-33.86882,-8.65,69.64960000000001,30.04442],[-123.116226,-74.00597399999999,139.691711,11.581981,151.20929,115.216667,18.956,31.2357],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<b>Vancouver, Canada<\/b><br>Lat: 49.25<br>Lon: -123.12","<b>New York, United States<\/b><br>Lat: 40.71<br>Lon: -74.01","<b>Tokyo, Japan<\/b><br>Lat: 35.69<br>Lon: 139.69","<b>Munich, Germany<\/b><br>Lat: 48.14<br>Lon: 11.58","<b>Sydney, Australia<\/b><br>Lat: -33.87<br>Lon: 151.21","<b>Denpasar, Indonesia<\/b><br>Lat: -8.65<br>Lon: 115.22","<b>Tromsø, Norway<\/b><br>Lat: 69.65<br>Lon: 18.96","<b>Cairo, Egypt<\/b><br>Lat: 30.04<br>Lon: 31.24"],null,null,null,["Vancouver","New York","Tokyo","Munich","Sydney","Denpasar","Tromsø","Cairo"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"12px","textOnly":true,"style":{"font-weight":"bold","color":"white"},"className":"","sticky":true},null]}],"limits":{"lat":[-33.86882,69.64960000000001],"lng":[-123.116226,151.20929]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="timekeeping-a-rabbit-hole-worth-falling-into" class="level3">
+<h3 class="anchored" data-anchor-id="timekeeping-a-rabbit-hole-worth-falling-into">Timekeeping: A Rabbit Hole Worth Falling Into 🐰🕳️</h3>
+<p>What started as a simple exploration of the 4-4-5 calendar turned into a wild ride through the quirks of time—daylight saving oddities, cultural twists, and even the midnight sun.</p>
+<p>I love these “useless trivias,” but they’re a reminder that time isn’t just ticking numbers on a clock—it’s shaped by geography, culture, and sometimes even political drama. This was a fun wake-up call (pun intended) that time is more complex, and entertaining? than we think!!</p>
 
 
 </section>
