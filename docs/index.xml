@@ -10,7 +10,2037 @@
 <atom:link href="https://chichacha.github.io/chi-files/index.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Thu, 26 Dec 2024 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 29 Dec 2024 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Visualizing 445 Calendar in R</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="have-you-heard-of-the-4-4-5-calendar" class="level3">
+<h3 class="anchored" data-anchor-id="have-you-heard-of-the-4-4-5-calendar">Have You Heard of the 4-4-5 Calendar? 📆</h3>
+<p>If you’ve worked in retail, you might already know that time isn’t always measured in standard months. Enter the 4-4-5 calendar: a reporting tool that divides a year into 12 periods, each organized into quarters of 4, 4, and 5 weeks (i.e.&nbsp;13 weeks in each quarter). This structure ensures comparability across years by standardizing the length of each reporting period. (But yes, this isn’t perfect either—every 5-6 years, this produces a year with 53 weeks.)</p>
+</section>
+<section id="why-use-a-4-4-5-calendar" class="level3">
+<h3 class="anchored" data-anchor-id="why-use-a-4-4-5-calendar">Why Use a 4-4-5 Calendar?</h3>
+<p>Standard Gregorian calendars often lead to reporting headaches🤕, especially when months have varying lengths or different counts of weekends. The 4-4-5 calendar solves this by:</p>
+<ul>
+<li>Aligning periods to weeks, making year-over-year comparisons simpler.</li>
+<li>Standardizing reporting cycles, especially for weekly-driven industries like retail.</li>
+<li>Providing flexibility with alternative formats, such as the 4-5-4 calendar, for specific business needs.</li>
+</ul>
+<p>There’s also a sibling version👧🏻, the 4-5-4 calendar, which I personally prefer because it ensures that American Thanksgiving 🦃🎁 always falls within Period 11. In contrast, the 4-4-5 calendar may place Thanksgiving in Period 11 or 12, depending on the year.</p>
+</section>
+<section id="building-a-custom-4-4-5-calendar-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="building-a-custom-4-4-5-calendar-in-r">Building a Custom 4-4-5 Calendar in R</h3>
+<p>To create a reusable tool, I developed the create_calendar function. This function takes a year and a calendar type (“445” or “454”) and returns a detailed tibble with dates, weeks, periods, and quarters. Function takes the year, and returns calendar as data frame.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Create Calendar Function</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">create_calendar <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(year, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calendar_type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"445"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col_pal =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>, ...) {</span>
+<span id="cb1-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.null</span>(col_pal)) {</span>
+<span id="cb1-3">    col_pal <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ggthemes<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tableau_color_pal</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hue Circle"</span>)(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>)[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>)]</span>
+<span id="cb1-4">  }</span>
+<span id="cb1-5">  </span>
+<span id="cb1-6">  cal <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb1-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dt =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq.Date</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ymd</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(year<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-1</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-12-01"</span>)), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ymd</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(year, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-12-31"</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"day"</span>)</span>
+<span id="cb1-8">  )</span>
+<span id="cb1-9">  </span>
+<span id="cb1-10">  wpq <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">switch</span>(calendar_type,</span>
+<span id="cb1-11">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"445"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb1-12">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wk =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">53</span>,</span>
+<span id="cb1-13">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>))),</span>
+<span id="cb1-14">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">q =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)))</span>
+<span id="cb1-15">                ),</span>
+<span id="cb1-16">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"454"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb1-17">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wk =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">53</span>,</span>
+<span id="cb1-18">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">p =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>))),</span>
+<span id="cb1-19">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">q =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)))</span>
+<span id="cb1-20">                ),</span>
+<span id="cb1-21">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stop</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Invalid calendar type. Choose '445' or '454'."</span>)</span>
+<span id="cb1-22">  )</span>
+<span id="cb1-23">  </span>
+<span id="cb1-24">  cal <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> cal <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-25">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb1-26">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yr =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">isoyear</span>(dt),</span>
+<span id="cb1-27">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wk =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">isoweek</span>(dt),</span>
+<span id="cb1-28">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wday =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wday</span>(dt, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">week_start =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">getOption</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lubridate.week.start"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span>
+<span id="cb1-29">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-30">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">left_join</span>(wpq, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"wk"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-31">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color_num=</span>wk <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> p <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> q) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-32">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color_wk =</span> colourvalues<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color_values</span>(color_num, </span>
+<span id="cb1-33">                                                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">palette=</span>farver<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">decode_colour</span>(col_pal))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-34">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(yr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span>year)</span>
+<span id="cb1-35">  </span>
+<span id="cb1-36">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(cal)</span>
+<span id="cb1-37">}</span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="making-the-visual-calendar" class="level3">
+<h3 class="anchored" data-anchor-id="making-the-visual-calendar">Making the Visual Calendar</h3>
+<p>Using <code>ggplot2</code>, we can create a visual representation of the calendar. The plot organizes weeks within periods and highlights each period in a grid layout.</p>
+<p>I’ve turned this ggplot2 as another function.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Plot Calendar Function</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">plot_calendar <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(cal) {</span>
+<span id="cb2-2">  cal <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>wday,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>color_num)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_tile</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(color_wk)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ffffffde"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-5">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_text</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">day</span>(dt),</span>
+<span id="cb2-6">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">month</span>(dt)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span>p,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ffffff"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e3e3e3"</span>))),  </span>
+<span id="cb2-7">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-8">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_text</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"W"</span>,wk),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(color_wk),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),</span>
+<span id="cb2-9">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>, </span>
+<span id="cb2-10">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> . <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(wk,color_num,color_wk,p,q))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-11">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_blank</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_reverse</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks=</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-13">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_discrete</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_sub</span>(.,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>L,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>L)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-14">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>p,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scales=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"free"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-15">    cowplot<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">line_size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb2-16">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>)</span>
+<span id="cb2-17">}</span></code></pre></div>
+</details>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">2025 - 445 🗓️</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">2025 - 454 🗓️</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">2024 - 445 🗓️</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">2024 - 445 🗓️</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_calendar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calendar_type=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"445"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_calendar</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_calendar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calendar_type=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"454"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_calendar</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_calendar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2024</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calendar_type=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"445"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_calendar</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_calendar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2024</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calendar_type=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"454"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_calendar</span>()</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>While the 4-4-5 calendar does simplifies retail reporting, timekeeping isn’t always that straightforward. I’ve taken things up a notch and explore how sunlight, time zones, and Daylight Saving Time adds extra complexity.</p>
+</section>
+<section id="up-the-complication-of-timekeeping-by-a-few-notches" class="level3">
+<h3 class="anchored" data-anchor-id="up-the-complication-of-timekeeping-by-a-few-notches">Up the Complication of Timekeeping by a Few Notches</h3>
+<p>At first glance, keeping track of time seems simple 💡—but dig deeper, and it’s anything but. Add time zones, daylight saving time (DST), and patterns of sunlight to the mix, and you’ve just cranked the complexity up to expert mode. 😅</p>
+<p>I don’t think I’ve solved this puzzle perfectly yet, but here’s my attempt using R’s <a href="https://cran.r-project.org/web/packages/suncalc/index.html" title="Get sun position, sunlight phases (times for sunrise, sunset, dusk, etc.), moon position and lunar phase for the given location and time.">suncalc</a> package to visualize sunlight data alongside our trusty 4-4-5 calendar.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Sunlight Length Plot Creation</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">## install.package if you don't have it installed.  </span></span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(suncalc)</span>
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Predefined city list with lat/lon &amp; timezones.  </span></span>
+<span id="cb7-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># To see full listing of available timezones, OlsonNames()</span></span>
+<span id="cb7-6"></span>
+<span id="cb7-7"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Creation of cities tibble</span></span>
+<span id="cb7-8">cities <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb7-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">city =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-10">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vancouver"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Toronto"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New York"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Chicago"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Los Angeles"</span>, </span>
+<span id="cb7-11">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tokyo"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Paris"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"London"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Munich"</span>,</span>
+<span id="cb7-12">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sydney"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Mumbai"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cape Town"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Moscow"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"São Paulo"</span>,</span>
+<span id="cb7-13">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Denpasar"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lima"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dubai"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bangkok"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Istanbul"</span>,</span>
+<span id="cb7-14">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Reykjavik"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tromsø"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Buenos Aires"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cairo"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Anchorage"</span></span>
+<span id="cb7-15">  ),</span>
+<span id="cb7-16">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">country =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-17">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Canada"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Canada"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"United States"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"United States"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"United States"</span>,</span>
+<span id="cb7-18">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Japan"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"France"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"United Kingdom"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Germany"</span>,</span>
+<span id="cb7-19">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Australia"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"India"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"South Africa"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Russia"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Brazil"</span>,</span>
+<span id="cb7-20">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Indonesia"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Peru"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"United Arab Emirates"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Thailand"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Turkey"</span>,</span>
+<span id="cb7-21">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Iceland"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Norway"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Argentina"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Egypt"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"United States"</span></span>
+<span id="cb7-22">  ),</span>
+<span id="cb7-23">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lat =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-24">    <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">49.246292</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">43.65107</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40.712776</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">41.878113</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">34.052235</span>, </span>
+<span id="cb7-25">    <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35.689487</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48.856613</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51.507222</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48.135124</span>,</span>
+<span id="cb7-26">    <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33.868820</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19.076090</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33.924870</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">55.755825</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23.550520</span>,</span>
+<span id="cb7-27">    <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.650000</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12.046374</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25.276987</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13.756331</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">41.008240</span>,</span>
+<span id="cb7-28">    <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">64.1466</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">69.6496</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">34.603722</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30.044420</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">61.218056</span></span>
+<span id="cb7-29">  ),</span>
+<span id="cb7-30">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lon =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-31">    <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">123.116226</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">79.347015</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">74.005974</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">87.629799</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">118.243683</span>, </span>
+<span id="cb7-32">    <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">139.691711</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.352222</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1275</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11.581981</span>,</span>
+<span id="cb7-33">    <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">151.209290</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">72.877426</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18.424055</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">37.617298</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">46.633308</span>,</span>
+<span id="cb7-34">    <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">115.216667</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">77.042793</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">55.296249</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100.501762</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">28.978359</span>,</span>
+<span id="cb7-35">    <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21.9426</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18.9560</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">58.3816</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">31.2357</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">149.900278</span></span>
+<span id="cb7-36">  ),</span>
+<span id="cb7-37">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tz =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-38">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Vancouver"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Toronto"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/New_York"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Chicago"</span>, </span>
+<span id="cb7-39">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Los_Angeles"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Asia/Tokyo"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe/Paris"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe/London"</span>, </span>
+<span id="cb7-40">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe/Berlin"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Australia/Sydney"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Asia/Kolkata"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Africa/Johannesburg"</span>, </span>
+<span id="cb7-41">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe/Moscow"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Sao_Paulo"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Asia/Makassar"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Lima"</span>, </span>
+<span id="cb7-42">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Asia/Dubai"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Asia/Bangkok"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe/Istanbul"</span>,</span>
+<span id="cb7-43">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Atlantic/Reykjavik"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Europe/Oslo"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Argentina/Buenos_Aires"</span>, </span>
+<span id="cb7-44">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Africa/Cairo"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"America/Anchorage"</span></span>
+<span id="cb7-45">  )</span>
+<span id="cb7-46">)</span>
+<span id="cb7-47"></span>
+<span id="cb7-48"></span>
+<span id="cb7-49"></span>
+<span id="cb7-50"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generalized function </span></span>
+<span id="cb7-51">visualize_sunlight <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(city_name, year) {</span>
+<span id="cb7-52">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Find city details</span></span>
+<span id="cb7-53">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#city_name &lt;- ("Vancouver, BC")</span></span>
+<span id="cb7-54">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#year &lt;- 2025</span></span>
+<span id="cb7-55">  city <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> cities <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(city <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> city_name)</span>
+<span id="cb7-56">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(city) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stop</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"City not found in predefined list."</span>)</span>
+<span id="cb7-57">  </span>
+<span id="cb7-58">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get sunlight data for the year</span></span>
+<span id="cb7-59">  </span>
+<span id="cb7-60">  sunlight_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_calendar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year =</span> year) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-61">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pull</span>(dt) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-62">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map_dfr</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">getSunlightTimes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">date =</span> ., <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lat =</span> city<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lat, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lon =</span> city<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lon, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tz =</span> city<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>tz)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-63">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>()  <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-64">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb7-65">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">daylight_dur =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.duration</span>(sunrise <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%--%</span> sunset),</span>
+<span id="cb7-66">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">across</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">where</span>(is.POSIXct), </span>
+<span id="cb7-67">             <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">time =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> lubridate<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hms</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ymd_hms</span>(.), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"%H:%M:%S"</span>))))</span>
+<span id="cb7-68">    )</span>
+<span id="cb7-69">  </span>
+<span id="cb7-70">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add calendar columns</span></span>
+<span id="cb7-71">  sunlight_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sunlight_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bind_cols</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_calendar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year =</span> year))</span>
+<span id="cb7-72">  </span>
+<span id="cb7-73">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Summarise by Period</span></span>
+<span id="cb7-74">  p_summary <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sunlight_data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-75">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(p) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-76">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(</span>
+<span id="cb7-77">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">across</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(dt<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>color_num), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">min =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(.), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">max =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(.))),</span>
+<span id="cb7-78">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">avg_dur =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(daylight_dur)</span>
+<span id="cb7-79">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-80">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb7-81">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">avg_dur_seconds =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(avg_dur),  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert duration to seconds</span></span>
+<span id="cb7-82">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">avg_dur_hours =</span> avg_dur_seconds <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3600</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert seconds to hours</span></span>
+<span id="cb7-83">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">descr =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_glue</span>(</span>
+<span id="cb7-84">      <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"P{p}</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">{format(dt_min, '%Y %b %e')} - {format(dt_max, '%Y %b %e')}</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>,</span>
+<span id="cb7-85">      <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Avg Daylight: {round(avg_dur_hours, 2)} hours"</span></span>
+<span id="cb7-86">    )</span>
+<span id="cb7-87">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-88">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">relocate</span>(p, descr)</span>
+<span id="cb7-89">  </span>
+<span id="cb7-90">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Detect DST start and end</span></span>
+<span id="cb7-91">  dst_info <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb7-92">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">date =</span> sunlight_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>date,</span>
+<span id="cb7-93">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">is_dst =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with_tz</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ymd_hms</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(date, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"00:00:00"</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tzone =</span> city<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>tz) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dst</span>()</span>
+<span id="cb7-94">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(is_dst) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb7-95">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(date)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span>date<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(date)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span>date)</span>
+<span id="cb7-96">  </span>
+<span id="cb7-97">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dynamically create subtitle</span></span>
+<span id="cb7-98">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(dst_info) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) {</span>
+<span id="cb7-99">    subtitle <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"This location does not observe Daylight Saving Time (DST)."</span></span>
+<span id="cb7-100">  } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> {</span>
+<span id="cb7-101">    dst_start <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(city<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lat<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(dst_info<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>date),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(dst_info<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>date))</span>
+<span id="cb7-102">    dst_end <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(city<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>lat<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(dst_info<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>date),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(dst_info<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>date))</span>
+<span id="cb7-103">    subtitle <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_glue</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DST Starts: {format(dst_start, '%b %e %a (Week %V)')} | DST Ends: {format(dst_end, '%b %e %a (Week %V)')}"</span>)</span>
+<span id="cb7-104">  }</span>
+<span id="cb7-105">  </span>
+<span id="cb7-106">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate the plot</span></span>
+<span id="cb7-107">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(sunlight_data, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(color_num) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(wday) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-108">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_ribbon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> dawn_time, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> dusk_time, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(colorspace<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lighten</span>(color_wk, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>)))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-109">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_ribbon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> sunrise_time, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> sunset_time, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(color_wk))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-110">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> solarNoon_time), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-111">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-112">    cowplot<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal_vgrid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font_family =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-113">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_hline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yintercept =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(sunlight_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sunrise_time)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-114">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_hline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yintercept =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(sunlight_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sunrise_time)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-115">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_hline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yintercept =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(sunlight_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sunset_time)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-116">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_hline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yintercept =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(sunlight_data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sunset_time)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-117">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(</span>
+<span id="cb7-118">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> hms<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_hms</span>(.),</span>
+<span id="cb7-119">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">breaks =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3600</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3600</span>), <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hourly breaks</span></span>
+<span id="cb7-120">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">limits =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3600</span>)</span>
+<span id="cb7-121">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-122">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb7-123">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb7-124">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb7-125">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_glue</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sunlight Duration for {city_name} {city$country} ({year}) - 445 Calendar"</span>),</span>
+<span id="cb7-126">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> subtitle</span>
+<span id="cb7-127">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-128">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_label</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>color_num_min, </span>
+<span id="cb7-129">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>avg_dur_seconds, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"P"</span>,p,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">avg</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(avg_dur_hours,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">hrs"</span>)),</span>
+<span id="cb7-130">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> p_summary, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>, </span>
+<span id="cb7-131">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lineheight=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ffffff50"</span>)</span>
+<span id="cb7-132">}</span></code></pre></div>
+</details>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">Vancouver 🇨🇦</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">New York 🇺🇸</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" aria-controls="tabset-2-3" aria-selected="false">Munich 🇩🇪</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" aria-controls="tabset-2-4" aria-selected="false">Tromsø 🇳🇴</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-5" aria-controls="tabset-2-5" aria-selected="false">Sydney 🇦🇺</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-6" aria-controls="tabset-2-6" aria-selected="false">Tokyo 🇯🇵</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-7" aria-controls="tabset-2-7" aria-selected="false">Denpasar 🇮🇩</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-8" aria-controls="tabset-2-8" aria-selected="false">Cairo 🇪🇬</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
+<p>Vancouver 🇨🇦🌲⛰️ Daylight Saving Time: DST is observed from March to November. Summer days are long (about 16 hours) while winter days are short (about 8 hours). 👩🏻‍🏫 There are more than twice as many daylight hours on the summer solstice than on the winter one.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vancouver"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
+<p>New York 🇺🇸🗽🏙 Daylight Saving Time: DST is observed from March to November, just like Vancouver. About 15 hours in the summer and about 9.4 hours in the winter, New York’s patterns are slightly less pronounced than Vancouver’s but still notable.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New York"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
+<p>Munich 🇩🇪🍺🏰 Daylight Saving Time: Commences in late March and concludes in late October. Sunlight: Summer days last approximately 16 hours, while winter days last approximately 8.5 hours.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Munich"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
+<p>Tromsø 🇳🇴❄️🌌 **Tromsø’s graph below is broken due to the sun setting after midnight during the summer (a phenomenon called the midnight sun), and I didn’t think through on these edge cases while creating ggplot2!</p>
+<p>Daylight Saving: Starts last Sunday in March, ends last Sunday in October in Norway. That said, Tromsø (and other places in the Arctic Circle) experience midnight sun and polar night - So DST has no actual practical effect??!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tromsø"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-5" class="tab-pane" aria-labelledby="tabset-2-5-tab">
+<p>Sydney 🇦🇺🌊🐨 Daylight Saving: Starts first Sunday in October, ends first Sunday in April as seen on the glitch on visual below. I didn’t quite get the extraction of DST accurately in my function, so subtitle still isn’t accurate… 😅 🙀Another interesting thing I learned is that Not all states observe DST in Australia 🇦🇺! This creates a patchwork of timezones during the summer in Australia!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sydney"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-6" class="tab-pane" aria-labelledby="tabset-2-6-tab">
+<p>Tokyo 🇯🇵🏙️🌸 Daylight Saving: Japan doesn’t observe DST (Since 1952). Most of Japan experiences consistent sunrise and sunset times throughout the year, making DST less beneficial.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tokyo"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-7" class="tab-pane" aria-labelledby="tabset-2-7-tab">
+<p>Denpasar 🇮🇩🌴🌊 Like the rest of Indonesia, Bali does not observe DST. The daylight time remains constant throughout the year due to its tropical, equatorial location thoughout the year. So there’s really no need for DST.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Denpasar"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-8" class="tab-pane" aria-labelledby="tabset-2-8-tab">
+<p>Cairo 🇪🇬🕌🐪 Daylight Saving: Unlike Canada or US, DST transition occurs on Friday in Late April and Thursdays in Late October, instead of more typical Sunday.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">visualize_sunlight</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cairo"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2025</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="where-are-these-cities" class="level3">
+<h3 class="anchored" data-anchor-id="where-are-these-cities">Where are these cities?</h3>
+<p>Here’s a map of the cities I’ve picked in above.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Interactive Leaflet Map Code</summary>
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(leaflet)</span>
+<span id="cb16-2"></span>
+<span id="cb16-3">cities <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb16-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(city <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tokyo"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Denpasar"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Vancouver"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New York"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Munich"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Sydney"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cairo"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Tromsø"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb16-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">leaflet</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb16-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">addProviderTiles</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"CartoDB.DarkMatter"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb16-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">addMarkers</span>(</span>
+<span id="cb16-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>city,</span>
+<span id="cb16-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">popup =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(</span>
+<span id="cb16-10">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;b&gt;"</span>, city, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">", "</span>,country, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;/b&gt;&lt;br&gt;"</span>,</span>
+<span id="cb16-11">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lat: "</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(lat, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;br&gt;"</span>,</span>
+<span id="cb16-12">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lon: "</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(lon, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb16-13">  ), htmltools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span>HTML</span>
+<span id="cb16-14">  ),</span>
+<span id="cb16-15">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labelOptions =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labelOptions</span>(</span>
+<span id="cb16-16">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"font-weight"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"color"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"white"</span>),</span>
+<span id="cb16-17">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">direction =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"auto"</span>,</span>
+<span id="cb16-18">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">textsize =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"12px"</span>,</span>
+<span id="cb16-19">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">noHide =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span id="cb16-20">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">textOnly =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span id="cb16-21">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sticky =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb16-22">    )</span>
+<span id="cb16-23">  )</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-9e020dab2e0460a12d49" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9e020dab2e0460a12d49">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["CartoDB.DarkMatter",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[49.246292,40.712776,35.689487,48.135124,-33.86882,-8.65,69.64960000000001,30.04442],[-123.116226,-74.00597399999999,139.691711,11.581981,151.20929,115.216667,18.956,31.2357],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<b>Vancouver, Canada<\/b><br>Lat: 49.25<br>Lon: -123.12","<b>New York, United States<\/b><br>Lat: 40.71<br>Lon: -74.01","<b>Tokyo, Japan<\/b><br>Lat: 35.69<br>Lon: 139.69","<b>Munich, Germany<\/b><br>Lat: 48.14<br>Lon: 11.58","<b>Sydney, Australia<\/b><br>Lat: -33.87<br>Lon: 151.21","<b>Denpasar, Indonesia<\/b><br>Lat: -8.65<br>Lon: 115.22","<b>Tromsø, Norway<\/b><br>Lat: 69.65<br>Lon: 18.96","<b>Cairo, Egypt<\/b><br>Lat: 30.04<br>Lon: 31.24"],null,null,null,["Vancouver","New York","Tokyo","Munich","Sydney","Denpasar","Tromsø","Cairo"],{"interactive":false,"permanent":true,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"12px","textOnly":true,"style":{"font-weight":"bold","color":"white"},"className":"","sticky":true},null]}],"limits":{"lat":[-33.86882,69.64960000000001],"lng":[-123.116226,151.20929]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="timekeeping-a-rabbit-hole-worth-falling-into" class="level3">
+<h3 class="anchored" data-anchor-id="timekeeping-a-rabbit-hole-worth-falling-into">Timekeeping: A Rabbit Hole Worth Falling Into 🐰🕳️</h3>
+<p>What started as a simple exploration of the 4-4-5 calendar turned into a wild ride through the quirks of time—daylight saving oddities, cultural twists, and even the midnight sun.</p>
+<p>I love these “useless trivias,” but they’re a reminder that time isn’t just ticking numbers on a clock—it’s shaped by geography, culture, and sometimes even political drama. This was a fun wake-up call (pun intended) that time is more complex, and entertaining? than we think!!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>ggplot</category>
+  <category>calendar</category>
+  <category>leaflet</category>
+  <category>suncalc</category>
+  <guid>https://chichacha.github.io/chi-files/posts/2024_12/calendar_generator.html</guid>
+  <pubDate>Sun, 29 Dec 2024 08:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Geometic Art Generator with Shiny</title>
   <dc:creator>Chisato </dc:creator>
