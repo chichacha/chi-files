@@ -25,14 +25,7 @@ format:
     css: styles.css
     toc: true
     toc-depth: 4
-    include-arter-body: |
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EK13JXE55"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-4EK13JXE55');
-      </script>
+    include-in-header: google_analytics.html
     
 page-layout: full
 
