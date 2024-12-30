@@ -13,29 +13,27 @@ about:
       href: https://github.com/chichacha
 ---
 
-### **🌌 Welcome to the Chi-Files!**
+### **🌌 Welcome to the Chi**(χ)**-Files!**
 
-This blog chronicles my journey as a data enthusiast, tech explorer, and creative thinker. 💧
+This blog follows my data adventures, tech explorations, and creative thinking. 💧
 
 ### **🧑‍💻 Who Am I?**
 
-I'm a Data Visualization Specialist whose work spans data science, analytics, and storytelling. I transform raw data into meaningful insights that drive powerful decisions. At the intersection of tech and creativity, I explore tools like R (with a special love for ggplot2), SQL, Databricks, and even turn ordinary Microsoft PowerPoints into dynamic storytelling platforms.
-
-As a curious explorer, I blend technical expertise with the art of data storytelling. From complex datasets to visual art with ggplot2, I transform data into inspiration and knowledge.
+I'm a Data Visualization Specialist whose work spans data science, analytics, and storytelling. I aim to transform raw data into meaningful insights that drive better decision making. I fell in love exploring data using R (with extra special love 💕 for ggplot2), I also love tinkering with SQL, Databricks, as well as utilizing ordinary Microsoft PowerPoints as dynamic storytelling platforms.
 
 ### **🫣A Few Fun Facts**
 
--   🐱 I lean towards more like "cat"—independent, curious, and always exploring, thriving on discovery.
+-   🐱 I lean towards more like "cat"—independent, curious, and always exploring, taking pleasure in discoveries.
 
--   🐶 Although if asked, I’m a dog person. Dogs hold a special place in my heart ❤️, and my furry friend is my constant companion.
+-   🐶 That said, if asked, I’m a dog person. Dogs hold a special place in my heart ❤️, and my furry friend is my constant companion.
 
--   🌊 I'm captivated by waves in all forms—from the rolling ocean swells to the invisible rhythms of radio frequencies. Maybe it's not just waves, but patterns in general that fascinate me, like the elegance of geometric designs.
+-   🌊 I'm captivated by waves—from the rolling ocean swells to the invisible rhythms of radio frequencies. I am drawn to patterns especially geometric ones, not simply waves.
 
--   🛸 The name "Chi-Files" reflects my passion for mystery, exploration, and the unknown.
+-   🛸 The name "**Chi**(χ)**-Files**" represents my passion for mystery, adventure, and the unknown.
 
 ### **✍️ Why This Blog?**
 
-This space showcases my discoveries in **data, visualization, and technology**. Here you'll find professional insights, personal reflections, and creative projects—often likely featuring abstract art and compelling **ggplot2** visualizations. 🎨📊
+This space showcases my discoveries in **data, visualization, and technology**. Here you'll find some professional insights, personal reflections, and likely more of odd creative projects utilizing R in some way. 🎨📊
 
 This blog aims to inspire, demonstrating how data can be both **functional and beautiful**, **analytical and artistic**. 💡
 
