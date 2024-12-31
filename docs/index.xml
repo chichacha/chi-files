@@ -10,7 +10,595 @@
 <atom:link href="https://chichacha.github.io/chi-files/index.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Sun, 29 Dec 2024 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 31 Dec 2024 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Taco Hat Cake Gift Pizza with Monkey, Ninja and Unicorn</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/2024_12/taco_hat_cake_gift_pizza.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="holiday-fun-gone-wild" class="level3">
+<h3 class="anchored" data-anchor-id="holiday-fun-gone-wild">🌮🎩🍰🎁🍕 Holiday Fun Gone Wild!</h3>
+<p>Over the Christmas holiday, my niece and nephew introduced me to <a href="https://en.wikipedia.org/wiki/Taco_Cat_Goat_Cheese_Pizza">Taco Cat Goat Cheese Pizza</a>, a game that’s equal parts chaotic and hilarious. Imagine trying to slap a card while screaming “TACO!” but your hand freezes like it forgot its job. 🖐️🌮</p>
+<p>My niece and nephew absolutely crushed me — turns out kids are scarily good at this game. Maybe I was too stuffed with holiday treats (I think I’ve had one too many cookies🍪🍫🍷).</p>
+<p>But even in defeat, I had so much fun that I decided I needed a version of this game at home. So, I went ahead and bought Taco Hat Cake Gift Pizza (because, let’s be honest, who can resist a ninja 🥷 and unicorn 🦄?).</p>
+</section>
+<section id="creation-of-card-deck-as-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="creation-of-card-deck-as-tibble">Creation of Card Deck as Tibble</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Easily Install and Load the 'Tidyverse'</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggforce) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Accelerating 'ggplot2'</span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggtext) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Improved Text Rendering Support for 'ggplot2'</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggimage) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Use Image in 'ggplot2'</span></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(fs) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Cross-Platform File System Operations Based on 'libuv'</span></span></code></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define the palette</span></span>
+<span id="cb2-2">pal5 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">taco=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#0fa3b1"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hat=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#b5e2fa"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cake=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fdfcdc"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pizza=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#eddea4"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gift=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f7a072"</span>)</span>
+<span id="cb2-3">base_img_path <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(here<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">here</span>(),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"posts"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2024_12"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images"</span>)</span>
+<span id="cb2-4"></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Sample card composition data</span></span>
+<span id="cb2-6">cards_comp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tibble</span>(</span>
+<span id="cb2-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">card =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Taco"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hat"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cake"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Gift"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pizza"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Monkey"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ninja"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Unicorn"</span>),</span>
+<span id="cb2-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">emoji =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🌮"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🎩"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🍰"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🎁"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🍕"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🐵"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🥷"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🦄"</span>),</span>
+<span id="cb2-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">emoji_img =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">taco=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco.png"</span>),</span>
+<span id="cb2-10">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hat=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat.png"</span>),</span>
+<span id="cb2-11">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cake=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cake.png"</span>),</span>
+<span id="cb2-12">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gift=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gift.png"</span>),</span>
+<span id="cb2-13">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pizza=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza.png"</span>),</span>
+<span id="cb2-14">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">monkey=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"monkey.png"</span>),</span>
+<span id="cb2-15">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ninja=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ninja.png"</span>),</span>
+<span id="cb2-16">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">unicorn=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">path</span>(base_img_path,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"unicorn.png"</span>)),</span>
+<span id="cb2-17">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"base"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"special"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)),</span>
+<span id="cb2-18">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">count =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb2-19">)</span>
+<span id="cb2-20">cards <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> cards_comp <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uncount</span>(count)</span>
+<span id="cb2-21">cards<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>color <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>],<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gift"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>)]),</span>
+<span id="cb2-22">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>],<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cake"</span>)]),</span>
+<span id="cb2-23">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cake"</span>],<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gift"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>)]),</span>
+<span id="cb2-24">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gift"</span>],<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>)]),</span>
+<span id="cb2-25">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>],<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">times=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gift"</span>)]),</span>
+<span id="cb2-26">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gift"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>)]),</span>
+<span id="cb2-27">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pizza"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>)]),</span>
+<span id="cb2-28">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cake"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hat"</span>)])) </span></code></pre></div>
+</details>
+</div>
+</section>
+<section id="card-composition" class="level3">
+<h3 class="anchored" data-anchor-id="card-composition">Card Composition</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">cards <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(type) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-3">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#slice_sample(n = nrow(cards)) |&gt;</span></span>
+<span id="cb3-4">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#mutate(player=c(rep(c("A","B","C","D","E"),times=12),"X","X","X","X")) |&gt;</span></span>
+<span id="cb3-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grp=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(type<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"base"</span>,card,type)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grp=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_inorder</span>(grp)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(grp) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">idx=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>idx,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>grp)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_tile</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(color)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.97</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_image</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">image=</span>emoji_img, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"width"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_fixed</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_richtext</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>grp,</span>
+<span id="cb3-15">                    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_glue</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;b&gt;{n}&lt;/b&gt;&lt;br&gt;{grp}&lt;br&gt;cards"</span>)),</span>
+<span id="cb3-16">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> . <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(grp) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">n</span>(),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">det=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(card),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">collapse=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;br&gt;"</span>)),</span>
+<span id="cb3-17">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>,</span>
+<span id="cb3-18">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"transparent"</span>,</span>
+<span id="cb3-19">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label.colour=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"transparent"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Composition of Cards inside of Taco Hat Cake Gift Pizza"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/taco_hat_cake_gift_pizza_files/figure-html/card_comp-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>game</category>
+  <guid>https://chichacha.github.io/chi-files/posts/2024_12/taco_hat_cake_gift_pizza.html</guid>
+  <pubDate>Tue, 31 Dec 2024 08:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Visualizing 445 Calendar in R</title>
   <dc:creator>Chisato </dc:creator>

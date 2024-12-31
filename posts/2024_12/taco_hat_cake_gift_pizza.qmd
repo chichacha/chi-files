@@ -1,0 +1,98 @@
+---
+title: "Taco Hat Cake Gift Pizza with Monkey, Ninja and Unicorn"
+date: "2024-12-31"
+categories: [r, game]
+format:
+  html:
+    code-fold: true
+execute:
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### 🌮🎩🍰🎁🍕 Holiday Fun Gone Wild!
+
+Over the Christmas holiday, my niece and nephew introduced me to [Taco Cat Goat Cheese Pizza](https://en.wikipedia.org/wiki/Taco_Cat_Goat_Cheese_Pizza), a game that’s equal parts chaotic and hilarious. Imagine trying to slap a card while screaming "TACO!" but your hand freezes like it forgot its job. 🖐️🌮
+
+My niece and nephew absolutely crushed me — turns out kids are scarily good at this game. Maybe I was too stuffed with holiday treats (I think I've had one too many cookies🍪🍫🍷).
+
+But even in defeat, I had so much fun that I decided I needed a version of this game at home. So, I went ahead and bought Taco Hat Cake Gift Pizza (because, let’s be honest, who can resist a ninja 🥷 and unicorn 🦄?).
+
+### Creation of Card Deck as Tibble 
+
+```{r setup}
+
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(ggforce) # Accelerating 'ggplot2'
+library(ggtext) # Improved Text Rendering Support for 'ggplot2'
+library(ggimage) # Use Image in 'ggplot2'
+library(fs) # Cross-Platform File System Operations Based on 'libuv'
+
+```
+
+
+```{r df_creation}
+
+# Define the palette
+pal5 <- c(taco="#0fa3b1",hat="#b5e2fa",cake="#fdfcdc",pizza="#eddea4",gift="#f7a072")
+base_img_path <- path(here::here(),"posts","2024_12","images")
+
+# Sample card composition data
+cards_comp <- tibble(
+  card = c("Taco", "Hat", "Cake", "Gift", "Pizza", "Monkey", "Ninja", "Unicorn"),
+  emoji = c("🌮", "🎩", "🍰", "🎁", "🍕", "🐵", "🥷", "🦄"),
+  emoji_img = c(taco=path(base_img_path,"taco.png"),
+                hat=path(base_img_path,"hat.png"),
+                cake=path(base_img_path,"cake.png"),
+                gift=path(base_img_path,"gift.png"),
+                pizza=path(base_img_path,"pizza.png"),
+                monkey=path(base_img_path,"monkey.png"),
+                ninja=path(base_img_path,"ninja.png"),
+                unicorn=path(base_img_path,"unicorn.png")),
+  type = c(rep("base",times=5),rep("special",times=3)),
+  count = c(11,11,11,11,11,3,3,3)
+)
+cards <- cards_comp |> uncount(count)
+cards$color <- c(rep(pal5["taco"],times=8),c(pal5[c("pizza","gift","hat")]),
+          rep(pal5["hat"],times=9),c(pal5[c("taco","cake")]),
+          rep(pal5["cake"],times=8),c(pal5[c("taco","gift","hat")]),
+          rep(pal5["gift"],times=8),c(pal5[c("pizza","taco","pizza")]),
+          rep(pal5["pizza"],times=8),c(pal5[c("hat","taco","gift")]),
+          c(pal5[c("gift","pizza","hat")]),
+          c(pal5[c("hat","pizza","taco")]),
+          c(pal5[c("taco","cake","hat")])) 
+
+
+```
+
+### Card Composition 
+
+
+```{r card_comp}
+
+cards |>
+  arrange(type) |>
+  #slice_sample(n = nrow(cards)) |>
+  #mutate(player=c(rep(c("A","B","C","D","E"),times=12),"X","X","X","X")) |>
+  mutate(grp=if_else(type=="base",card,type)) |>
+  mutate(grp=fct_inorder(grp)) |>
+  group_by(grp) |>
+  mutate(idx=row_number()) |>
+  ggplot(aes(x=idx,y=grp)) +
+  geom_tile(aes(fill=I(color)), width=0.75, height=0.97) +
+  geom_image(aes(image=emoji_img, by="width")) +
+  coord_fixed() +
+  theme_nothing(base_family="Roboto Condensed") +
+  geom_richtext(aes(x=0,y=grp,
+                    label=str_glue("<b>{n}</b><br>{grp}<br>cards")),
+                data = . %>% group_by(grp) %>% summarise(n=n(),det=paste(unique(card),collapse="<br>")),
+                family="Roboto Condensed",
+                fill="transparent",
+                label.colour="transparent") +
+  labs(title="Composition of Cards inside of Taco Hat Cake Gift Pizza")
+
+```
+
+
+
