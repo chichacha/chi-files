@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>CHI(χ)-Files</title>
+<link>https://chichacha.github.io/chi-files/#category=news</link>
+<atom:link href="https://chichacha.github.io/chi-files/index-news.xml" rel="self" type="application/rss+xml"/>
+<description>Exploring the irrational, the visual, and the unexpected</description>
+<generator>quarto-1.6.39</generator>
+<lastBuildDate>Sat, 21 Dec 2024 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Hello World! The First Post!</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="welcome-to-the-chi-files" class="level2">
+<h2 class="anchored" data-anchor-id="welcome-to-the-chi-files">👋 Welcome to the Chi-Files!</h2>
+<p>Every great journey begins with a single step—or in this case, a single post. Really I’m just trying to learn how to use Quarto…</p>
+<section id="why-the-chi-files" class="level3">
+<h3 class="anchored" data-anchor-id="why-the-chi-files">🌟 Why the “Chi-Files”?</h3>
+<p>The blog name is a nod to my love of mystery, discovery, and exploration. Data can be like an unsolved case—full of patterns, stories, and hidden gems waiting to be uncovered.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/welcome/thumbnail.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>X-Files</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-chi-square-test-solving-data-mysteries" class="level3">
+<h3 class="anchored" data-anchor-id="the-chi-square-test-solving-data-mysteries">The Chi-Square Test: Solving Data Mysteries 🛸</h3>
+<p>In the Chi-Files, every dataset is a puzzle, and the <strong>chi-square statistic</strong> is our investigative tool to uncover hidden relationships.</p>
+<p>The formula for the chi-square statistic is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cchi%5E2%20=%20%5Csum%20%5Cfrac%7B(O_i%20-%20E_i)%5E2%7D%7BE_i%7D%0A"></p>
+<p>Where: - <img src="https://latex.codecogs.com/png.latex?O_i"> = Observed frequency - <img src="https://latex.codecogs.com/png.latex?E_i"> = Expected frequency - <img src="https://latex.codecogs.com/png.latex?%5Csum"> = The summation symbol, meaning we sum across all categories.</p>
+</section>
+<section id="an-x-files-twist" class="level3">
+<h3 class="anchored" data-anchor-id="an-x-files-twist"><strong>An X-Files Twist</strong></h3>
+<p>Suppose we’re investigating sightings of UFOs 👽 across regions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 36%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Region</strong></th>
+<th><strong>Observed Sightings</strong> (<img src="https://latex.codecogs.com/png.latex?O_i">)</th>
+<th><strong>Expected Sightings</strong> (<img src="https://latex.codecogs.com/png.latex?E_i">)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Area 51</td>
+<td>50</td>
+<td>40</td>
+</tr>
+<tr class="even">
+<td>Roswell</td>
+<td>70</td>
+<td>60</td>
+</tr>
+<tr class="odd">
+<td>Pine Gap</td>
+<td>30</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>Using the chi-square formula, we calculate:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cchi%5E2%20=%20%5Cfrac%7B(50%20-%2040)%5E2%7D%7B40%7D%20+%20%5Cfrac%7B(70%20-%2060)%5E2%7D%7B60%7D%20+%20%5Cfrac%7B(30%20-%2050)%5E2%7D%7B50%7D%0A"></p>
+<p>This leads to:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cchi%5E2%20=%20%5Cfrac%7B100%7D%7B40%7D%20+%20%5Cfrac%7B100%7D%7B60%7D%20+%20%5Cfrac%7B400%7D%7B50%7D%20=%202.5%20+%201.67%20+%208%20=%2012.17%0A"></p>
+<p>If this value exceeds the critical value, we may conclude there’s <strong>something strange going on in these regions</strong>… but the truth is out there! 🛸</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/welcome/index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The chi-square test reveals mysteries hidden in plain data. Use it wisely, and remember: <strong>the truth is out there!</strong> 🛸</p>
+</div>
+</div>
+<p><a href="https://quarto.org">Visit Quarto</a></p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://chichacha.github.io/chi-files/posts/welcome/</guid>
+  <pubDate>Sat, 21 Dec 2024 08:00:00 GMT</pubDate>
+  <media:content url="https://chichacha.github.io/chi-files/posts/welcome/thumbnail.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+</channel>
+</rss>
