@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>CHI(χ)-Files</title>
+<link>https://chichacha.github.io/chi-files/#category=posts</link>
+<atom:link href="https://chichacha.github.io/chi-files/index-posts.xml" rel="self" type="application/rss+xml"/>
+<description>Exploring the irrational, the visual, and the unexpected</description>
+<generator>quarto-1.6.39</generator>
+<lastBuildDate>Tue, 31 Dec 2024 17:33:22 GMT</lastBuildDate>
+</channel>
+</rss>
