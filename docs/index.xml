@@ -10,9 +10,9 @@
 <atom:link href="https://chichacha.github.io/chi-files/index.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Tue, 31 Dec 2024 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 04 Jan 2025 20:58:43 GMT</lastBuildDate>
 <item>
-  <title>Taco Hat Cake Gift Pizza with Monkey, Ninja and Unicorn</title>
+  <title>Recreating the Chaos of Taco Hat Cake Gift Pizza in R</title>
   <dc:creator>Chisato </dc:creator>
   <link>https://chichacha.github.io/chi-files/posts/2024_12/taco_hat_cake_gift_pizza.html</link>
   <description><![CDATA[ 
@@ -21,17 +21,17 @@
 
 
 
-<section id="holiday-fun-gone-wild" class="level3">
-<h3 class="anchored" data-anchor-id="holiday-fun-gone-wild">🌮🎩🍰🎁🍕 Holiday Fun Gone Wild!</h3>
+<section id="taco-hat-cake-gift-pizza-with-monkey-ninja-and-unicorn" class="level3">
+<h3 class="anchored" data-anchor-id="taco-hat-cake-gift-pizza-with-monkey-ninja-and-unicorn">🌮🎩🍰🎁🍕 Taco Hat Cake Gift Pizza with Monkey, Ninja, and Unicorn</h3>
 <p>Over the Christmas holiday, my niece and nephew introduced me to <a href="https://en.wikipedia.org/wiki/Taco_Cat_Goat_Cheese_Pizza">Taco Cat Goat Cheese Pizza</a>, a game that’s equal parts chaotic and hilarious. Imagine trying to slap a card while screaming “TACO!” but your hand freezes like it forgot its job. 🖐️🌮</p>
-<p>My niece and nephew absolutely crushed me — turns out kids are scarily good at this game. Maybe I was too stuffed with holiday treats (I think I’ve had one too many cookies🍪🍫🍷).</p>
+<p>My niece and nephew absolutely crushed me — I like to blame that I’ve had one too many cookies and was too slow 🍪🍫🍷.</p>
 <p>But even in defeat, I had so much fun that I decided I needed a version of this game at home. So, I went ahead and bought Taco Hat Cake Gift Pizza (because, let’s be honest, who can resist a ninja 🥷 and unicorn 🦄?).</p>
 </section>
-<section id="creation-of-card-deck-as-tibble" class="level3">
-<h3 class="anchored" data-anchor-id="creation-of-card-deck-as-tibble">Creation of Card Deck as Tibble</h3>
+<section id="crafting-the-card-deck" class="level3">
+<h3 class="anchored" data-anchor-id="crafting-the-card-deck">Crafting the Card Deck</h3>
 <div class="cell">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>Pakcages Used in This Blog Post</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(tidyverse) <span class="co" style="color: #5E5E5E;
@@ -59,9 +59,11 @@ background-color: null;
 font-style: inherit;"># Cross-Platform File System Operations Based on 'libuv'</span></span></code></pre></div>
 </details>
 </div>
+<p>When I opened the game, I found myself fascinated by the simple yet clever design of the card deck. It’s a perfect balance of “base” cards (like Taco, Hat, Cake, Gift, and Pizza) and “special” cards (Monkey, Unicorn and Ninja). Naturally, my data-nerd instincts kicked in, and I thought: <em>Why not recreate this deck as a dataset in R?</em></p>
+<p>Using the tidyverse, I created a small dataset to represent the deck. Instead of manually duplicating rows to match the card counts, I used one of my favorite hidden gems in tidyverse: <a href="https://tidyr.tidyverse.org/reference/uncount.html"><code>uncount()</code></a> in <code>tidyr</code> package.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>Creation of the Card Deck</summary>
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Define the palette</span></span>
@@ -73,23 +75,23 @@ font-style: inherit;">c</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">taco=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"#0fa3b1"</span>,<span class="at" style="color: #657422;
+font-style: inherit;">"#2f4858"</span>,<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">hat=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"#b5e2fa"</span>,<span class="at" style="color: #657422;
+font-style: inherit;">"#33658a"</span>,<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">cake=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"#fdfcdc"</span>,<span class="at" style="color: #657422;
+font-style: inherit;">"#86bbd8ff"</span>,<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">pizza=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"#eddea4"</span>,<span class="at" style="color: #657422;
+font-style: inherit;">"#f6ae2dff"</span>,<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">gift=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"#f7a072"</span>)</span>
+font-style: inherit;">"#f26419"</span>)</span>
 <span id="cb2-3">base_img_path <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -259,14 +261,22 @@ font-style: inherit;">3</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>)</span>
 <span id="cb2-19">)</span>
-<span id="cb2-20">cards <span class="ot" style="color: #003B4F;
+<span id="cb2-20"></span>
+<span id="cb2-21"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">###. Here's the power of Uncount function, opposite of dplyr::count()</span></span>
+<span id="cb2-22">cards <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> cards_comp <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uncount</span>(count)</span>
-<span id="cb2-21">cards<span class="sc" style="color: #5E5E5E;
+<span id="cb2-23"></span>
+<span id="cb2-24"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### After cards have been unnested, assigning background color</span></span>
+<span id="cb2-25">cards<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>color <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -291,7 +301,7 @@ background-color: null;
 font-style: inherit;">"gift"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"hat"</span>)]),</span>
-<span id="cb2-22">          <span class="fu" style="color: #4758AB;
+<span id="cb2-26">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
 background-color: null;
@@ -308,7 +318,7 @@ background-color: null;
 font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"cake"</span>)]),</span>
-<span id="cb2-23">          <span class="fu" style="color: #4758AB;
+<span id="cb2-27">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
 background-color: null;
@@ -327,7 +337,7 @@ background-color: null;
 font-style: inherit;">"gift"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"hat"</span>)]),</span>
-<span id="cb2-24">          <span class="fu" style="color: #4758AB;
+<span id="cb2-28">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
 background-color: null;
@@ -346,7 +356,7 @@ background-color: null;
 font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"pizza"</span>)]),</span>
-<span id="cb2-25">          <span class="fu" style="color: #4758AB;
+<span id="cb2-29">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rep</span>(pal5[<span class="st" style="color: #20794D;
 background-color: null;
@@ -365,7 +375,7 @@ background-color: null;
 font-style: inherit;">"taco"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"gift"</span>)]),</span>
-<span id="cb2-26">          <span class="fu" style="color: #4758AB;
+<span id="cb2-30">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -376,7 +386,7 @@ background-color: null;
 font-style: inherit;">"pizza"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"hat"</span>)]),</span>
-<span id="cb2-27">          <span class="fu" style="color: #4758AB;
+<span id="cb2-31">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -387,7 +397,7 @@ background-color: null;
 font-style: inherit;">"pizza"</span>,<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"taco"</span>)]),</span>
-<span id="cb2-28">          <span class="fu" style="color: #4758AB;
+<span id="cb2-32">          <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">c</span>(pal5[<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -400,12 +410,18 @@ background-color: null;
 font-style: inherit;">"hat"</span>)])) </span></code></pre></div>
 </details>
 </div>
+<section id="spotlight-on-uncount" class="level4">
+<h4 class="anchored" data-anchor-id="spotlight-on-uncount">Spotlight on uncount()</h4>
+<p>If you’ve ever struggled to expand a dataset by repeating rows based on a count column, uncount() is a lifesaver. In just one line, it takes a column like count and automatically duplicates rows the specified number of times. I actually didn’t know this function till fairly recently.</p>
 </section>
-<section id="card-composition" class="level3">
-<h3 class="anchored" data-anchor-id="card-composition">Card Composition</h3>
+</section>
+<section id="visualizing-the-card-composition" class="level3">
+<h3 class="anchored" data-anchor-id="visualizing-the-card-composition">Visualizing the Card Composition</h3>
+<p>With the deck dataset ready, I couldn’t resist visualizing it. Using <code>ggplot2</code> and <a href="https://cran.r-project.org/web/packages/ggimage/index.html"><code>ggimage</code></a>, I created a colorful layout that shows the composition of cards in Taco Hat Cake Gift Pizza.</p>
+<p>Here’s the plot:</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>Layout Out Base &amp; Special Card</summary>
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">cards <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
@@ -496,7 +512,11 @@ font-style: inherit;">image=</span>emoji_img, <span class="at" style="color: #65
 background-color: null;
 font-style: inherit;">by=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"width"</span>)) <span class="sc" style="color: #5E5E5E;
+font-style: inherit;">"height"</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
 <span id="cb3-12">  <span class="fu" style="color: #4758AB;
@@ -579,7 +599,7 @@ font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">title=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Composition of Cards inside of Taco Hat Cake Gift Pizza"</span>)</span></code></pre></div>
+font-style: inherit;">".    Composition of Cards inside of Taco Hat Cake Gift Pizza"</span>)</span></code></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -589,6 +609,176 @@ font-style: inherit;">"Composition of Cards inside of Taco Hat Cake Gift Pizza"<
 </div>
 </div>
 </div>
+</section>
+<section id="shuffling-the-deck-and-dealing-to-players" class="level3">
+<h3 class="anchored" data-anchor-id="shuffling-the-deck-and-dealing-to-players">Shuffling the Deck and Dealing to Players 🎲</h3>
+<p>Once the deck was ready, it was time to shuffle and deal. After all, what’s a card game without a bit of randomness? Using <a href="https://dplyr.tidyverse.org/reference/slice.html"><code>slice_sample()</code></a>, I shuffled the cards, then distributed them to five imaginary players.</p>
+<p>Here’s how the shuffled cards looked when dealt out, with any extra cards forming a “Left Over Pile”:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Shuffling and Dealing</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Shuffle the cards</span></span>
+<span id="cb4-2">shuffled_cards <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> cards <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice_sample</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(cards))</span>
+<span id="cb4-4"></span>
+<span id="cb4-5">player_num <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb4-6">shuffled_cards <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">idx=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>()<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb4-8">         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">player =</span> (idx<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span>player_num)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">is_left_over=</span>idx<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span>player_num<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">player=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">if_else</span>(is_left_over,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Left Over Pile"</span>,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Player "</span>,player))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>idx<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">floor</span>((idx<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_tile</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(color)),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.97</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.97</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_image</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">image=</span>emoji_img, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"height"</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.12</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>player)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/2024_12/taco_hat_cake_gift_pizza_files/figure-html/card_original_hands-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-thoughts" class="level3">
+<h3 class="anchored" data-anchor-id="final-thoughts">Final Thoughts</h3>
+<p>Recreating Taco Hat Cake Gift Pizza in R was a fun way to blend coding with a bit of chaos. From shuffling cards to imagining new twists, this exercise now sparked few different ideas on how to utilize this mini dataset — and maybe a few new rules for game night. 🌮🎩🍰</p>
 
 
 </section>
@@ -597,7 +787,7 @@ font-style: inherit;">"Composition of Cards inside of Taco Hat Cake Gift Pizza"<
   <category>r</category>
   <category>game</category>
   <guid>https://chichacha.github.io/chi-files/posts/2024_12/taco_hat_cake_gift_pizza.html</guid>
-  <pubDate>Tue, 31 Dec 2024 08:00:00 GMT</pubDate>
+  <pubDate>Sat, 04 Jan 2025 20:58:43 GMT</pubDate>
 </item>
 <item>
   <title>Visualizing 445 Calendar in R</title>

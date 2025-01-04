@@ -1,6 +1,6 @@
 ---
-title: "Taco Hat Cake Gift Pizza with Monkey, Ninja and Unicorn"
-date: "2024-12-31"
+title: "Recreating the Chaos of Taco Hat Cake Gift Pizza in R"
+date: last-modified
 categories: [r, game]
 format:
   html:
@@ -11,18 +11,18 @@ editor_options:
   chunk_output_type: console
 ---
 
-### 🌮🎩🍰🎁🍕 Holiday Fun Gone Wild!
+### 🌮🎩🍰🎁🍕 Taco Hat Cake Gift Pizza with Monkey, Ninja, and Unicorn
 
 Over the Christmas holiday, my niece and nephew introduced me to [Taco Cat Goat Cheese Pizza](https://en.wikipedia.org/wiki/Taco_Cat_Goat_Cheese_Pizza), a game that’s equal parts chaotic and hilarious. Imagine trying to slap a card while screaming "TACO!" but your hand freezes like it forgot its job. 🖐️🌮
 
-My niece and nephew absolutely crushed me — turns out kids are scarily good at this game. Maybe I was too stuffed with holiday treats (I think I've had one too many cookies🍪🍫🍷).
+My niece and nephew absolutely crushed me — I like to blame that I've had one too many cookies and was too slow 🍪🍫🍷.
 
 But even in defeat, I had so much fun that I decided I needed a version of this game at home. So, I went ahead and bought Taco Hat Cake Gift Pizza (because, let’s be honest, who can resist a ninja 🥷 and unicorn 🦄?).
 
-### Creation of Card Deck as Tibble 
+### Crafting the Card Deck
 
 ```{r setup}
-
+#| code-summary: "Pakcages Used in This Blog Post"
 library(tidyverse) # Easily Install and Load the 'Tidyverse'
 library(ggforce) # Accelerating 'ggplot2'
 library(ggtext) # Improved Text Rendering Support for 'ggplot2'
@@ -31,11 +31,15 @@ library(fs) # Cross-Platform File System Operations Based on 'libuv'
 
 ```
 
+When I opened the game, I found myself fascinated by the simple yet clever design of the card deck. It’s a perfect balance of “base” cards (like Taco, Hat, Cake, Gift, and Pizza) and “special” cards (Monkey, Unicorn and Ninja). Naturally, my data-nerd instincts kicked in, and I thought: *Why not recreate this deck as a dataset in R?*
+
+Using the tidyverse, I created a small dataset to represent the deck. Instead of manually duplicating rows to match the card counts, I used one of my favorite hidden gems in tidyverse: [`uncount()`](https://tidyr.tidyverse.org/reference/uncount.html) in `tidyr` package.  
 
 ```{r df_creation}
+#| code-summary: "Creation of the Card Deck"
 
 # Define the palette
-pal5 <- c(taco="#0fa3b1",hat="#b5e2fa",cake="#fdfcdc",pizza="#eddea4",gift="#f7a072")
+pal5 <- c(taco="#2f4858",hat="#33658a",cake="#86bbd8ff",pizza="#f6ae2dff",gift="#f26419")
 base_img_path <- path(here::here(),"posts","2024_12","images")
 
 # Sample card composition data
@@ -53,7 +57,11 @@ cards_comp <- tibble(
   type = c(rep("base",times=5),rep("special",times=3)),
   count = c(11,11,11,11,11,3,3,3)
 )
+
+###. Here's the power of Uncount function, opposite of dplyr::count()
 cards <- cards_comp |> uncount(count)
+
+### After cards have been unnested, assigning background color
 cards$color <- c(rep(pal5["taco"],times=8),c(pal5[c("pizza","gift","hat")]),
           rep(pal5["hat"],times=9),c(pal5[c("taco","cake")]),
           rep(pal5["cake"],times=8),c(pal5[c("taco","gift","hat")]),
@@ -66,10 +74,18 @@ cards$color <- c(rep(pal5["taco"],times=8),c(pal5[c("pizza","gift","hat")]),
 
 ```
 
-### Card Composition 
+#### Spotlight on uncount()
 
+If you’ve ever struggled to expand a dataset by repeating rows based on a count column, uncount() is a lifesaver. In just one line, it takes a column like count and automatically duplicates rows the specified number of times. I actually didn't know this function till fairly recently.  
+
+### Visualizing the Card Composition 
+
+With the deck dataset ready, I couldn’t resist visualizing it. Using `ggplot2` and [`ggimage`](https://cran.r-project.org/web/packages/ggimage/index.html), I created a colorful layout that shows the composition of cards in Taco Hat Cake Gift Pizza. 
+
+Here’s the plot:
 
 ```{r card_comp}
+#| code-summary: "Layout Out Base & Special Card"
 
 cards |>
   arrange(type) |>
@@ -81,7 +97,7 @@ cards |>
   mutate(idx=row_number()) |>
   ggplot(aes(x=idx,y=grp)) +
   geom_tile(aes(fill=I(color)), width=0.75, height=0.97) +
-  geom_image(aes(image=emoji_img, by="width")) +
+  geom_image(aes(image=emoji_img, by="height"), size=0.1) +
   coord_fixed() +
   theme_nothing(base_family="Roboto Condensed") +
   geom_richtext(aes(x=0,y=grp,
@@ -90,9 +106,42 @@ cards |>
                 family="Roboto Condensed",
                 fill="transparent",
                 label.colour="transparent") +
-  labs(title="Composition of Cards inside of Taco Hat Cake Gift Pizza")
+  labs(title=".    Composition of Cards inside of Taco Hat Cake Gift Pizza")
+
+
 
 ```
 
 
+### Shuffling the Deck and Dealing to Players 🎲
 
+Once the deck was ready, it was time to shuffle and deal. After all, what’s a card game without a bit of randomness? Using [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html), I shuffled the cards, then distributed them to five imaginary players.
+
+Here’s how the shuffled cards looked when dealt out, with any extra cards forming a “Left Over Pile”:
+
+```{r card_original_hands}
+#| code-summary: "Shuffling and Dealing"
+#| fig-width: 8
+#| fig-height: 7
+# Shuffle the cards
+shuffled_cards <- cards |> 
+  slice_sample(n = nrow(cards))
+
+player_num <- 5
+shuffled_cards |>
+  mutate(idx=row_number()-1,
+         player = (idx%%player_num)+1) |>
+  mutate(is_left_over=idx>=player_num*12) |>
+  mutate(player=if_else(is_left_over,"Left Over Pile",str_c("Player ",player))) |>
+  ggplot(aes(x=idx%%4,y=floor((idx%%12)/4))) +
+  geom_tile(aes(fill=I(color)),width=0.97, height=0.97) +
+  geom_image(aes(image=emoji_img, by="height"), size=0.12) +
+  theme_nothing(base_family="Roboto Condensed") +
+  facet_wrap(~player)
+
+
+```
+
+### Final Thoughts
+
+Recreating Taco Hat Cake Gift Pizza in R was a fun way to blend coding with a bit of chaos. From shuffling cards to imagining new twists, this exercise now sparked few different ideas on how to utilize this mini dataset — and maybe a few new rules for game night. 🌮🎩🍰
