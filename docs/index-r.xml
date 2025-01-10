@@ -10,7 +10,1115 @@
 <atom:link href="https://chichacha.github.io/chi-files/index-r.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Wed, 08 Jan 2025 03:37:22 GMT</lastBuildDate>
+<lastBuildDate>Fri, 10 Jan 2025 06:10:07 GMT</lastBuildDate>
+<item>
+  <title>Pentomino Solutions 6x10 Rectangle</title>
+  <dc:creator>Chisato </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="solving-the-puzzle-the-6x10-pentomino-challenge-with-a-big-help" class="level3">
+<h3 class="anchored" data-anchor-id="solving-the-puzzle-the-6x10-pentomino-challenge-with-a-big-help">Solving the Puzzle: The 6x10 Pentomino Challenge (with a Big Help)</h3>
+<p><img src="https://chichacha.github.io/chi-files/posts/pentomino/images/Pentominos.png" class="img-fluid"></p>
+<p>The 6x10 pentomino challenge asks you to fit all 12 pieces into a rectangle perfectly—no overlaps, no gaps, just pure geometric magic. There are 2339 unique solutions! My go-to solution site has been <a href="https://isomerdesign.com/Pentomino/">isomerdesign.com</a>. In this post, I’m not solving the 6x10 challenge myself, but I’ll visualize some solutions using R &amp; trusty <code>ggplot2</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Pakcages Used in This Blog Post</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Easily Install and Load the 'Tidyverse'</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(cowplot) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Streamlined Plot Theme and Plot Annotations for 'ggplot2'</span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(sf) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Simple Features for R</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(patchwork) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The Composer of Plots</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Just playing around with color palette</span></span>
+<span id="cb1-7">retro_col_a <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#00A0B0"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6A4A3C"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#CC333F"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#EB6841"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#EDC951"</span>)</span>
+<span id="cb1-8">retro_col_b  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#CA0B0B"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#EAA109"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#71A6AE"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#18668C"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#06394D"</span>)</span>
+<span id="cb1-9">retro_col_c <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#325A64"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#44838F"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#68D0BD"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#F53F19"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#891C29"</span>)</span>
+<span id="cb1-10">retro_col_d <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#241965"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#653993"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#9F4094"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#B73D6E"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#F19406"</span>)</span>
+<span id="cb1-11">retro_col_e <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#383431"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#79C39E"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#EAD1B5"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#EE9B69"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#E77843"</span>)</span>
+<span id="cb1-12">retro_col_f <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#8E2605"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#E54B1F"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FDC018"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#628A81"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#5F3924"</span>)</span>
+<span id="cb1-13">retro_col_g <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#811638"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#0B7978"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FCB632"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#F27238"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#C32327"</span>)</span>
+<span id="cb1-14"></span>
+<span id="cb1-15">retro_col <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(retro_col_b, retro_col_e, retro_col_a, retro_col_d, retro_col_c, retro_col_f, retro_col_g)</span></code></pre></div>
+</details>
+</div>
+<p>I started by loading few useful pakages above. <code>tidyverse</code> makes data wrangling simple, while <code>sf</code> helps manage spartial geometries. Additionally I’ve prepped retro-inspired color palettes so that I can give the visuals a nostalgic puzzle game vibes.</p>
+</section>
+<section id="loading-the-solutions" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-solutions">Loading the Solutions</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Reading Text Solution File</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Thank you to solution as text! </span></span>
+<span id="cb2-2">sol_df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://isomerdesign.com/Pentomino/6x10/solutions.txt"</span>,</span>
+<span id="cb2-3">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col_names=</span>F)</span>
+<span id="cb2-4"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### 2339 Solutions included in CSV</span></span>
+<span id="cb2-5"></span>
+<span id="cb2-6"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Turn solution into data frame</span></span>
+<span id="cb2-7">make_coord_df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x){</span>
+<span id="cb2-8">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#x &lt;- sol_df$X2[[1]]</span></span>
+<span id="cb2-9">  x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_split</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_remove_all</span>(x,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span>),<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">simplify=</span>T)</span>
+<span id="cb2-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">byrow=</span>T) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-11">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-13">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pivot_longer</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-14">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.integer</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_extract</span>(name,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">d+"</span>))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-15">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(x,y,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">piece=</span>value) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-16">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x_min=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(x),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y_min=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(y),</span>
+<span id="cb2-18">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x_max=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(x),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y_max=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(y),</span>
+<span id="cb2-19">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">idx=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>(x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>y),</span>
+<span id="cb2-20">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">adj_x=</span>x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>x_min<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">adj_y=</span>y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y_min<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-21">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ungroup</span>()</span>
+<span id="cb2-22">}</span>
+<span id="cb2-23"></span>
+<span id="cb2-24"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### df for data frame</span></span>
+<span id="cb2-25">sol_df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sol_df <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">solution_df =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(X2,make_coord_df))</span>
+<span id="cb2-27"></span>
+<span id="cb2-28"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### df_long for data frame that's unnested</span></span>
+<span id="cb2-29">sol_df_long <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sol_df <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-30">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unnest</span>(solution_df)</span></code></pre></div>
+</details>
+</div>
+<p>The solutions are provided in a plain text file, where each solution is represented by 10 strings of characters x 6 rows for each of 2339 solutions for 6x10 rectangle. Each letter corresponds to one of the 12 pentomino pieces. Using this as input, I created a function to process each solution into a structured tibble (data frame).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Convert to SF Object</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Function to turn coordinate as center and conver to square</span></span>
+<span id="cb3-2">create_square_fence <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, y) {</span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_polygon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb3-4">    x<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-0.5</span>, y<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-0.5</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bottom Left</span></span>
+<span id="cb3-5">    x<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">+0.5</span>, y<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-0.5</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#Bottom Right</span></span>
+<span id="cb3-6">    x<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">+0.5</span>, y<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">+0.5</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#Top Right</span></span>
+<span id="cb3-7">    x<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-0.5</span>, y<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">+0.5</span>, <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#Top Left</span></span>
+<span id="cb3-8">    x<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-0.5</span>, y<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">-0.5</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Close the polygon by coming back to bottom left</span></span>
+<span id="cb3-9">  ), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)))</span>
+<span id="cb3-10">}</span>
+<span id="cb3-11"></span>
+<span id="cb3-12"><span class="do" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">### Convert data frame into sf object</span></span>
+<span id="cb3-13">sol_sf <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sol_df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rowwise</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-15">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># For each row, create a square geometry from the x, y coordinate</span></span>
+<span id="cb3-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geometry=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_square_fence</span>(x,y)),</span>
+<span id="cb3-17">         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geometry_adj=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_square_fence</span>(adj_x,adj_y))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ungroup</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Remove rowwise grouping</span></span>
+<span id="cb3-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(X1,piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geometry=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_union</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sfc</span>(geometry)),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.groups=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"drop"</span>,</span>
+<span id="cb3-21">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geometry_adj=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_union</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sfc</span>(geometry_adj),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.groups=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"drop"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sf</span>() </span>
+<span id="cb3-23"></span>
+<span id="cb3-24"></span>
+<span id="cb3-25">pieces_63 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span>sol_sf <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_drop_geometry</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-27">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(piece,geometry_adj,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sort=</span>T) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-28">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">i=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb3-30">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col=</span>colourvalues<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color_values</span>(i,farver<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">decode_colour</span>(retro_col)))</span>
+<span id="cb3-31"></span>
+<span id="cb3-32">sol_sf_comb <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sol_sf <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-33">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inner_join</span>(pieces_63 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(col,geometry_adj,piece))</span></code></pre></div>
+</details>
+</div>
+<p>Once the data frame was ready, next step was to convert it into sf geometries for spatial analysis and visualization. Here’s how I’ve tackled it.</p>
+<ol type="1">
+<li>Square Polygons: I wrote a small helper function to create a square polygon for each (x,y) coordinate. Each square represents a single unit of the pentomino square pieces.</li>
+<li>Merging into Shapes: To represent entire pentomino pieces, I’ve combined all individual square polygons for a piece into a single shape using st_union().<br>
+</li>
+<li>Normalized Geometry for Variations:<br>
+</li>
+</ol>
+<ul>
+<li>Pentomino pieces can appear in up to 8 variations (rotations and flips). For example, a single piece might have multiple “faces”, depending on how it’s oriented in the solution.</li>
+<li>To identify which variations of a piece was used in each solution, I created adjusted geometries by aligning the shapes relative to their bounding boxes.</li>
+</ul>
+</section>
+<section id="heatmap-of-pentomino-placement-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="heatmap-of-pentomino-placement-patterns">Heatmap of Pentomino Placement Patterns</h3>
+<p>With the 2339 Solutions processed and converted into geometries, I decided to analyze where each pentomino piece tends to appear on the board. The result is the heatmap you see below.</p>
+<p>The code using geom_tile() to represent the frequency of each piece at each (x,y) position across all solutions. A facet is created for each pentomino piece, so we can see the pattern differences.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Heatmap of Pentomino Placement Patterns</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">sol_df_long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">count</span>(x,y,piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>x,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>y)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_tile</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>n)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_fixed</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_viridis_c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">option=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"F"</span>,<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">trans=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sqrt"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"apperence"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_map</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="921"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="insights-from-the-heatmap" class="level4">
+<h4 class="anchored" data-anchor-id="insights-from-the-heatmap">Insights from the Heatmap</h4>
+<ul>
+<li>X Stays Central: The X-piece avoids edges entirely, sticking to the middle where it fits best.</li>
+<li>I Loves the Left Edges: The I-piece often hugs the edges, but there are a few spaces it avoids altogether.</li>
+<li>F and W Are Versatile: These flexible shapes show up all over, but slight tendency towards the center</li>
+<li>V and Y Favor the Edges: Their hook-like shapes are perfect for corners and boundaries.</li>
+<li>T Favors the Top Left: The T-piece seems to favour the top left-corner according to the heatmap.</li>
+<li>Z Leans Asymmetrically: Z leans to one side, and more likely to stay away from the edges.</li>
+<li>L Sticks to Edges: These elongated shapes often sit along the board’s boundaries, especially the bottom left.</li>
+<li>P and U Fits Everywhere: the P-piece slots into difference places.</li>
+</ul>
+</section>
+</section>
+<section id="recapping-the-shapes" class="level3">
+<h3 class="anchored" data-anchor-id="recapping-the-shapes">Recapping the Shapes</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Piece Shapes Recap</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">p_sep <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span>pieces_63 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">j=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>(i)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sf</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(col)),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_grid</span>(j<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>()</span>
+<span id="cb5-9">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#theme_minimal()</span></span>
+<span id="cb5-10"></span>
+<span id="cb5-11">p_stack <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span>pieces_63 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">j=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>(i)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sf</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(col)),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fffff3"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf_text</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label=</span>piece, </span>
+<span id="cb5-18">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geometry=</span>geometry_adj<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)),</span>
+<span id="cb5-19">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"American Typewriter"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb5-20">               <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> . <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(j<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_grid</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>piece) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>() </span>
+<span id="cb5-23"></span>
+<span id="cb5-24">p_sep <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> p_stack <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_layout</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">heights=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="912"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In above I created a visualization to recap the 12 pentomino shapes, each column shows different variations of piece faces. There are 12 free pieces, but 63 fixed pieces.</p>
+</section>
+<section id="some-solutions" class="level3">
+<h3 class="anchored" data-anchor-id="some-solutions">Some Solutions !</h3>
+<p>Since it’s bit hard to display all the solution at once… I’ve first chosen these 12 special solutions. These 12 solutions are particularly interesting because they belong to 3 unique sets where the pieces remain in their default orientation—no flipping or rotation is required! Within each set, there are 4 solutions that differ only in the arrangement of the pieces on the board.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Special 12 Solutions (3 Sets x 4 Solutions)</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">sol_by_color <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span>sol_sf_comb <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_drop_geometry</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(X1) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col_pal=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(col),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">collapse=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">","</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ungroup</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_count</span>(col_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(n),col_pal) </span>
+<span id="cb6-8"></span>
+<span id="cb6-9">sol_sf_comb <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb6-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inner_join</span>(sol_by_color) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(col))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>X1) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb6-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_map</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="921"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Another Special 9 Solutions (3 Sets x 3 Solutions)</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">sol_sf_comb <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inner_join</span>(sol_by_color) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(col_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb7-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(col))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_inorder</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(X1))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_map</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="921"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>180 Solutions where Pair Exists</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">sol_sf_comb <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb8-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inner_join</span>(sol_by_color) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb8-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb8-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(col_pal) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb8-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_sf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">I</span>(col))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fct_inorder</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(X1)),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb8-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_nothing</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font_family=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Roboto Condensed"</span>) </span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="921"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="wrapping-up" class="level3">
+<h3 class="anchored" data-anchor-id="wrapping-up">Wrapping Up 🎁</h3>
+<p>Visualizing these solutions has been like uncovering hidden patterns in a puzzle. It’s been pretty fun execise learning to utilize some of function in <code>sf</code> packages too. And most importantly, now I have solution on my blog I can put away the actual puzzle board after the play.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>puzzle</category>
+  <category>ggplot2</category>
+  <guid>https://chichacha.github.io/chi-files/posts/pentomino/pentomino_part2.html</guid>
+  <pubDate>Fri, 10 Jan 2025 06:10:07 GMT</pubDate>
+</item>
 <item>
   <title>What’s a Pentomino Anyway?</title>
   <dc:creator>Chisato </dc:creator>
@@ -1576,7 +2684,7 @@ font-style: inherit;">+</span> p2</span></code></pre></div>
   <category>puzzle</category>
   <category>ggplot2</category>
   <guid>https://chichacha.github.io/chi-files/posts/pentomino/</guid>
-  <pubDate>Wed, 08 Jan 2025 03:37:22 GMT</pubDate>
+  <pubDate>Wed, 08 Jan 2025 03:40:44 GMT</pubDate>
 </item>
 <item>
   <title>Recreating the Chaos of Taco Hat Cake Gift Pizza in R</title>
