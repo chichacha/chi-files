@@ -1,0 +1,270 @@
+---
+title: "Pentomino Solutions 6x10 Rectangle"
+date: last-modified
+categories: [r, puzzle, ggplot2]
+format:
+  html:
+    code-fold: true
+    fig-width: 9.5
+    fig-height: 6.5
+execute:
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Solving the Puzzle: The 6x10 Pentomino Challenge (with a Big Help)
+
+![](images/Pentominos.png)
+
+The 6x10 pentomino challenge asks you to fit all 12 pieces into a rectangle perfectly—no overlaps, no gaps, just pure geometric magic. There are 2339 unique solutions! My go-to solution site has been [isomerdesign.com](https://isomerdesign.com/Pentomino/). In this post, I'm not solving the 6x10 challenge myself, but I'll visualize some solutions using R & trusty `ggplot2`.
+
+```{r}
+#| code-summary: "Pakcages Used in This Blog Post"
+
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(cowplot) # Streamlined Plot Theme and Plot Annotations for 'ggplot2'
+library(sf) # Simple Features for R
+library(patchwork) # The Composer of Plots
+
+### Just playing around with color palette
+retro_col_a <- c("#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
+retro_col_b  <-c("#CA0B0B", "#EAA109", "#71A6AE", "#18668C", "#06394D")
+retro_col_c <- c("#325A64", "#44838F", "#68D0BD", "#F53F19", "#891C29")
+retro_col_d <- c("#241965", "#653993", "#9F4094", "#B73D6E", "#F19406")
+retro_col_e <- c("#383431", "#79C39E", "#EAD1B5", "#EE9B69", "#E77843")
+retro_col_f <- c("#8E2605", "#E54B1F", "#FDC018", "#628A81", "#5F3924")
+retro_col_g <- c("#811638", "#0B7978", "#FCB632", "#F27238", "#C32327")
+
+retro_col <- c(retro_col_b, retro_col_e, retro_col_a, retro_col_d, retro_col_c, retro_col_f, retro_col_g)
+
+
+```
+
+I started by loading few useful pakages above.  `tidyverse` makes data wrangling simple, while `sf` helps manage spartial geometries.  Additionally I've prepped retro-inspired color palettes so that I can give the visuals a nostalgic puzzle game vibes.  
+
+### Loading the Solutions
+
+```{r}
+#| code-summary: "Reading Text Solution File"
+
+### Thank you to solution as text! 
+sol_df <- read_csv("https://isomerdesign.com/Pentomino/6x10/solutions.txt",
+                   col_names=F)
+### 2339 Solutions included in CSV
+
+### Turn solution into data frame
+make_coord_df <- function(x){
+  #x <- sol_df$X2[[1]]
+  x <- str_split(str_remove_all(x," "),"",simplify=T)
+  matrix(x,nrow=6,ncol=10, byrow=T) |>
+    as_tibble() |>
+    mutate(y=row_number()) |>
+    pivot_longer(-y) |>
+    mutate(x=as.integer(str_extract(name,"\\d+"))) |>
+    select(x,y,piece=value) |>
+    group_by(piece) |>
+    mutate(x_min=min(x),y_min=min(y),
+           x_max=max(x),y_max=max(y),
+           idx=row_number(x+y),
+           adj_x=x-x_min+1,adj_y=y-y_min+1) |>
+    ungroup()
+}
+
+### df for data frame
+sol_df <- sol_df |> 
+  mutate(solution_df = map(X2,make_coord_df))
+
+### df_long for data frame that's unnested
+sol_df_long <- sol_df |> 
+  unnest(solution_df)
+
+
+```
+
+The solutions are provided in a plain text file, where each solution is represented by 10 strings of characters x 6 rows for each of 2339 solutions for 6x10 rectangle.  Each letter corresponds to one of the 12 pentomino pieces.  Using this as input, I created a function to process each solution into a structured tibble (data frame).  
+
+
+```{r}
+#| code-summary: "Convert to SF Object"
+
+# Function to turn coordinate as center and conver to square
+create_square_fence <- function(x, y) {
+  st_polygon(list(matrix(c(
+    x-0.5, y-0.5,  # Bottom Left
+    x+0.5, y-0.5, #Bottom Right
+    x+0.5, y+0.5, #Top Right
+    x-0.5, y+0.5, #Top Left
+    x-0.5, y-0.5  # Close the polygon by coming back to bottom left
+  ), ncol = 2, byrow = TRUE)))
+}
+
+### Convert data frame into sf object
+sol_sf <- sol_df_long |>
+  rowwise() |>
+  # For each row, create a square geometry from the x, y coordinate
+  mutate(geometry=list(create_square_fence(x,y)),
+         geometry_adj=list(create_square_fence(adj_x,adj_y))) |>
+  ungroup() |> # Remove rowwise grouping
+  group_by(X1,piece) |>
+  summarise(geometry=st_union(st_sfc(geometry)),.groups="drop",
+            geometry_adj=st_union(st_sfc(geometry_adj),.groups="drop")) |>
+  st_sf() 
+
+
+pieces_63 <-sol_sf |>
+  st_drop_geometry() |>
+  count(piece,geometry_adj,sort=T) |>
+  arrange(piece) |>
+  mutate(i=row_number()) |>
+  mutate(col=colourvalues::color_values(i,farver::decode_colour(retro_col)))
+
+sol_sf_comb <- sol_sf |> 
+  inner_join(pieces_63 |> select(col,geometry_adj,piece))
+
+```
+
+Once the data frame was ready, next step was to convert it into sf geometries for spatial analysis and visualization.  Here's how I've tackled it. 
+
+1. Square Polygons: I wrote a small helper function to create a square polygon for each (x,y) coordinate.  Each square represents a single unit of the pentomino square pieces. 
+2. Merging into Shapes:  To represent entire pentomino pieces, I've combined all individual square polygons for a piece into a single shape using st_union().  
+3. Normalized Geometry for Variations:  
+- Pentomino pieces can appear in up to 8 variations (rotations and flips).  For example, a single piece might have multiple "faces", depending on how it's oriented in the solution.
+- To identify which variations of a piece was used in each solution, I created adjusted geometries by aligning the shapes relative to their bounding boxes.  
+
+
+### Heatmap of Pentomino Placement Patterns
+
+With the 2339 Solutions processed and converted into geometries, I decided to analyze where each pentomino piece tends to appear on the board. The result is the heatmap you see below.
+
+The code using geom_tile() to represent the frequency of each piece at each (x,y) position across all solutions.  A facet is created for each pentomino piece, so we can see the pattern differences. 
+
+```{r}
+#| code-summary: "Heatmap of Pentomino Placement Patterns"
+#| fig-width: 9.6
+#| fig-height: 5
+
+sol_df_long |>
+  count(x,y,piece) |>
+  ggplot(aes(x=x,y=y)) +
+  geom_tile(aes(fill=n)) +
+  coord_fixed() +
+  facet_wrap(~piece) +
+  scale_fill_viridis_c(option="F",trans="sqrt","apperence") +
+  theme_map(font_family="Roboto Condensed")
+
+```
+
+#### Insights from the Heatmap
+
+-   X Stays Central: The X-piece avoids edges entirely, sticking to the middle where it fits best.
+-   I Loves the Left Edges: The I-piece often hugs the edges, but there are a few spaces it avoids altogether. 
+-   F and W Are Versatile: These flexible shapes show up all over, but slight tendency towards the center
+-   V and Y Favor the Edges: Their hook-like shapes are perfect for corners and boundaries.
+-   T Favors the Top Left: The T-piece seems to favour the top left-corner according to the heatmap.
+-   Z Leans Asymmetrically: Z leans to one side, and more likely to stay away from the edges.
+-   L Sticks to Edges: These elongated shapes often sit along the board's boundaries, especially the bottom left.
+-   P and U Fits Everywhere: the P-piece slots into difference places.
+
+### Recapping the Shapes
+
+```{r}
+#| code-summary: "Piece Shapes Recap"
+
+p_sep <-pieces_63 |>
+  group_by(piece) |>
+  mutate(j=row_number(i)) |>
+  st_sf() |>
+  ggplot() +
+  geom_sf(aes(fill=I(col)),color="#fffff3") +
+  facet_grid(j~piece) +
+  theme_nothing()
+  #theme_minimal()
+
+p_stack <-pieces_63 |>
+  group_by(piece) |>
+  mutate(j=row_number(i)) |>
+  st_sf() |>
+  ggplot() +
+  geom_sf(aes(fill=I(col)),color="#fffff3") +
+  geom_sf_text(aes(label=piece, 
+                   geometry=geometry_adj+c(0,3)),
+               family="American Typewriter", size=5,
+               data = . %>% filter(j==1)) +
+  facet_grid(~piece) +
+  theme_nothing() 
+
+p_sep + p_stack + plot_layout(ncol=1, heights=c(4,1))
+
+```
+
+In above I created a visualization to recap the 12 pentomino shapes, each column shows different variations of piece faces. There are 12 free pieces, but 63 fixed pieces. 
+
+### Some Solutions ! 
+
+Since it's bit hard to display all the solution at once...  I've first chosen these 12 special solutions.  These 12 solutions are particularly interesting because they belong to 3 unique sets where the pieces remain in their default orientation—no flipping or rotation is required! Within each set, there are 4 solutions that differ only in the arrangement of the pieces on the board.
+
+```{r}
+#| code-summary: "Special 12 Solutions (3 Sets x 4 Solutions)"
+#| fig-width: 9.6
+#| fig-height: 5
+
+sol_by_color <-sol_sf_comb |>
+  st_drop_geometry() |>
+  group_by(X1) |>
+  summarise(col_pal=paste(sort(col),collapse=",")) |>
+  ungroup() |>
+  add_count(col_pal) |>
+  arrange(desc(n),col_pal) 
+
+sol_sf_comb |> 
+  inner_join(sol_by_color) |>
+  filter(n==4) |>
+  ggplot() +
+  geom_sf(aes(fill=I(col))) +
+  facet_wrap(~X1) +
+  theme_map(font_family="Roboto Condensed")
+
+
+```
+
+
+```{r}
+#| code-summary: "Another Special 9 Solutions (3 Sets x 3 Solutions)"
+#| fig-width: 9.6
+#| fig-height: 5
+
+sol_sf_comb |> 
+  inner_join(sol_by_color) |>
+  filter(n==3) |>
+  arrange(col_pal) |>
+  ggplot() +
+  geom_sf(aes(fill=I(col))) +
+  facet_wrap(~fct_inorder(factor(X1))) +
+  theme_map(font_family="Roboto Condensed")
+
+
+```
+
+```{r}
+#| code-summary: "180 Solutions where Pair Exists"
+#| fig-width: 9.6
+#| fig-height: 5
+
+sol_sf_comb |> 
+  inner_join(sol_by_color) |>
+  filter(n==2) |>
+  arrange(col_pal) |>
+  ggplot() +
+  geom_sf(aes(fill=I(col))) +
+  facet_wrap(~fct_inorder(factor(X1)),ncol=18) +
+  theme_nothing(font_family="Roboto Condensed") 
+
+
+```
+
+
+### Wrapping Up 🎁
+
+Visualizing these solutions has been like uncovering hidden patterns in a puzzle. It's been pretty fun execise learning to utilize some of function in `sf` packages too.  And most importantly, now I have solution on my blog I can put away the actual puzzle board after the play. 
+
