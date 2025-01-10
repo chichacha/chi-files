@@ -1,6 +1,6 @@
 ---
 title: "What's a Pentomino Anyway?"
-date: "2025-01-04"
+date: "2025-01-07"
 categories: [r, puzzle, ggplot, sf]
 format:
   html:
