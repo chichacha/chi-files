@@ -1,7 +1,7 @@
 ---
 title: "Pentomino Solutions 6x10 Rectangle"
 date: last-modified
-categories: [r, puzzle, ggplot2]
+categories: [r, puzzle, ggplot, sf]
 format:
   html:
     code-fold: true
