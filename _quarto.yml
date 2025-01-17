@@ -22,6 +22,7 @@ website:
       - icon: github
         href: https://github.com/chichacha
       - icon: rss
+        text: R-Bloggers
         href: https://www.r-bloggers.com
 
 format:
