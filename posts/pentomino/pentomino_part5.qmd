@@ -1,0 +1,227 @@
+---
+title: "Utiling geom_arc_bar for creation of geometric art"
+date: last-modified
+categories: [r, puzzle, ggplot, patchwork, ggforce]
+format:
+  html:
+    code-fold: true
+    fig-width: 9.5
+    fig-height: 6.5
+execute:
+  echo: true
+editor_options: 
+  chunk_output_type: console
+image: images/Pentominos_tran.gif
+---
+
+### Geometry x Colors Experimentation
+
+I'm still obsessing with Pentomino dataset that I have been using.  
+
+I love using the [`ggforce`](https://ggforce.data-imaginist.com/index.html) package for creating stunning visualizations. `ggforce` essentially allows you to extend the ggplot2 capabilities, i.e. ggplot2 on steroid.  My go-to functions usually include [geom_regon](https://ggforce.data-imaginist.com/reference/geom_regon.html), [geom_parallel_sets](https://ggforce.data-imaginist.com/reference/geom_parallel_sets.html), and [geom_circle](https://ggforce.data-imaginist.com/reference/geom_circle.html). But recently, I realized there’s functions I haven’t fully explored, one of them being  [geom_arc_bar](https://ggforce.data-imaginist.com/reference/geom_arc_bar.html).
+
+
+```{r}
+#| code-summary: "Setups and Pakcages Used in This Blog Post"
+
+# Load required libraries
+library(tidyverse)    # Data wrangling and general utilities
+library(ggforce)      # Extra geoms for ggplot2 
+library(cowplot)      # Additional plotting helpers
+library(patchwork)    # Combine multiple ggplots effortlessly!
+
+# Pentomino Solutions Dataset 
+pento_sol <- read_csv("https://raw.githubusercontent.com/chichacha/pentomino/refs/heads/main/pentomino_solution.csv")
+
+### Convert Solution to XY position data frame
+pento_sol_df <- pento_sol |>
+  mutate(solution_num = row_number()) |>
+  mutate(sol_text = str_split(sol_text, " ")) |>
+  unnest(sol_text) |>
+  group_by(solution_num) |>
+  mutate(y = row_number()) |>
+  ungroup() |>
+  mutate(sol_text = str_split(sol_text, "")) |>
+  unnest(sol_text) |>
+  group_by(solution_num, y) |>
+  mutate(x = row_number()) |>
+  ungroup()
+
+pento_min <- pento_sol_df |>
+  filter(sol_text != ".") |>  # exclude the "." cells
+  select(x, y, sol_text, solution_num, dim) |>
+  nest(.by = c(solution_num, dim))
+
+# Just using my retro color palette
+retro <-  c("#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
+retro12 <- colorRampPalette(retro)(12)
+piece<-c("F","I","L","N","P","T","U","V","W","X","Y","Z")
+names(retro12) <- piece
+
+ 
+```
+
+
+### Quick Demo of Basic Use geom_arc_bar function
+
+Here’s a demo showing the effects of different geom_arc_bar parameters like segment smoothness (n), expansion or contraction (expand), and rounding of corner (radius).
+I like that I can draw pie or donut chart without leaving cartesian coordinate.  
+
+
+```{r geom_arc_bar_demo}
+#| code-summary: "Simple Example"
+#| fig-width: 9.6
+#| fig-height: 4
+
+# Sample data
+data <- data.frame(
+  x = c(0,0,0,0,0,0),
+  y = c(0,0,0,0,0,0),
+  r0=c(rep(0.5,times=4),0,0),
+  r=c(rep(1,times=4),0.5,0.5),
+  start = c(0, pi/2, pi, 3*pi/2,0,pi),
+  end = c(pi/2, pi, 3*pi/2, 2*pi,pi,2*pi),
+  group=c("A","B","C","D","E","F")
+)
+
+# Plot using geom_arc_bar
+ggplot(data) +
+  geom_arc_bar(aes(
+    x0 = x, y0 = y, r0 = r0, r = r, 
+    start = start, end = end, 
+    fill = group
+  ), color="#fffff3") +
+  geom_arc_bar(aes(
+    x0 = x+2, y0 = y, r0 = r0, r = r, 
+    start = start, end = end, 
+    fill = group
+  ), color="#fffff3", n=4) + ## n to control the number of points used to draw a full circle.
+  geom_arc_bar(aes(
+    x0 = x+4, y0 = y, r0 = r0, r = r, 
+    start = start, end = end, 
+    fill = group
+  ), color="#fffff3", expand=unit(-1,"mm")) + ## expand to control expansion, negative value is used to contract
+  geom_arc_bar(aes(
+    x0 = x+6, y0 = y, r0 = r0, r = r, 
+    start = start, end = end, 
+    fill = group
+  ), color="#fffff3", radius=unit(3,"mm"), n=36) +
+  theme_minimal_grid(font_family="Roboto Condensed") +
+  labs(title = "Fun with geom_arc_bar", fill = "Group") +
+  coord_fixed() +
+  scale_fill_manual(values=c(retro,"#323433")) +
+  scale_x_continuous(breaks=c(0,2,4,6)) +
+  scale_y_continuous(breaks=c(-1,0,1))
+
+
+```
+
+### Slightly Abstract Pentomino Solutions 
+
+What happens when a classic Pentomino puzzle collides with geometric abstraction? These visuals are still valid solutions to the Pentomino problem, but now they blur the line between puzzles and art. By experimenting with shapes, colors, these solutions have transformed into something entirely new: playful geometric art with a hint of order and chaos 🪄🐰🎩
+
+```{r art_variation1}
+
+abstract_plot <- function(i){
+  pento_min$data[[i]] |>
+    arrange(sol_text) |>
+    group_by(sol_text) |>
+    mutate(idx=row_number(),
+           diff_x=x-lag(x,default=1),
+           diff_y=y-lag(y,default=1)) |>
+    ungroup() |>
+    ggplot() +
+    geom_tile(aes(x=x,y=y), fill="#fffff3") +
+    geom_arc_bar(aes(x0=x+0.5,y0=y+0.5,r0=0, r=sqrt(1), start=3*pi/2, end=pi, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx==1)) +
+    geom_arc_bar(aes(x0=x-0.5,y0=y-0.5,r0=0, r=sqrt(1), start=0, end=pi/2, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx==2)) +
+    geom_arc_bar(aes(x0=x+0.5,y0=y-0.5,r0=0, r=sqrt(1), start=0, end=-pi/2, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx==3)) +
+    geom_circle(aes(x0=x,y0=y, r=sqrt(0.25),
+                    fill=sol_text), 
+                data = . %>% filter(idx==5),
+                color="transparent") +
+    geom_arc_bar(aes(x0=x+0.5,y0=y+0.5,r0=0, r=sqrt(1), start=3*pi/2, end=pi, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx==4)) +
+    coord_fixed() +
+    scale_fill_manual(values=retro12) +
+    #scale_color_manual(values=retro12) +
+    theme_nothing()
+  
+}
+
+pento_min |> filter(dim=="8×8a") |> 
+  pull(solution_num) |>
+  sample(size=6) |>
+  map(abstract_plot) |>
+  wrap_plots() 
+
+```
+
+
+```{r art_variation2}
+
+library(TSP)
+
+abstract_plot2 <- function(i) {
+  my_tsp <-pento_min$data[[i]] |>
+    mutate(sol_text=as.numeric(fct_reorder(sol_text,x*y,sum))*100) |>
+    dist("manhattan") |>
+    TSP::as.TSP()
+  
+  ### available TSP Method without installing extra
+  methods <- c("identity", "random", "nearest_insertion",
+               "cheapest_insertion", "farthest_insertion", "arbitrary_insertion",
+               "nn", "repetitive_nn", "two_opt")
+  
+  my_tsp_path <- solve_TSP(my_tsp, method=methods[3]) ## nearest insertion 
+  
+  pento_min$data[[i]][as.integer(my_tsp_path),] |>
+    mutate(idx=row_number()) |>
+    ggplot() +
+    geom_arc_bar(aes(x0=x+0.5,y0=y+0.5,r0=0, r=sqrt(1), start=3*pi/2, end=pi, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx%%8==1)) +
+    geom_arc_bar(aes(x0=x-0.5,y0=y-0.5,r0=0, r=sqrt(1), start=0, end=pi/2, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx%%8==2)) +
+    geom_arc_bar(aes(x0=x+0.5,y0=y-0.5,r0=0, r=sqrt(1), start=0, end=-pi/2, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx%%8==3)) +
+    geom_circle(aes(x0=x,y0=y, r=sqrt(0.25),
+                    fill=sol_text), 
+                data = . %>% filter(idx%%8==4),
+                color="transparent") +
+    geom_arc_bar(aes(x0=x+0.5,y0=y+0.5,r0=0, r=sqrt(1), start=3*pi/2, end=pi, 
+                     fill=sol_text), color="transparent",
+                 data = . %>% filter(idx%%8==5)) +
+    geom_regon(aes(x0=x,y0=y,r=sqrt(0.5),sides=4, fill=sol_text,angle=0), 
+               color="transparent",
+               data = . %>% filter(idx%%8==6)) +
+    geom_regon(aes(x0=x,y0=y,r=sqrt(0.5),sides=4, fill=sol_text,angle=0), 
+               color="transparent",
+               data = . %>% filter(idx%%8==7)) +
+    geom_regon(aes(x0=x,y0=y,r=sqrt(0.5),sides=4, fill=sol_text,angle=0), 
+               color="transparent",
+               data = . %>% filter(idx%%8==0)) +
+    # geom_text(aes(x=x,y=y, label=idx), color="#fffff330",
+    #           family="Futura") +
+    coord_fixed() +
+    scale_fill_manual(values=retro12) +
+    theme_nothing()
+  
+}
+
+pento_min |> filter(dim=="8×8d") |> 
+  pull(solution_num) |>
+  sample(size=6) |>
+  map(abstract_plot2) |>
+  wrap_plots() 
+
+```
+
