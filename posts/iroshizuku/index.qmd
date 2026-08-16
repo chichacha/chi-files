@@ -17,6 +17,7 @@ format:
 editor: 
   markdown: 
     wrap: sentence
+image: images/iroshizuku.svg
 ---
 
 ```{r}
