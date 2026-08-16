@@ -1,0 +1,466 @@
+---
+title: "Making Iroshizuku Interactive with Observable"
+description: "Taking my tiny fountain pen ink dataset from R into Observable JS for a first interactive colour visualization."
+author: "Chi"
+date: "2026-08-16"
+categories:
+  - r
+  - observable
+  - javascript
+  - dataviz
+  - color
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-tools: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(colorspace)
+library(scales)
+library(farver)
+```
+
+## One tiny dataset, another rabbit hole 🐇🕳️
+
+In the previous post, I turned 24 Pilot Iroshizuku fountain pen inks into a tiny shop using `ggplot2`.
+
+But while sorting the inks by colour, I started wondering what it would look like if I could rearrange them interactively.
+
+I had also been meaning to figure out something completely new to me: **Observable JS inside a Quarto document**!
+
+So this post is partly an ink experiment and partly my first attempt at understanding how R, Observable, and Quarto fit together.
+
+The plan is... 
+
+> Take the same 24 inks, pass the data from R to Observable, and let me rearrange them interactively.
+
+And while I'm here, I want to compare two perceptual colour representations:
+
+* **HCL**, which I used in the previous post
+* **OKLCH**, which I've been curious about from modern web/CSS colour discussions
+
+Let's see where that goes.
+
+---
+
+## The data
+
+I'll start with exactly the same 24 inks.
+
+```{r}
+#| label: ink-data
+#| echo: true
+
+iroshizuku_colors <- tibble(
+  ink_name = c(
+    "Ajisai", "Asagao", "Konpeki", "Amairo", "Kujaku", "Rikka",
+    "Tsukiyo", "Shinkai", "Syoro", "Shinryoku", "Suigyoku", "Takesumi",
+    "Fuyusyogun", "Chikurin", "Hotarubi", "Hanaikada", "Murasakishikibu",
+    "Yamabudo", "Momiji", "Fuyugaki", "Yuyake", "Toro", "Yamaguri", "Syungyo"
+  ),
+  ink_name_japanese = c(
+    "紫陽花", "朝顔", "紺碧", "天色", "孔雀", "立夏",
+    "月夜", "深海", "松露", "深緑", "翠玉", "竹炭",
+    "冬将軍", "竹林", "蛍火", "花筏", "紫式部",
+    "山葡萄", "紅葉", "冬柿", "夕焼け", "灯籠", "山栗", "春暁"
+  ),
+  hex = c(
+    "#1255A2", "#04318E", "#0368B4", "#00A0DF", "#028986", "#1A7DA5",
+    "#016D8C", "#1C3A65", "#077D5E", "#007E4F", "#037261", "#1E1D1E",
+    "#6A869A", "#94BD4E", "#D9DA26", "#ED7E93", "#765FA8", "#660D5B",
+    "#E12E2C", "#EA5A10", "#EF881F", "#F0B018", "#5B4532", "#674F4D"
+  ),
+  description = c(
+    "Hydrangea",
+    "Morning Glory",
+    "Deep Cerulean Blue",
+    "Sky Blue",
+    "Peacock",
+    "Early Summer",
+    "Moonlit Night",
+    "Deep Sea",
+    "Dew on Pine Tree",
+    "Forest Green",
+    "Emerald",
+    "Bamboo Charcoal",
+    "Winter Commander",
+    "Bamboo Forest",
+    "Firefly Glow",
+    "Floating Cherry Blossoms",
+    "Murasaki Shikibu",
+    "Wild Grape Vine",
+    "Autumn Maple Leaves",
+    "Winter Persimmon",
+    "Sunset Glow",
+    "Lantern Light",
+    "Wild Chestnut",
+    "Spring Dawn"
+  )
+)
+```
+
+## Two ways of describing colour
+
+In the previous post I converted the hex values to HCL using `colorspace`.
+This time I'm keeping those coordinates, but I'm also adding **OKLCH**.
+
+Both give me three concepts that are convenient for exploring this little palette:
+
+* lightness
+* chroma
+* hue
+
+But they aren't interchangeable coordinate systems. In particular, a hue angle in HCL does not necessarily mean exactly the same perceptual hue angle in OKLCH.
+
+That's actually part of what makes comparing them interesting.
+
+```{r}
+#| label: prepare-ojs-data
+#| echo: true
+
+# HCL / polar LUV
+hcl_coords <- coords(
+  as(hex2RGB(iroshizuku_colors$hex), "polarLUV")
+) |>
+  as_tibble() |>
+  rename(
+    hcl_h = H,
+    hcl_c = C,
+    hcl_l = L
+  )
+
+# OKLCH
+oklch_coords <- farver::decode_colour(
+  iroshizuku_colors$hex,
+  to = "oklch"
+) |>
+  as_tibble() |>
+  rename(
+    oklch_l = l,
+    oklch_c = c,
+    oklch_h = h
+  )
+
+ink_data <- iroshizuku_colors |>
+  bind_cols(hcl_coords, oklch_coords) |>
+  mutate(
+    original_order = row_number()
+  ) |>
+  select(
+    original_order,
+    ink_name,
+    ink_name_japanese,
+    description,
+    hex,
+    hcl_h,
+    hcl_c,
+    hcl_l,
+    oklch_h,
+    oklch_c,
+    oklch_l
+  )
+
+ink_data
+```
+
+The numbers aren't really the point yet.
+What I want is to hand this little table to JavaScript and start moving things around.
+
+## R, meet Observable 👋
+
+This was the first part that felt slightly magical to me.
+
+Quarto's `ojs_define()` lets me take an R object created while rendering the document and expose it to Observable JS running in the page.
+
+```{r}
+#| label: send-to-ojs
+#| output: false
+
+ojs_define(inks = ink_data)
+```
+
+The R data frame arrives on the Observable side in a column-oriented form, so I'll turn it into an array of row objects first.
+
+```{ojs}
+ink_rows = transpose(inks)
+```
+
+Now Observable can work with it like normal JavaScript data.
+
+```{ojs}
+Inputs.table(ink_rows, {
+  columns: [
+    "ink_name_japanese",
+    "ink_name",
+    "description",
+    "hex",
+    "hcl_h",
+    "oklch_h"
+  ],
+  header: {
+    ink_name_japanese: "日本語",
+    ink_name: "Ink",
+    description: "Meaning",
+    hex: "Hex",
+    hcl_h: "HCL Hue",
+    oklch_h: "OKLCH Hue"
+  }
+})
+```
+
+**R prepares the data. Observable gets to play with it in the browser.**
+
+---
+
+## First Observable experiment: rearrange the inks
+
+Rather than hard-coding one sorting rule, I want two controls.
+
+First: **which colour space?**
+
+```{ojs}
+viewof colour_space = Inputs.radio(
+  ["HCL", "OKLCH"],
+  {
+    label: "Colour space",
+    value: "OKLCH"
+  }
+)
+```
+
+Then: **which property?**
+
+```{ojs}
+viewof arrange_by = Inputs.radio(
+  ["Hue", "Chroma", "Lightness"],
+  {
+    label: "Arrange inks by",
+    value: "Hue"
+  }
+)
+```
+
+Because Observable is reactive, changing either input automatically changes anything that depends on it.
+
+I'll first map the selected options to the appropriate data column.
+
+```{ojs}
+sort_field = {
+  if (colour_space === "HCL") {
+    if (arrange_by === "Hue") return "hcl_h";
+    if (arrange_by === "Chroma") return "hcl_c";
+    return "hcl_l";
+  }
+
+  if (arrange_by === "Hue") return "oklch_h";
+  if (arrange_by === "Chroma") return "oklch_c";
+  return "oklch_l";
+}
+```
+
+And then sort.
+
+For hue I want low → high around the colour wheel.
+
+For chroma and lightness, I find high → low slightly easier to read.
+
+```{ojs}
+sorted_inks = {
+  const rows = [...ink_rows];
+
+  if (arrange_by === "Hue") {
+    return rows.sort((a, b) => a[sort_field] - b[sort_field]);
+  }
+
+  return rows.sort((a, b) => b[sort_field] - a[sort_field]);
+}
+```
+
+## The interactive palette
+
+For my first Observable visualization, I'm deliberately keeping the geometry boring.
+
+Each ink is just a coloured tile.
+
+The interesting part is that its position is reactive.
+
+```{ojs}
+ink_grid = sorted_inks.map((d, i) => ({
+  ...d,
+  column: i % 6,
+  row: 3 - Math.floor(i / 6)
+}))
+```
+
+```{ojs}
+Plot.plot({
+  width: 850,
+  height: 420,
+  marginTop: 20,
+  marginRight: 20,
+  marginBottom: 20,
+  marginLeft: 20,
+
+  x: {
+    axis: null,
+    domain: d3.range(6)
+  },
+
+  y: {
+    axis: null,
+    domain: d3.range(4)
+  },
+
+  marks: [
+    Plot.cell(ink_grid, {
+      x: "column",
+      y: "row",
+      fill: "hex",
+      inset: 3,
+      tip: true,
+      title: d => {
+        const prefix =
+          colour_space === "HCL"
+            ? "hcl"
+            : "oklch";
+
+        return `${d.ink_name_japanese} · ${d.ink_name}
+${d.description}
+${d.hex}
+
+${colour_space}
+Hue ${d[`${prefix}_h`].toFixed(1)}°
+Chroma ${d[`${prefix}_c`].toFixed(2)}
+Lightness ${d[`${prefix}_l`].toFixed(2)}`;
+      }
+    }),
+
+    Plot.text(ink_grid, {
+      x: "column",
+      y: "row",
+      text: "ink_name_japanese",
+      fill: "white",
+      fontSize: 18,
+      dy: -5
+    }),
+
+    Plot.text(ink_grid, {
+      x: "column",
+      y: "row",
+      text: "ink_name",
+      fill: "white",
+      fontSize: 11,
+      dy: 14
+    })
+  ]
+})
+```
+
+Try changing both controls.
+
+Same 24 inks.
+
+Same hex colours.
+
+Different representation, different ordering.
+
+---
+
+## Put the inks into colour space
+
+Sorting is one way to use the coordinates.
+
+But I can also stop treating the shelf position as meaningful at all and let the colour coordinates determine where each ink goes.
+
+First I'll create generic hue and chroma values based on whichever colour space is selected.
+
+```{ojs}
+colour_space_inks = ink_rows.map(d => ({
+  ...d,
+
+  display_h:
+    colour_space === "HCL"
+      ? d.hcl_h
+      : d.oklch_h,
+
+  display_c:
+    colour_space === "HCL"
+      ? d.hcl_c
+      : d.oklch_c,
+
+  display_l:
+    colour_space === "HCL"
+      ? d.hcl_l
+      : d.oklch_l
+}))
+```
+
+Now the same plot can switch between HCL and OKLCH.
+
+```{ojs}
+Plot.plot({
+  width: 850,
+  height: 500,
+
+  x: {
+    label: `${colour_space} Hue →`,
+    domain: [0, 360]
+  },
+
+  y: {
+    label: `↑ ${colour_space} Chroma`,
+    grid: true
+  },
+
+  marks: [
+    Plot.dot(colour_space_inks, {
+      x: "display_h",
+      y: "display_c",
+      fill: "hex",
+      r: 20,
+      stroke: "white",
+      strokeWidth: 1.5,
+      tip: true,
+
+      title: d =>
+        `${d.ink_name_japanese} · ${d.ink_name}
+${d.description}
+
+H ${d.display_h.toFixed(1)}°
+C ${d.display_c.toFixed(2)}
+L ${d.display_l.toFixed(2)}`
+    })
+  ]
+})
+```
+
+Now the **colour-space control changes the coordinate system itself**, not just the order of the tiles.
+
+That is much more fun.
+
+One important caveat: I shouldn't interpret the numeric scales of HCL chroma and OKLCH chroma as though they were directly comparable. What interests me here is the resulting **relative structure** of the 24 colours.
+
+## What I learned just getting this far
+
+This is my first time putting Observable JS directly inside a Quarto document, and the biggest adjustment so far is that it doesn't feel like writing another sequence of notebook cells.
+
+There are a few different things happening:
+
+**R** prepares the dataset.
+
+**Quarto** passes it into the page.
+
+**Observable** handles reactive values and dependencies.
+
+**Observable Plot** draws the browser-side visualization.
+
+Once that clicked, this started to feel much less mysterious.
+
+And I really like the idea that I can keep doing data preparation in R while using JavaScript only for the parts where browser interaction is actually useful.
+
