@@ -10,7 +10,436 @@
 <atom:link href="https://chichacha.github.io/chi-files/index.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Mon, 20 Jan 2025 02:28:13 GMT</lastBuildDate>
+<lastBuildDate>Sat, 15 Aug 2026 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>A Tiny Iroshizuku Ink Shop in R</title>
+  <dc:creator>Chi </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/iroshizuku/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="色彩雫" class="level2">
+<h2 class="anchored" data-anchor-id="色彩雫">色彩雫</h2>
+<p>I just discovered that the R script I had written while back, which was a hand-curated colour palette of Pilot Iroshizuku fountain pen inks.</p>
+<p>Pilot describes Iroshizuku as a combination of iro = colour, and shizuku = droplet. The individual inks take their names from Japanese landscapes, plants, seasons, and other bits of nature.</p>
+<p>The names don’t simply tell you what colour an ink is.</p>
+<ul>
+<li>月夜 isn’t just dark blue. It is moonlit night.</li>
+<li>花筏 isn’t just pink. It evokes cherry blossom petals floating together on water like a little raft.</li>
+<li>冬将軍 - literally the Winter General - somehow becomes a cool gray.</li>
+</ul>
+<p>So naturally, I turned them into data!</p>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The data</h2>
+<p>This is a small hand-curated dataset of 24 Iroshizuku inks. The hex colours are approximate representations rather than measurements of the physical inks. Fountain pen ink is much more complicated than a single hex value: paper, nib width, saturation, shading, sheen, and lighting all change how an ink appears.</p>
+<p>The ink names and descriptions are based on Pilot’s <a href="https://www.pilotpen.eu/our-universes/fine-writing/iroshizuku-inks/">Iroshizuku collection</a>. The hex values are approximate colours used for this visualization rather than official measured colour values.</p>
+<p>But hex is enough for a little plotting experiment!</p>
+</section>
+<section id="first-just-the-colours" class="level2">
+<h2 class="anchored" data-anchor-id="first-just-the-colours">First: just the colours</h2>
+<p>Before making bottles, it is useful to see the palette itself.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku/index_files/figure-html/simple-palette-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption>The Iroshizuku palette in its original order.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This already makes a nice colour chart, but the ordering feels fairly arbitrary. So I wanted to see what would happen if the inks were arranged by colour rather than by catalogue order.</p>
+</section>
+<section id="sorting-colours-perceptually" class="level2">
+<h2 class="anchored" data-anchor-id="sorting-colours-perceptually">Sorting colours perceptually</h2>
+<p>RGB is useful for screens, but it isn’t especially good at representing how humans perceive differences between colours. For sorting this palette, I converted the hex values into <strong>HCL colour space</strong> using the <code>colorspace</code> package.</p>
+<p>HCL separates colour into:</p>
+<ul>
+<li><strong>Hue</strong> — roughly which colour family it belongs to</li>
+<li><strong>Chroma</strong> — how colourful or saturated it feels</li>
+<li><strong>Luminance</strong> — how light or dark it appears</li>
+</ul>
+<p>That makes it much nicer for arranging colours in a visually coherent sequence.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">hcl_coords <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coords</span>(</span>
+<span id="cb1-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hex2RGB</span>(iroshizuku_colors<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>hex), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"polarLUV"</span>)</span>
+<span id="cb1-3">) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_tibble</span>()</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">ink_plot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> iroshizuku_colors <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bind_cols</span>(hcl_coords) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb1-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Rotate the hue wheel so the sequence starts near blue / teal.</span></span>
+<span id="cb1-10">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hue_sort =</span> (H <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">360</span></span>
+<span id="cb1-11">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(hue_sort, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(L), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(C)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(</span>
+<span id="cb1-14">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot_order =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row_number</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb1-15">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> plot_order <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>,</span>
+<span id="cb1-16">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">row_raw =</span> plot_order <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%/%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>,</span>
+<span id="cb1-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">row =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(row_raw) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> row_raw</span>
+<span id="cb1-18">  )</span></code></pre></div>
+</details>
+</div>
+<p>The exact order is not scientifically important. I rotated the hue wheel so that the display begins around the blue-green part of the palette, simply because it produces a calmer visual flow for this particular set of inks.</p>
+</section>
+<section id="the-tiny-ink-shop" class="level2">
+<h2 class="anchored" data-anchor-id="the-tiny-ink-shop">The tiny ink shop</h2>
+<p>I wanted the palette to look like a tiny Japanese stationery-shop display: rows of ink bottles, wooden shelves, paper labels, and little price cards.</p>
+<p>The whole thing is still just <code>ggplot2</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku/index_files/figure-html/ink-shop-1.png" class="img-fluid figure-img" width="1056"></p>
+<figcaption>A tiny Iroshizuku ink shop, arranged in perceptual colour order.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-palette-as-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-palette-as-data">The palette as data</h2>
+<p>And because this is still a data project, here is the resulting palette in the same perceptual order.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="table-responsive">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">日本語</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Ink</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Meaning</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hex</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Hue °</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Chroma</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Lightness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">月夜</td>
+<td style="text-align: left; width: 8em;">Tsukiyo</td>
+<td style="text-align: left; width: 15em;">Moonlit Night</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(1, 109, 140, 255) !important;">#016D8C</span></td>
+<td style="text-align: right;">228</td>
+<td style="text-align: right;">44.5</td>
+<td style="text-align: center;">42.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">立夏</td>
+<td style="text-align: left; width: 8em;">Rikka</td>
+<td style="text-align: left; width: 15em;">Early Summer</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(26, 125, 165, 255) !important;">#1A7DA5</span></td>
+<td style="text-align: right;">233</td>
+<td style="text-align: right;">52.4</td>
+<td style="text-align: center;">49.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">冬将軍</td>
+<td style="text-align: left; width: 8em;">Fuyusyogun</td>
+<td style="text-align: left; width: 15em;">Winter Commander</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(106, 134, 154, 255) !important;">#6A869A</span></td>
+<td style="text-align: right;">233</td>
+<td style="text-align: right;">24.5</td>
+<td style="text-align: center;">54.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">天色</td>
+<td style="text-align: left; width: 8em;">Amairo</td>
+<td style="text-align: left; width: 15em;">Sky Blue</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(0, 160, 223, 255) !important;">#00A0DF</span></td>
+<td style="text-align: right;">237</td>
+<td style="text-align: right;">76.5</td>
+<td style="text-align: center;">62.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">紺碧</td>
+<td style="text-align: left; width: 8em;">Konpeki</td>
+<td style="text-align: left; width: 15em;">Deep Cerulean Blue</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(3, 104, 180, 255) !important;">#0368B4</span></td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">74.5</td>
+<td style="text-align: center;">43.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">深海</td>
+<td style="text-align: left; width: 8em;">Shinkai</td>
+<td style="text-align: left; width: 15em;">Deep Sea</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(28, 58, 101, 255) !important;">#1C3A65</span></td>
+<td style="text-align: right;">253</td>
+<td style="text-align: right;">36.9</td>
+<td style="text-align: center;">24.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">紫陽花</td>
+<td style="text-align: left; width: 8em;">Ajisai</td>
+<td style="text-align: left; width: 15em;">Hydrangea</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(18, 85, 162, 255) !important;">#1255A2</span></td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">70.0</td>
+<td style="text-align: center;">36.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">朝顔</td>
+<td style="text-align: left; width: 8em;">Asagao</td>
+<td style="text-align: left; width: 15em;">Morning Glory</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(4, 49, 142, 255) !important;">#04318E</span></td>
+<td style="text-align: right;">261</td>
+<td style="text-align: right;">67.8</td>
+<td style="text-align: center;">24.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">紫式部</td>
+<td style="text-align: left; width: 8em;">Murasakishikibu</td>
+<td style="text-align: left; width: 15em;">Murasaki Shikibu</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(118, 95, 168, 255) !important;">#765FA8</span></td>
+<td style="text-align: right;">276</td>
+<td style="text-align: right;">56.5</td>
+<td style="text-align: center;">45.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">竹炭</td>
+<td style="text-align: left; width: 8em;">Takesumi</td>
+<td style="text-align: left; width: 15em;">Bamboo Charcoal</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(30, 29, 30, 255) !important;">#1E1D1E</span></td>
+<td style="text-align: right;">308</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: center;">10.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">山葡萄</td>
+<td style="text-align: left; width: 8em;">Yamabudo</td>
+<td style="text-align: left; width: 15em;">Wild Grape Vine</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(102, 13, 91, 255) !important;">#660D5B</span></td>
+<td style="text-align: right;">317</td>
+<td style="text-align: right;">47.2</td>
+<td style="text-align: center;">23.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">花筏</td>
+<td style="text-align: left; width: 8em;">Hanaikada</td>
+<td style="text-align: left; width: 15em;">Floating Cherry Blossoms</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(34, 34, 34, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(237, 126, 147, 255) !important;">#ED7E93</span></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">74.6</td>
+<td style="text-align: center;">65.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">紅葉</td>
+<td style="text-align: left; width: 8em;">Momiji</td>
+<td style="text-align: left; width: 15em;">Autumn Maple Leaves</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(225, 46, 44, 255) !important;">#E12E2C</span></td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">140.0</td>
+<td style="text-align: center;">49.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">春暁</td>
+<td style="text-align: left; width: 8em;">Syungyo</td>
+<td style="text-align: left; width: 15em;">Spring Dawn</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(103, 79, 77, 255) !important;">#674F4D</span></td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">15.5</td>
+<td style="text-align: center;">36.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">冬柿</td>
+<td style="text-align: left; width: 8em;">Fuyugaki</td>
+<td style="text-align: left; width: 15em;">Winter Persimmon</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(234, 90, 16, 255) !important;">#EA5A10</span></td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">128.0</td>
+<td style="text-align: center;">56.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">夕焼け</td>
+<td style="text-align: left; width: 8em;">Yuyake</td>
+<td style="text-align: left; width: 15em;">Sunset Glow</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(34, 34, 34, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(239, 136, 31, 255) !important;">#EF881F</span></td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">104.2</td>
+<td style="text-align: center;">66.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">山栗</td>
+<td style="text-align: left; width: 8em;">Yamaguri</td>
+<td style="text-align: left; width: 15em;">Wild Chestnut</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(91, 69, 50, 255) !important;">#5B4532</span></td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">21.2</td>
+<td style="text-align: center;">31.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">灯籠</td>
+<td style="text-align: left; width: 8em;">Toro</td>
+<td style="text-align: left; width: 15em;">Lantern Light</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(34, 34, 34, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(240, 176, 24, 255) !important;">#F0B018</span></td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">92.7</td>
+<td style="text-align: center;">75.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">蛍火</td>
+<td style="text-align: left; width: 8em;">Hotarubi</td>
+<td style="text-align: left; width: 15em;">Firefly Glow</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(34, 34, 34, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(217, 218, 38, 255) !important;">#D9DA26</span></td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">89.9</td>
+<td style="text-align: center;">84.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">竹林</td>
+<td style="text-align: left; width: 8em;">Chikurin</td>
+<td style="text-align: left; width: 15em;">Bamboo Forest</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(34, 34, 34, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(148, 189, 78, 255) !important;">#94BD4E</span></td>
+<td style="text-align: right;">107</td>
+<td style="text-align: right;">68.9</td>
+<td style="text-align: center;">71.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">深緑</td>
+<td style="text-align: left; width: 8em;">Shinryoku</td>
+<td style="text-align: left; width: 15em;">Forest Green</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(0, 126, 79, 255) !important;">#007E4F</span></td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">48.9</td>
+<td style="text-align: center;">46.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">松露</td>
+<td style="text-align: left; width: 8em;">Syoro</td>
+<td style="text-align: left; width: 15em;">Dew on Pine Tree</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(7, 125, 94, 255) !important;">#077D5E</span></td>
+<td style="text-align: right;">156</td>
+<td style="text-align: right;">41.9</td>
+<td style="text-align: center;">46.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; width: 6em; font-weight: bold;">翠玉</td>
+<td style="text-align: left; width: 8em;">Suigyoku</td>
+<td style="text-align: left; width: 15em;">Emerald</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(3, 114, 97, 255) !important;">#037261</span></td>
+<td style="text-align: right;">169</td>
+<td style="text-align: right;">35.1</td>
+<td style="text-align: center;">42.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; width: 6em; font-weight: bold;">孔雀</td>
+<td style="text-align: left; width: 8em;">Kujaku</td>
+<td style="text-align: left; width: 15em;">Peacock</td>
+<td style="text-align: right; width: 5em;"><span style=" font-weight: bold;    color: rgba(255, 255, 255, 255) !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(2, 137, 134, 255) !important;">#028986</span></td>
+<td style="text-align: right;">189</td>
+<td style="text-align: right;">40.4</td>
+<td style="text-align: center;">51.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+<p>I started with an old R script containing 24 fountain pen colours.</p>
+<p>Somewhere along the way I learned a little more about perceptual colour spaces and built a tiny imaginary Japanese ink shop out of geom_rect().</p>
+<p>Now I just want more ink. 🖋️</p>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>ggplot</category>
+  <category>dataviz</category>
+  <category>color</category>
+  <category>japan</category>
+  <guid>https://chichacha.github.io/chi-files/posts/iroshizuku/</guid>
+  <pubDate>Sat, 15 Aug 2026 07:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Utiling geom_arc_bar for creation of geometric art</title>
   <dc:creator>Chisato </dc:creator>

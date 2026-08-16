@@ -102,6 +102,62 @@
     "href": "index.html",
     "title": "CHI(χ)-Files",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nUtiling geom_arc_bar for creation of geometric art\n\n\n\n\n\n\nJanuary 19, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPentomino Solution & Patchwork\n\n\n\n\n\n\nJanuary 16, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompact Pentomino Solution : Parquet Magic\n\n\n\n\n\n\nJanuary 12, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPentomino Solutions 6x10 Rectangle\n\n\n\n\n\n\nJanuary 9, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nWhat’s a Pentomino Anyway?\n\n\n\n\n\n\nJanuary 7, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nRecreating the Chaos of Taco Hat Cake Gift Pizza in R\n\n\n\n\n\n\nJanuary 4, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nVisualizing 445 Calendar in R\n\n\n\n\n\n\nDecember 29, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGeometic Art Generator with Shiny\n\n\n\n\n\n\nDecember 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nFish-Eye Lens Effect with ggplot2\n\n\n\n\n\n\nDecember 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nCreating a Seigaha Motif with ggplot2\n\n\n\n\n\n\nDecember 21, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHello World! The First Post!\n\n\nAn introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.\n\n\n\nDecember 21, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\nA Tiny Iroshizuku Ink Shop in R\n\n\nTurning Pilot’s beautifully named fountain pen inks into a tiny Japanese stationery-shop display with ggplot2.\n\n\n\nAugust 15, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUtiling geom_arc_bar for creation of geometric art\n\n\n\n\n\n\nJanuary 19, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPentomino Solution & Patchwork\n\n\n\n\n\n\nJanuary 16, 2025\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompact Pentomino Solution : Parquet Magic\n\n\n\n\n\n\nJanuary 12, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nPentomino Solutions 6x10 Rectangle\n\n\n\n\n\n\nJanuary 9, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nWhat’s a Pentomino Anyway?\n\n\n\n\n\n\nJanuary 7, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nRecreating the Chaos of Taco Hat Cake Gift Pizza in R\n\n\n\n\n\n\nJanuary 4, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nVisualizing 445 Calendar in R\n\n\n\n\n\n\nDecember 29, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGeometic Art Generator with Shiny\n\n\n\n\n\n\nDecember 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nFish-Eye Lens Effect with ggplot2\n\n\n\n\n\n\nDecember 22, 2024\n\n\n\n\n\n\n\n\n\n\n\n\nCreating a Seigaha Motif with ggplot2\n\n\n\n\n\n\nDecember 21, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHello World! The First Post!\n\n\nAn introduction to the Chi-Files blog and its exciting journey trying to learn Quarto.\n\n\n\nDecember 21, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html",
+    "href": "posts/iroshizuku/index.html",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "",
+    "text": "I just discovered that the R script I had written while back, which was a hand-curated colour palette of Pilot Iroshizuku fountain pen inks.\nPilot describes Iroshizuku as a combination of iro = colour, and shizuku = droplet. The individual inks take their names from Japanese landscapes, plants, seasons, and other bits of nature.\nThe names don’t simply tell you what colour an ink is.\n\n月夜 isn’t just dark blue. It is moonlit night.\n花筏 isn’t just pink. It evokes cherry blossom petals floating together on water like a little raft.\n冬将軍 - literally the Winter General - somehow becomes a cool gray.\n\nSo naturally, I turned them into data!"
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#色彩雫",
+    "href": "posts/iroshizuku/index.html#色彩雫",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "",
+    "text": "I just discovered that the R script I had written while back, which was a hand-curated colour palette of Pilot Iroshizuku fountain pen inks.\nPilot describes Iroshizuku as a combination of iro = colour, and shizuku = droplet. The individual inks take their names from Japanese landscapes, plants, seasons, and other bits of nature.\nThe names don’t simply tell you what colour an ink is.\n\n月夜 isn’t just dark blue. It is moonlit night.\n花筏 isn’t just pink. It evokes cherry blossom petals floating together on water like a little raft.\n冬将軍 - literally the Winter General - somehow becomes a cool gray.\n\nSo naturally, I turned them into data!"
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#the-data",
+    "href": "posts/iroshizuku/index.html#the-data",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "The data",
+    "text": "The data\nThis is a small hand-curated dataset of 24 Iroshizuku inks. The hex colours are approximate representations rather than measurements of the physical inks. Fountain pen ink is much more complicated than a single hex value: paper, nib width, saturation, shading, sheen, and lighting all change how an ink appears.\nThe ink names and descriptions are based on Pilot’s Iroshizuku collection. The hex values are approximate colours used for this visualization rather than official measured colour values.\nBut hex is enough for a little plotting experiment!"
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#first-just-the-colours",
+    "href": "posts/iroshizuku/index.html#first-just-the-colours",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "First: just the colours",
+    "text": "First: just the colours\nBefore making bottles, it is useful to see the palette itself.\n\n\n\n\n\nThe Iroshizuku palette in its original order.\n\n\n\n\nThis already makes a nice colour chart, but the ordering feels fairly arbitrary. So I wanted to see what would happen if the inks were arranged by colour rather than by catalogue order."
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#sorting-colours-perceptually",
+    "href": "posts/iroshizuku/index.html#sorting-colours-perceptually",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "Sorting colours perceptually",
+    "text": "Sorting colours perceptually\nRGB is useful for screens, but it isn’t especially good at representing how humans perceive differences between colours. For sorting this palette, I converted the hex values into HCL colour space using the colorspace package.\nHCL separates colour into:\n\nHue — roughly which colour family it belongs to\nChroma — how colourful or saturated it feels\nLuminance — how light or dark it appears\n\nThat makes it much nicer for arranging colours in a visually coherent sequence.\n\n\nCode\nhcl_coords &lt;- coords(\n  as(hex2RGB(iroshizuku_colors$hex), \"polarLUV\")\n) |&gt;\n  as_tibble()\n\nink_plot &lt;- iroshizuku_colors |&gt;\n  bind_cols(hcl_coords) |&gt;\n  mutate(\n    # Rotate the hue wheel so the sequence starts near blue / teal.\n    hue_sort = (H - 220) %% 360\n  ) |&gt;\n  arrange(hue_sort, desc(L), desc(C)) |&gt;\n  mutate(\n    plot_order = row_number() - 1,\n    col = plot_order %% 6,\n    row_raw = plot_order %/% 6,\n    row = max(row_raw) - row_raw\n  )\n\n\nThe exact order is not scientifically important. I rotated the hue wheel so that the display begins around the blue-green part of the palette, simply because it produces a calmer visual flow for this particular set of inks."
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#the-tiny-ink-shop",
+    "href": "posts/iroshizuku/index.html#the-tiny-ink-shop",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "The tiny ink shop",
+    "text": "The tiny ink shop\nI wanted the palette to look like a tiny Japanese stationery-shop display: rows of ink bottles, wooden shelves, paper labels, and little price cards.\nThe whole thing is still just ggplot2.\n\n\n\n\n\nA tiny Iroshizuku ink shop, arranged in perceptual colour order."
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#the-palette-as-data",
+    "href": "posts/iroshizuku/index.html#the-palette-as-data",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "The palette as data",
+    "text": "The palette as data\nAnd because this is still a data project, here is the resulting palette in the same perceptual order.\n\n\n\n\n\n\n日本語\nInk\nMeaning\nHex\nHue °\nChroma\nLightness\n\n\n\n\n月夜\nTsukiyo\nMoonlit Night\n#016D8C\n228\n44.5\n42.5\n\n\n立夏\nRikka\nEarly Summer\n#1A7DA5\n233\n52.4\n49.0\n\n\n冬将軍\nFuyusyogun\nWinter Commander\n#6A869A\n233\n24.5\n54.5\n\n\n天色\nAmairo\nSky Blue\n#00A0DF\n237\n76.5\n62.1\n\n\n紺碧\nKonpeki\nDeep Cerulean Blue\n#0368B4\n250\n74.5\n43.1\n\n\n深海\nShinkai\nDeep Sea\n#1C3A65\n253\n36.9\n24.4\n\n\n紫陽花\nAjisai\nHydrangea\n#1255A2\n254\n70.0\n36.4\n\n\n朝顔\nAsagao\nMorning Glory\n#04318E\n261\n67.8\n24.2\n\n\n紫式部\nMurasakishikibu\nMurasaki Shikibu\n#765FA8\n276\n56.5\n45.4\n\n\n竹炭\nTakesumi\nBamboo Charcoal\n#1E1D1E\n308\n0.6\n10.9\n\n\n山葡萄\nYamabudo\nWild Grape Vine\n#660D5B\n317\n47.2\n23.2\n\n\n花筏\nHanaikada\nFloating Cherry Blossoms\n#ED7E93\n2\n74.6\n65.8\n\n\n紅葉\nMomiji\nAutumn Maple Leaves\n#E12E2C\n12\n140.0\n49.7\n\n\n春暁\nSyungyo\nSpring Dawn\n#674F4D\n17\n15.5\n36.0\n\n\n冬柿\nFuyugaki\nWinter Persimmon\n#EA5A10\n22\n128.0\n56.9\n\n\n夕焼け\nYuyake\nSunset Glow\n#EF881F\n35\n104.2\n66.6\n\n\n山栗\nYamaguri\nWild Chestnut\n#5B4532\n45\n21.2\n31.1\n\n\n灯籠\nToro\nLantern Light\n#F0B018\n55\n92.7\n75.9\n\n\n蛍火\nHotarubi\nFirefly Glow\n#D9DA26\n86\n89.9\n84.5\n\n\n竹林\nChikurin\nBamboo Forest\n#94BD4E\n107\n68.9\n71.7\n\n\n深緑\nShinryoku\nForest Green\n#007E4F\n145\n48.9\n46.3\n\n\n松露\nSyoro\nDew on Pine Tree\n#077D5E\n156\n41.9\n46.3\n\n\n翠玉\nSuigyoku\nEmerald\n#037261\n169\n35.1\n42.6\n\n\n孔雀\nKujaku\nPeacock\n#028986\n189\n40.4\n51.4\n\n\n\n\n\n\n\n\nI started with an old R script containing 24 fountain pen colours.\nSomewhere along the way I learned a little more about perceptual colour spaces and built a tiny imaginary Japanese ink shop out of geom_rect().\nNow I just want more ink. 🖋️"
+  },
+  {
+    "objectID": "posts/iroshizuku/index.html#why-bother",
+    "href": "posts/iroshizuku/index.html#why-bother",
+    "title": "A Tiny Iroshizuku Ink Shop in R",
+    "section": "Why bother?",
+    "text": "Why bother?\nThere isn’t an important business question hiding in this dataset.\nThere isn’t really a practical question at all.\nBut small datasets like this are a nice excuse to explore a visualization idea, learn something about colour spaces, and remember that R does not always have to produce a dashboard, model, or analysis.\nSometimes the dataset is 24 bottles of fountain pen ink.\nAnd that’s enough."
   }
 ]
