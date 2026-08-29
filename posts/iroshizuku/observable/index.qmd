@@ -2,7 +2,7 @@
 title: "Making Iroshizuku Interactive with Observable"
 description: "Taking my tiny fountain pen ink dataset from R into Observable JS for a first interactive colour visualization."
 author: "Chi"
-date: "2026-08-16"
+date: "2026-08-29"
 categories:
   - r
   - observable
@@ -26,32 +26,31 @@ library(scales)
 library(farver)
 ```
 
+
 ## One tiny dataset, another rabbit hole 🐇🕳️
 
 In the previous post, I turned 24 Pilot Iroshizuku fountain pen inks into a tiny shop using `ggplot2`.
 
 But while sorting the inks by colour, I started wondering what it would look like if I could rearrange them interactively.
 
-I had also been meaning to figure out something completely new to me: **Observable JS inside a Quarto document**!
+I had also been meaning to try something completely new to me: **Observable JS inside a Quarto document**.
 
-So this post is partly an ink experiment and partly my first attempt at understanding how R, Observable, and Quarto fit together.
+So this post is partly an ink experiment and partly me figuring out how R, Observable, and Quarto fit together.
 
-The plan is... 
+The plan is pretty small:
 
-> Take the same 24 inks, pass the data from R to Observable, and let me rearrange them interactively.
+> Take the same 24 inks, pass the data from R to Observable, and start moving things around.
 
-And while I'm here, I want to compare two perceptual colour representations:
+And while I'm here, I want to play with two perceptual colour representations:
 
 * **HCL**, which I used in the previous post
-* **OKLCH**, which I've been curious about from modern web/CSS colour discussions
+* **OKLCH**, which I keep seeing pop up in modern web/CSS colour discussions
 
-Let's see where that goes.
-
----
+Let's see where this goes.
 
 ## The data
 
-I'll start with exactly the same 24 inks.
+Same 24 inks as before.
 
 ```{r}
 #| label: ink-data
@@ -107,19 +106,37 @@ iroshizuku_colors <- tibble(
 
 ## Two ways of describing colour
 
-In the previous post I converted the hex values to HCL using `colorspace`.
-This time I'm keeping those coordinates, but I'm also adding **OKLCH**.
+In the last post I used HCL to sort the inks.
 
-Both give me three concepts that are convenient for exploring this little palette:
+Then I remembered I had also been curious about **OKLCH** — mostly because I keep seeing it in CSS.  So... why not add that too? 😆
+
+Both give me some version of:
 
 * lightness
 * chroma
 * hue
 
-But they aren't interchangeable coordinate systems. In particular, a hue angle in HCL does not necessarily mean exactly the same perceptual hue angle in OKLCH.
+They aren't the same colour space, though, so I don't expect the numbers — or even the ordering — to match perfectly.
 
-That's actually part of what makes comparing them interesting.
+Which actually makes this more interesting.  What happens when I give the exact same 24 colours two different perceptual coordinate systems?
 
+## Same inks, different order
+
+The 24 inks themselves haven't changed. The hex values are exactly the same.
+
+But when I sort them by **hue, chroma, or lightness**, HCL and OKLCH don't always agree on the order.
+
+Some inks stay close to the same neighbours.
+
+Others suddenly swap places.
+
+That makes sense: HCL and OKLCH are different perceptual colour spaces, so their coordinates aren't expected to line up perfectly. But seeing the difference as an actual row of ink swatches makes it much more tangible than comparing columns of numbers.
+
+In other words:
+
+**same colours, different map of colour space.** 🎨
+
+And that is exactly what made me want to turn the sorting into something interactive.
 ```{r}
 #| label: prepare-ojs-data
 #| echo: true
@@ -169,14 +186,124 @@ ink_data <- iroshizuku_colors |>
 ink_data
 ```
 
-The numbers aren't really the point yet.
-What I want is to hand this little table to JavaScript and start moving things around.
+```{r}
+#| label: prepare-colour-space-order
+#| echo: false
+plot_data <- ink_data |>
+  pivot_longer(hcl_h:oklch_l) |>
+  group_by(name) |>
+  arrange(value, .by_group = TRUE) |>
+  mutate(x = row_number()) |>
+  ungroup() |>
+  mutate(
+    prop = str_remove(name, "^(hcl_|oklch_)"),
+    y = fct_reorder(name, value, sum, .desc = TRUE),
+    
+    # Japanese vertical writing
+    label_vertical = str_split(ink_name_japanese, "", simplify = FALSE) |>
+      map_chr(~ paste(.x, collapse = "\n")),
+    
+    # perceptual lightness of each hex colour
+    text_colour = if_else(
+      farver::decode_colour(hex, to = "lab")[, "l"] < 55,
+      "white",
+      "black"
+    )
+  )
+
+plot_data <- plot_data |>
+  mutate(
+    prop_label = recode(
+      prop,
+      h = "Sorted by Hue",
+      c = "Sorted by Chroma",
+      l = "Sorted by Lightness"
+    )
+  )
+```
+
+```{r}
+#| label: compare-colour-space-order
+#| echo: true
+#| fig-cap: "The same 24 inks sorted by hue, chroma, and lightness in HCL and OKLCH."
+#| fig-align: center
+#| out-width: "100%"
+
+ggplot(plot_data, aes(x = x, y = y)) +
+  geom_tile(
+    aes(fill = I(hex)),
+    width = 0.98,
+    height = 0.96
+  ) +
+  geom_text(
+    aes(
+      label = label_vertical,
+      colour = I(text_colour)
+    ),
+    family = "osaka",
+    lineheight = 0.85,
+    size = 3.5
+  ) +
+  facet_wrap(
+    ~ prop_label,
+    scales = "free",
+    ncol = 1
+  ) +
+  theme_void(base_family = "osaka") +
+  theme(
+    plot.background = element_rect(
+      fill = "#F5F1E8",
+      colour = NA
+    ),
+    panel.background = element_rect(
+      fill = "#F5F1E8",
+      colour = NA
+    ),
+    strip.background = element_blank(),
+    strip.text = element_text(
+      size = 10,
+      face = "bold",
+      margin = margin(b = 8)
+    ),
+    panel.spacing = unit(1.1, "lines"),
+    plot.title = element_text(
+      size = 12,
+      face = "bold",
+      margin = margin(b = 12)
+    ),
+    plot.margin = margin(20, 20, 20, 20)
+  ) +
+  labs(
+    title = "24 inks, 3 ways of seeing them"
+  )
+
+
+```
+
+
+Mostly I just want to get this little table out of R and into JavaScript so I can start moving things around in browser!
 
 ## R, meet Observable 👋
 
-This was the first part that felt slightly magical to me.
+This part felt slightly magical the first time it worked.
 
-Quarto's `ojs_define()` lets me take an R object created while rendering the document and expose it to Observable JS running in the page.
+Quarto's `ojs_define()` lets me create something in R and hand it over to Observable running in the browser.
+
+So R says: **Here are my 24 inks.**
+
+Observable says: **Thanks. Now let me play with them.**
+
+```{mermaid}
+flowchart LR
+    R[R 🐣<br/>prepare data] --> Q[Quarto 📦<br/>hand it over]
+    Q --> O[Observable ✨<br/>play in the browser]
+```
+
+That handoff is basically the whole experiment.
+
+R still does the data wrangling I’m comfortable with. Quarto acts as the bridge. Observable takes over once I want the page itself to react.
+
+Reference: https://quarto.org/docs/computations/ojs.html
 
 ```{r}
 #| label: send-to-ojs
@@ -185,13 +312,15 @@ Quarto's `ojs_define()` lets me take an R object created while rendering the doc
 ojs_define(inks = ink_data)
 ```
 
-The R data frame arrives on the Observable side in a column-oriented form, so I'll turn it into an array of row objects first.
+The R data frame needs one small reshaping step on the Observable side.
 
 ```{ojs}
 ink_rows = transpose(inks)
 ```
 
-Now Observable can work with it like normal JavaScript data.
+After that, Observable can work with it like ordinary JavaScript data.
+
+
 
 ```{ojs}
 Inputs.table(ink_rows, {
@@ -214,15 +343,19 @@ Inputs.table(ink_rows, {
 })
 ```
 
+This tiny handoff was one of the things I really wanted to understand from this experiment.
+
 **R prepares the data. Observable gets to play with it in the browser.**
 
 ---
 
 ## First Observable experiment: rearrange the inks
 
-Rather than hard-coding one sorting rule, I want two controls.
+I'm starting with something very simple.
 
-First: **which colour space?**
+Two controls:
+
+**Which colour space?**
 
 ```{ojs}
 viewof colour_space = Inputs.radio(
@@ -234,7 +367,9 @@ viewof colour_space = Inputs.radio(
 )
 ```
 
-Then: **which property?**
+And:
+
+**What should I sort by?**
 
 ```{ojs}
 viewof arrange_by = Inputs.radio(
@@ -267,7 +402,6 @@ sort_field = {
 And then sort.
 
 For hue I want low → high around the colour wheel.
-
 For chroma and lightness, I find high → low slightly easier to read.
 
 ```{ojs}
@@ -401,6 +535,32 @@ colour_space_inks = ink_rows.map(d => ({
 }))
 ```
 
+
+```{ojs}
+max_chroma = d3.max(colour_space_inks, d => d.display_c)
+
+polar_inks = colour_space_inks.map(d => {
+  const theta = (d.display_h - 90) * Math.PI / 180;
+
+  // scale chroma to a plotting radius
+  const r = (d.display_c / max_chroma) * 85;
+
+  return {
+    ...d,
+    theta,
+    radius_value: r,
+    polar_x: r * Math.cos(theta),
+    polar_y: r * Math.sin(theta)
+  };
+})
+
+lightnessExtent = d3.extent(polar_inks, d => d.display_l)
+
+lightnessScale = d3.scaleLinear()
+  .domain(lightnessExtent)
+  .range([20, 58])
+
+```
 Now the same plot can switch between HCL and OKLCH.
 
 ```{ojs}
@@ -438,6 +598,89 @@ L ${d.display_l.toFixed(2)}`
     })
   ]
 })
+```
+
+
+```{ojs}
+
+Plot.plot({
+  width: 700,
+  height: 700,
+  margin: 40,
+  aspectRatio: 1,
+
+  x: {
+    axis: null
+  },
+
+  y: {
+    axis: null
+  },
+  
+  r: {
+    range: [12,30]
+  },
+
+  marks: [
+    Plot.frame(),
+
+    // faint reference rings
+    Plot.circle(
+      [20, 40, 60, 80],
+      {
+        x: 0,
+        y: 0,
+        r: d => d,
+        stroke: "#d9d9d9",
+        fill: null
+      }
+    ),
+
+    // crosshair guides
+    Plot.ruleX([0], {stroke: "#dddddd"}),
+    Plot.ruleY([0], {stroke: "#dddddd"}),
+
+    // labels for cardinal hue directions
+    Plot.text(
+      [
+        {x: 0, y: 95, label: "0°"},
+        {x: 95, y: 0, label: "90°"},
+        {x: 0, y: -95, label: "180°"},
+        {x: -95, y: 0, label: "270°"}
+      ],
+      {
+        x: "x",
+        y: "y",
+        text: "label",
+        fontSize: 11,
+        fill: "#777"
+      }
+    ),
+
+    Plot.dot(polar_inks, {
+      x: "polar_x",
+      y: "polar_y",
+      fill: "hex",
+      stroke: "white",
+      strokeWidth: 1.5,
+
+      // use lightness for dot size
+      r: d => lightnessScale(d.display_l),
+      //r: 25,
+
+      tip: true,
+      title: d =>
+        `${d.ink_name_japanese} · ${d.ink_name}
+${d.description}
+
+${colour_space}
+Hue ${d.display_h.toFixed(1)}°
+Chroma ${d.display_c.toFixed(2)}
+Lightness ${d.display_l.toFixed(2)}`
+    })
+  ]
+})
+
 ```
 
 Now the **colour-space control changes the coordinate system itself**, not just the order of the tiles.
