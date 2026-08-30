@@ -10,7 +10,1468 @@
 <atom:link href="https://chichacha.github.io/chi-files/index-r.xml" rel="self" type="application/rss+xml"/>
 <description>Exploring the irrational, the visual, and the unexpected</description>
 <generator>quarto-1.6.39</generator>
-<lastBuildDate>Sat, 29 Aug 2026 07:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 30 Aug 2026 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Iroshizuku Meets a Flow Field</title>
+  <dc:creator>Chi </dc:creator>
+  <link>https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I really only wanted to spill some fountain pen ink. Not literally. That would be expensive. 🖋️</p>
+<p>I wanted to take colours inspired by Pilot’s <strong>Iroshizuku</strong> fountain pen inks, drop them somewhere on a blank canvas, and let them flow.</p>
+<p>That led me to <strong>flow fields</strong>.</p>
+<section id="first-where-do-i-drop-the-ink" class="level2">
+<h2 class="anchored" data-anchor-id="first-where-do-i-drop-the-ink">First: where do I drop the ink?</h2>
+<p>Before worrying about how anything moves, I need some starting points.</p>
+<p>For that, I went back to an old favourite: <strong>phyllotaxis</strong> - the mathematical arrangement associated with sunflower seeds and other plant structures.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/phyllotaxis-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The important part is the <strong>golden angle</strong> - about 137.5^.<br>
+Each new point rotates by that angle and moves a little farther from the center.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Calpha%20=%20%5Cpi(3-%5Csqrt%7B5%7D)%20%5Capprox%20137.5%5E%5Ccirc%0A"></p>
+<p>This gives me a deterministic set of locations.</p>
+<p>No flow yet. Just places where I can drop particles.</p>
+</section>
+<section id="what-is-a-flow-field" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-flow-field">What is a flow field?</h2>
+<p>This was the part I initially made much more complicated in my head than it needed to be. A flow field is simply a rule:</p>
+<blockquote class="blockquote">
+<p>At position <code>(x, y)</code>, which direction should I go?</p>
+</blockquote>
+<p>For example, this field:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">field_vortex <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, y) {</span>
+<span id="cb1-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">atan2</span>(y, x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> pi <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-3">}</span></code></pre></div>
+</div>
+<p>returns a direction perpendicular to the line from the origin.</p>
+<p>I like thinking of the field as an <strong>invisible landscape</strong>.</p>
+<p>The landscape doesn’t draw anything itself.</p>
+<p>I have to drop something into it.</p>
+<p>💧</p>
+</section>
+<section id="the-walker" class="level2">
+<h2 class="anchored" data-anchor-id="the-walker">The walker</h2>
+<p>A particle begins at <code>(x0, y0)</code>.</p>
+<p>At every step it:</p>
+<ol type="1">
+<li>asks the field which direction it should travel,</li>
+<li>converts that angle into horizontal and vertical movement,</li>
+<li>takes one tiny step,</li>
+<li>asks again.</li>
+</ol>
+<p>The important bit of the walker is essentially:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">angle <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">field</span>(x, y)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">x_new <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cos</span>(angle) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> step_size</span>
+<span id="cb2-4">y_new <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> y <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sin</span>(angle) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> step_size</span></code></pre></div>
+</div>
+<p><code>cos(angle)</code> gives the horizontal component of the movement. <code>sin(angle)</code> gives the vertical component.</p>
+<p>And <code>step_size</code> determines how far the particle moves each time. So a curve isn’t actually being drawn. I’m recording the <strong>history of a moving particle</strong>. That distinction finally made flow fields click for me.</p>
+</section>
+<section id="drop-the-iroshizuku-ink-and-let-it-flow" class="level2">
+<h2 class="anchored" data-anchor-id="drop-the-iroshizuku-ink-and-let-it-flow">Drop the Iroshizuku ink and let it flow</h2>
+<p>Now I can combine the two ideas. <strong>Phyllotaxis decides where the particles are born.</strong> <strong>The flow field decides what happens to them afterward.</strong></p>
+<section id="spiral" class="level3">
+<h3 class="anchored" data-anchor-id="spiral">Spiral</h3>
+<p>Pulls the paths around the centre while gradually drifting outward — a bit like ink swirling outward as you stir a cup</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">spiral_paths <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">make_flow_paths</span>(</span>
+<span id="cb3-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_spiral,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># rule that determines which direction each particle moves</span></span>
+<span id="cb3-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># number of particles dropped into the field</span></span>
+<span id="cb3-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many steps each particle takes = like how LONG it keeps walking</span></span>
+<span id="cb3-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># distance travelled with each step = how FAR it moves each time</span></span>
+<span id="cb3-6">)</span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_flow_paths</span>(</span>
+<span id="cb3-9">  spiral_paths,</span>
+<span id="cb3-10">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># thickness of each particle trail</span></span>
+<span id="cb3-11">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># transparency: lower = more see-through</span></span>
+<span id="cb3-12">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/spiral-flow-1.png" class="img-fluid figure-img" alt="Hundreds of coloured paths beginning in a phyllotactic arrangement and curving through a spiral flow field." width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Same birth pattern. Different laws of physics.</p>
+</section>
+</section>
+<section id="change-the-field-change-the-world" class="level2">
+<h2 class="anchored" data-anchor-id="change-the-field-change-the-world">Change the field, change the world</h2>
+<p>Here’s the part I find addictive.</p>
+<p>I don’t need to rewrite the walker.<br>
+I can just give it a different function.</p>
+<p>The starting geometry stays the same.<br>
+The walking process stays the same.<br>
+Only the field changes — and with it, the entire world the particles move through.</p>
+<section id="radial-fields" class="level3">
+<h3 class="anchored" data-anchor-id="radial-fields">Radial fields</h3>
+<p>These fields are all centered around the origin, but they guide the particles in different ways: circling, spiralling, moving outward, or pulling inward.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">Vortex</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Spiral</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false">Outward</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" aria-controls="tabset-1-4" aria-selected="false">Inward</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<p>Pulls the paths into circular motion — a bit like star trails in a long-exposure photograph.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb4-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_vortex,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># circular motion around the centre</span></span>
+<span id="cb4-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = sparser star trails; higher = denser sky</span></span>
+<span id="cb4-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter trails, like ending the exposure early</span></span>
+<span id="cb4-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother, tighter curves; higher = bigger jumps</span></span>
+<span id="cb4-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer light trails; higher = bolder streaks</span></span>
+<span id="cb4-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer/fainter trails; higher = more opaque</span></span>
+<span id="cb4-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/vortex-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<p>Pulls the paths around the centre while gradually drifting outward — a bit like ink swirling outward as you stir a cup.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb5-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_spiral,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># circular motion with a gentle outward drift</span></span>
+<span id="cb5-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb5-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter spirals; higher = longer outward journeys</span></span>
+<span id="cb5-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother spirals; higher = bigger jumps through the field</span></span>
+<span id="cb5-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb5-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb5-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/spiral-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<p>Pushes the paths away from the centre, like sparks or ink flung outward from a single point.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb6-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_outward,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># motion directly away from the centre</span></span>
+<span id="cb6-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer outward traces; higher = denser burst</span></span>
+<span id="cb6-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>,          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter bursts; higher = longer radiating paths</span></span>
+<span id="cb6-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother expansion; higher = more dramatic outward jumps</span></span>
+<span id="cb6-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer streaks; higher = bolder marks</span></span>
+<span id="cb6-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer trails; higher = stronger opacity</span></span>
+<span id="cb6-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/outward-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" aria-labelledby="tabset-1-4-tab">
+<p>Draws the paths back toward the centre, like everything on the page is being gently pulled inward.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb7-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_inward,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># motion directly toward the centre</span></span>
+<span id="cb7-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer inward traces; higher = denser convergence</span></span>
+<span id="cb7-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter inward motion; higher = longer collapsing paths</span></span>
+<span id="cb7-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother inward pull; higher = more abrupt movement</span></span>
+<span id="cb7-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer threads; higher = heavier strokes</span></span>
+<span id="cb7-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap near the centre</span></span>
+<span id="cb7-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/inward-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="wave-fields" class="level3">
+<h3 class="anchored" data-anchor-id="wave-fields">Wave fields</h3>
+<p>These fields are less about the centre and more about movement across the page: swaying, slanting, colliding, and rippling.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" aria-controls="tabset-2-1" aria-selected="true">Waves</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" aria-controls="tabset-2-2" aria-selected="false">Diagonal</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" aria-controls="tabset-2-3" aria-selected="false">Interference</a></li><li class="nav-item"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" aria-controls="tabset-2-4" aria-selected="false">Ripple</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" aria-labelledby="tabset-2-1-tab">
+<p>Bends the paths back and forth, like loose strands of seaweed drifting with the current.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb8-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_wavy,    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># back-and-forth motion, like seaweed drifting in a current</span></span>
+<span id="cb8-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer strands; higher = a fuller, more tangled flow</span></span>
+<span id="cb8-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter strands; higher = longer, more continuous sweeps</span></span>
+<span id="cb8-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother bends; higher = looser, more exaggerated movement</span></span>
+<span id="cb8-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker, more painterly strokes</span></span>
+<span id="cb8-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = lighter layering; higher = stronger overlapping colour</span></span>
+<span id="cb8-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/waves-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" aria-labelledby="tabset-2-2-tab">
+<p>Nudges the paths along a slanted current, as if a breeze were pushing them diagonally across the page.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb9-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_diagonal,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># slanted wave-like motion across the page</span></span>
+<span id="cb9-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb9-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">125</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter marks; higher = longer, more continuous paths</span></span>
+<span id="cb9-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb9-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb9-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb9-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/diagonal-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" aria-labelledby="tabset-2-3-tab">
+<p>Lets crossing wave patterns push against each other, creating a more tangled, woven motion.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb10-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_interference,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># crossing wave patterns, like ripples meeting on water</span></span>
+<span id="cb10-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = more open crossings; higher = denser woven structure</span></span>
+<span id="cb10-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter fragments; higher = longer interlaced paths</span></span>
+<span id="cb10-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.005</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer, smoother weaving; higher = more abrupt directional changes</span></span>
+<span id="cb10-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = delicate threads; higher = heavier woven strokes</span></span>
+<span id="cb10-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>                  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer overlaps; higher = stronger visual interference</span></span>
+<span id="cb10-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/interference-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" aria-labelledby="tabset-2-4-tab">
+<p>Pushes the paths through expanding rings, a bit like ripples spreading outward across water.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb11-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_ripple,   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># radial wave motion, like ripples spreading across water</span></span>
+<span id="cb11-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer visible ripple traces; higher = denser layering</span></span>
+<span id="cb11-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>,          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = shorter paths; higher = longer ripple-following trails</span></span>
+<span id="cb11-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.008</span>,      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother ripples; higher = more exaggerated movement</span></span>
+<span id="cb11-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer rings; higher = bolder ripple marks</span></span>
+<span id="cb11-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb11-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/ripple-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The particles themselves have not changed.<br>
+The walker has not changed.<br>
+Only the field has changed — and that is enough to make each world feel different.</p>
+</section>
+</section>
+<section id="how-n-changes-the-crowd" class="level2">
+<h2 class="anchored" data-anchor-id="how-n-changes-the-crowd">How <code>n</code> changes the crowd</h2>
+<p>Before changing how far the particles travel, I can change something even simpler: how many particles I release into the field.</p>
+<p><code>n</code> controls the number of starting points.</p>
+<p>The field does not change.<br>
+The walker does not change.<br>
+Each particle follows the same rules.</p>
+<p>There are simply more — or fewer — travelers moving through the same world.</p>
+<p>With a small <code>n</code>, the structure of the field feels sparse and exposed.<br>
+As <code>n</code> increases, the individual paths begin to overlap and the drawing becomes denser, richer, and more like a continuous texture.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" aria-controls="tabset-3-1" aria-selected="true"><code>n = 50</code></a></li><li class="nav-item"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" aria-controls="tabset-3-2" aria-selected="false"><code>n = 100</code></a></li><li class="nav-item"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" aria-controls="tabset-3-3" aria-selected="false"><code>n = 250</code></a></li><li class="nav-item"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" aria-controls="tabset-3-4" aria-selected="false"><code>n = 500</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb12-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_vortex,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># same circular field in every tab</span></span>
+<span id="cb12-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,                <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># very few particles = sparse, isolated trails</span></span>
+<span id="cb12-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so journey length does not change</span></span>
+<span id="cb12-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so stride does not change</span></span>
+<span id="cb12-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed drawing style</span></span>
+<span id="cb12-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed transparency</span></span>
+<span id="cb12-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/density-50-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb13-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_vortex,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># same circular field in every tab</span></span>
+<span id="cb13-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># more particles = more of the field becomes visible</span></span>
+<span id="cb13-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so journey length does not change</span></span>
+<span id="cb13-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so stride does not change</span></span>
+<span id="cb13-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed drawing style</span></span>
+<span id="cb13-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed transparency</span></span>
+<span id="cb13-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/density-100-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb14-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_vortex,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># same circular field in every tab</span></span>
+<span id="cb14-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># overlapping trails begin to create a fuller structure</span></span>
+<span id="cb14-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so journey length does not change</span></span>
+<span id="cb14-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so stride does not change</span></span>
+<span id="cb14-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed drawing style</span></span>
+<span id="cb14-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed transparency</span></span>
+<span id="cb14-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/density-250-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" aria-labelledby="tabset-3-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb15-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_vortex,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># same circular field in every tab</span></span>
+<span id="cb15-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># many particles = dense, layered star trails</span></span>
+<span id="cb15-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>,         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so journey length does not change</span></span>
+<span id="cb15-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.006</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed so stride does not change</span></span>
+<span id="cb15-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed drawing style</span></span>
+<span id="cb15-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed transparency</span></span>
+<span id="cb15-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/density-500-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Changing <code>n</code> does not change the rules of motion. It changes how densely those rules are sampled.</p>
+<p>A sparse field gives me individual paths.<br>
+A crowded field begins to reveal a texture.</p>
+</section>
+<section id="how-n_steps-changes-the-journey" class="level2">
+<h2 class="anchored" data-anchor-id="how-n_steps-changes-the-journey">How <code>n_steps</code> changes the journey</h2>
+<p>Keeping the same field and starting geometry, I varied only <code>n_steps</code> to see how the length of the journey changes the final drawing.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" aria-controls="tabset-4-1" aria-selected="true"><code>n_steps = 5</code></a></li><li class="nav-item"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" aria-controls="tabset-4-2" aria-selected="false"><code>n_steps = 25</code></a></li><li class="nav-item"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" aria-controls="tabset-4-3" aria-selected="false"><code>n_steps = 125</code></a></li><li class="nav-item"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" aria-controls="tabset-4-4" aria-selected="false"><code>n_steps = 250</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb16-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_diagonal,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># slanted wave-like motion across the page</span></span>
+<span id="cb16-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb16-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># very short paths</span></span>
+<span id="cb16-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb16-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb16-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb16-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/diagonal_005-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb17-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_diagonal,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># slanted wave-like motion across the page</span></span>
+<span id="cb17-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb17-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>,            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># medium-length paths</span></span>
+<span id="cb17-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb17-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb17-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb17-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/diagonal_025-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" aria-labelledby="tabset-4-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb18-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_diagonal,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># slanted wave-like motion across the page</span></span>
+<span id="cb18-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb18-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">125</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># long flowing paths</span></span>
+<span id="cb18-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb18-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb18-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb18-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/diagonal_125-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-4" class="tab-pane" aria-labelledby="tabset-4-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb19-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_diagonal,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># slanted wave-like motion across the page</span></span>
+<span id="cb19-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb19-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># long flowing paths</span></span>
+<span id="cb19-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb19-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb19-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb19-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/diagonal_250-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-step_size-changes-the-stride" class="level2">
+<h2 class="anchored" data-anchor-id="how-step_size-changes-the-stride">How <code>step_size</code> changes the stride</h2>
+<p>If <code>n_steps</code> controls how long the journey lasts, <code>step_size</code> controls the particle’s stride.</p>
+<p>Here I kept the field, particle count, number of steps, and drawing style the same, and changed only <code>step_size</code>. Smaller values trace the field more delicately, while larger values move farther at each step and exaggerate the motion.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" aria-controls="tabset-5-1" aria-selected="true">Tiny stride</a></li><li class="nav-item"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" aria-controls="tabset-5-2" aria-selected="false">Medium stride</a></li><li class="nav-item"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" aria-controls="tabset-5-3" aria-selected="false">Long stride</a></li><li class="nav-item"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" aria-controls="tabset-5-4" aria-selected="false">Extra Long stride</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb20-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_spiral,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># circular motion with a gentle outward drift</span></span>
+<span id="cb20-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb20-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed here so only step_size changes</span></span>
+<span id="cb20-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span>,     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># tiny stride = very fine, tightly sampled motion</span></span>
+<span id="cb20-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb20-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb20-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/spiral_tiny_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb21-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_spiral,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># circular motion with a gentle outward drift</span></span>
+<span id="cb21-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb21-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed here so only step_size changes</span></span>
+<span id="cb21-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># medium stride = balanced between smoothness and movement</span></span>
+<span id="cb21-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb21-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb21-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/spiral_mid_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-3" class="tab-pane" aria-labelledby="tabset-5-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb22-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_spiral,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># circular motion with a gentle outward drift</span></span>
+<span id="cb22-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb22-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed here so only step_size changes</span></span>
+<span id="cb22-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.08</span>,      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># large stride = exaggerated jumps through the field</span></span>
+<span id="cb22-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb22-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb22-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/spiral_long_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-4" class="tab-pane" aria-labelledby="tabset-5-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_flow_field</span>(</span>
+<span id="cb23-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">field =</span> field_spiral,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># circular motion with a gentle outward drift</span></span>
+<span id="cb23-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>,               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb23-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n_steps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fixed here so only step_size changes</span></span>
+<span id="cb23-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">step_size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># large stride = exaggerated jumps through the field</span></span>
+<span id="cb23-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>,       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb23-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb23-8">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/index_files/figure-html/spiral_extra_long_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>With the same journey length, changing only the stride makes the paths feel very different. Small steps hug the field more closely, while larger steps produce bolder, looser motion.</p>
+</section>
+<section id="a-tiny-system" class="level2">
+<h2 class="anchored" data-anchor-id="a-tiny-system">A tiny system</h2>
+<p>What started as <em>“I want to spill some ink”</em> turned into a surprisingly useful little programming lesson.</p>
+<p>The system now has three independent ideas:</p>
+<pre class="text"><code>STARTING POINTS
+      ↓
+   particles
+      ↓
+ FLOW FIELD
+      ↓
+   direction
+      ↓
+   WALKER
+      ↓
+    paths</code></pre>
+<p>The starting geometry answers:</p>
+<blockquote class="blockquote">
+<p><strong>Where do you begin?</strong></p>
+</blockquote>
+<p>The field answers:</p>
+<blockquote class="blockquote">
+<p><strong>Given where you are, which direction should you go?</strong></p>
+</blockquote>
+<p>And the walker answers:</p>
+<blockquote class="blockquote">
+<p><strong>How do you move through that field — how long is the journey, and how big is each step?</strong></p>
+</blockquote>
+<p>Once those responsibilities are separated, I can change one without rewriting the others.</p>
+<p>Which means there are now far too many things I want to try. 😬</p>
+<p>Different starting geometries. Different mathematical fields. Noise. Curl.</p>
+<p>Maybe even particles that pay attention to each other instead of only listening to the environment.</p>
+<p>But that’s for another ink spill.</p>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>r</category>
+  <category>ggplot</category>
+  <category>dataviz</category>
+  <category>generative-art</category>
+  <category>color</category>
+  <guid>https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/</guid>
+  <pubDate>Sun, 30 Aug 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/images/iroshizuku.svg" medium="image" type="image/svg+xml"/>
+</item>
 <item>
   <title>Making Iroshizuku Interactive with Observable</title>
   <dc:creator>Chi </dc:creator>

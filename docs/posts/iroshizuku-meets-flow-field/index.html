@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Chi">
+<meta name="dcterms.date" content="2026-08-30">
+<meta name="description" content="Spilling imaginary fountain pen ink into an invisible field.">
+
+<title>Iroshizuku Meets a Flow Field – CHI(χ)-Files</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-4EK13JXE55"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4EK13JXE55');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">CHI(χ)-Files</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/chichacha"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.r-bloggers.com"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text">R-Bloggers</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <div class="quarto-title-block"><div><h1 class="title">Iroshizuku Meets a Flow Field</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+                  <div>
+        <div class="description">
+          Spilling imaginary fountain pen ink into an invisible field.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">r</div>
+                <div class="quarto-category">ggplot</div>
+                <div class="quarto-category">dataviz</div>
+                <div class="quarto-category">generative-art</div>
+                <div class="quarto-category">color</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Chi </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 30, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#first-where-do-i-drop-the-ink" id="toc-first-where-do-i-drop-the-ink" class="nav-link active" data-scroll-target="#first-where-do-i-drop-the-ink">First: where do I drop the ink?</a></li>
+  <li><a href="#what-is-a-flow-field" id="toc-what-is-a-flow-field" class="nav-link" data-scroll-target="#what-is-a-flow-field">What is a flow field?</a></li>
+  <li><a href="#the-walker" id="toc-the-walker" class="nav-link" data-scroll-target="#the-walker">The walker</a></li>
+  <li><a href="#drop-the-iroshizuku-ink-and-let-it-flow" id="toc-drop-the-iroshizuku-ink-and-let-it-flow" class="nav-link" data-scroll-target="#drop-the-iroshizuku-ink-and-let-it-flow">Drop the Iroshizuku ink and let it flow</a>
+  <ul>
+  <li><a href="#spiral" id="toc-spiral" class="nav-link" data-scroll-target="#spiral">Spiral</a></li>
+  </ul></li>
+  <li><a href="#change-the-field-change-the-world" id="toc-change-the-field-change-the-world" class="nav-link" data-scroll-target="#change-the-field-change-the-world">Change the field, change the world</a>
+  <ul>
+  <li><a href="#radial-fields" id="toc-radial-fields" class="nav-link" data-scroll-target="#radial-fields">Radial fields</a></li>
+  <li><a href="#wave-fields" id="toc-wave-fields" class="nav-link" data-scroll-target="#wave-fields">Wave fields</a></li>
+  </ul></li>
+  <li><a href="#how-n-changes-the-crowd" id="toc-how-n-changes-the-crowd" class="nav-link" data-scroll-target="#how-n-changes-the-crowd">How <code>n</code> changes the crowd</a></li>
+  <li><a href="#how-n_steps-changes-the-journey" id="toc-how-n_steps-changes-the-journey" class="nav-link" data-scroll-target="#how-n_steps-changes-the-journey">How <code>n_steps</code> changes the journey</a></li>
+  <li><a href="#how-step_size-changes-the-stride" id="toc-how-step_size-changes-the-stride" class="nav-link" data-scroll-target="#how-step_size-changes-the-stride">How <code>step_size</code> changes the stride</a></li>
+  <li><a href="#a-tiny-system" id="toc-a-tiny-system" class="nav-link" data-scroll-target="#a-tiny-system">A tiny system</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+
+
+
+
+
+<p>I really only wanted to spill some fountain pen ink. Not literally. That would be expensive. 🖋️</p>
+<p>I wanted to take colours inspired by Pilot’s <strong>Iroshizuku</strong> fountain pen inks, drop them somewhere on a blank canvas, and let them flow.</p>
+<p>That led me to <strong>flow fields</strong>.</p>
+<section id="first-where-do-i-drop-the-ink" class="level2">
+<h2 class="anchored" data-anchor-id="first-where-do-i-drop-the-ink">First: where do I drop the ink?</h2>
+<p>Before worrying about how anything moves, I need some starting points.</p>
+<p>For that, I went back to an old favourite: <strong>phyllotaxis</strong> - the mathematical arrangement associated with sunflower seeds and other plant structures.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/phyllotaxis-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The important part is the <strong>golden angle</strong> - about 137.5^.<br>
+Each new point rotates by that angle and moves a little farther from the center.</p>
+<p><span class="math display">\[
+\alpha = \pi(3-\sqrt{5}) \approx 137.5^\circ
+\]</span></p>
+<p>This gives me a deterministic set of locations.</p>
+<p>No flow yet. Just places where I can drop particles.</p>
+</section>
+<section id="what-is-a-flow-field" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-flow-field">What is a flow field?</h2>
+<p>This was the part I initially made much more complicated in my head than it needed to be. A flow field is simply a rule:</p>
+<blockquote class="blockquote">
+<p>At position <code>(x, y)</code>, which direction should I go?</p>
+</blockquote>
+<p>For example, this field:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>field_vortex <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atan2</span>(y, x) <span class="sc">+</span> pi <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>returns a direction perpendicular to the line from the origin.</p>
+<p>I like thinking of the field as an <strong>invisible landscape</strong>.</p>
+<p>The landscape doesn’t draw anything itself.</p>
+<p>I have to drop something into it.</p>
+<p>💧</p>
+</section>
+<section id="the-walker" class="level2">
+<h2 class="anchored" data-anchor-id="the-walker">The walker</h2>
+<p>A particle begins at <code>(x0, y0)</code>.</p>
+<p>At every step it:</p>
+<ol type="1">
+<li>asks the field which direction it should travel,</li>
+<li>converts that angle into horizontal and vertical movement,</li>
+<li>takes one tiny step,</li>
+<li>asks again.</li>
+</ol>
+<p>The important bit of the walker is essentially:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>angle <span class="ot">&lt;-</span> <span class="fu">field</span>(x, y)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x_new <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">cos</span>(angle) <span class="sc">*</span> step_size</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>y_new <span class="ot">&lt;-</span> y <span class="sc">+</span> <span class="fu">sin</span>(angle) <span class="sc">*</span> step_size</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>cos(angle)</code> gives the horizontal component of the movement. <code>sin(angle)</code> gives the vertical component.</p>
+<p>And <code>step_size</code> determines how far the particle moves each time. So a curve isn’t actually being drawn. I’m recording the <strong>history of a moving particle</strong>. That distinction finally made flow fields click for me.</p>
+</section>
+<section id="drop-the-iroshizuku-ink-and-let-it-flow" class="level2">
+<h2 class="anchored" data-anchor-id="drop-the-iroshizuku-ink-and-let-it-flow">Drop the Iroshizuku ink and let it flow</h2>
+<p>Now I can combine the two ideas. <strong>Phyllotaxis decides where the particles are born.</strong> <strong>The flow field decides what happens to them afterward.</strong></p>
+<section id="spiral" class="level3">
+<h3 class="anchored" data-anchor-id="spiral">Spiral</h3>
+<p>Pulls the paths around the centre while gradually drifting outward — a bit like ink swirling outward as you stir a cup</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>spiral_paths <span class="ot">&lt;-</span> <span class="fu">make_flow_paths</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># rule that determines which direction each particle moves</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># number of particles dropped into the field</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">220</span>,         <span class="co"># how many steps each particle takes = like how LONG it keeps walking</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>      <span class="co"># distance travelled with each step = how FAR it moves each time</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_flow_paths</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  spiral_paths,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.9</span>,       <span class="co"># thickness of each particle trail</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># transparency: lower = more see-through</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/spiral-flow-1.png" class="img-fluid figure-img" alt="Hundreds of coloured paths beginning in a phyllotactic arrangement and curving through a spiral flow field." width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Same birth pattern. Different laws of physics.</p>
+</section>
+</section>
+<section id="change-the-field-change-the-world" class="level2">
+<h2 class="anchored" data-anchor-id="change-the-field-change-the-world">Change the field, change the world</h2>
+<p>Here’s the part I find addictive.</p>
+<p>I don’t need to rewrite the walker.<br>
+I can just give it a different function.</p>
+<p>The starting geometry stays the same.<br>
+The walking process stays the same.<br>
+Only the field changes — and with it, the entire world the particles move through.</p>
+<section id="radial-fields" class="level3">
+<h3 class="anchored" data-anchor-id="radial-fields">Radial fields</h3>
+<p>These fields are all centered around the origin, but they guide the particles in different ways: circling, spiralling, moving outward, or pulling inward.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Vortex</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Spiral</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Outward</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Inward</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>Pulls the paths into circular motion — a bit like star trails in a long-exposure photograph.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># circular motion around the centre</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = sparser star trails; higher = denser sky</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">220</span>,         <span class="co"># lower = shorter trails, like ending the exposure early</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># lower = smoother, tighter curves; higher = bigger jumps</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># lower = finer light trails; higher = bolder streaks</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># lower = softer/fainter trails; higher = more opaque</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/vortex-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Pulls the paths around the centre while gradually drifting outward — a bit like ink swirling outward as you stir a cup.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">220</span>,         <span class="co"># lower = shorter spirals; higher = longer outward journeys</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># lower = smoother spirals; higher = bigger jumps through the field</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.9</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/spiral-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Pushes the paths away from the centre, like sparks or ink flung outward from a single point.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_outward,  <span class="co"># motion directly away from the centre</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                <span class="co"># lower = fewer outward traces; higher = denser burst</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">120</span>,          <span class="co"># lower = shorter bursts; higher = longer radiating paths</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,       <span class="co"># lower = smoother expansion; higher = more dramatic outward jumps</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,        <span class="co"># lower = finer streaks; higher = bolder marks</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>             <span class="co"># lower = softer trails; higher = stronger opacity</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/outward-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p>Draws the paths back toward the centre, like everything on the page is being gently pulled inward.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_inward,  <span class="co"># motion directly toward the centre</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer inward traces; higher = denser convergence</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">120</span>,         <span class="co"># lower = shorter inward motion; higher = longer collapsing paths</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,      <span class="co"># lower = smoother inward pull; higher = more abrupt movement</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer threads; higher = heavier strokes</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># lower = softer layering; higher = stronger overlap near the centre</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/inward-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="wave-fields" class="level3">
+<h3 class="anchored" data-anchor-id="wave-fields">Wave fields</h3>
+<p>These fields are less about the centre and more about movement across the page: swaying, slanting, colliding, and rippling.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Waves</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Diagonal</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Interference</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false">Ripple</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<p>Bends the paths back and forth, like loose strands of seaweed drifting with the current.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_wavy,    <span class="co"># back-and-forth motion, like seaweed drifting in a current</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer strands; higher = a fuller, more tangled flow</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">150</span>,         <span class="co"># lower = shorter strands; higher = longer, more continuous sweeps</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,      <span class="co"># lower = smoother bends; higher = looser, more exaggerated movement</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,         <span class="co"># lower = finer strands; higher = thicker, more painterly strokes</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = lighter layering; higher = stronger overlapping colour</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/waves-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<p>Nudges the paths along a slanted current, as if a breeze were pushing them diagonally across the page.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">125</span>,           <span class="co"># lower = shorter marks; higher = longer, more continuous paths</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">1</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/diagonal-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<p>Lets crossing wave patterns push against each other, creating a more tangled, woven motion.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_interference,  <span class="co"># crossing wave patterns, like ripples meeting on water</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                     <span class="co"># lower = more open crossings; higher = denser woven structure</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">250</span>,               <span class="co"># lower = shorter fragments; higher = longer interlaced paths</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.005</span>,           <span class="co"># lower = finer, smoother weaving; higher = more abrupt directional changes</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.5</span>,             <span class="co"># lower = delicate threads; higher = heavier woven strokes</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>                  <span class="co"># lower = softer overlaps; higher = stronger visual interference</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/interference-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
+<p>Pushes the paths through expanding rings, a bit like ripples spreading outward across water.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_ripple,   <span class="co"># radial wave motion, like ripples spreading across water</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                <span class="co"># lower = fewer visible ripple traces; higher = denser layering</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,          <span class="co"># lower = shorter paths; higher = longer ripple-following trails</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.008</span>,      <span class="co"># lower = smoother ripples; higher = more exaggerated movement</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,        <span class="co"># lower = finer rings; higher = bolder ripple marks</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>             <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/ripple-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The particles themselves have not changed.<br>
+The walker has not changed.<br>
+Only the field has changed — and that is enough to make each world feel different.</p>
+</section>
+</section>
+<section id="how-n-changes-the-crowd" class="level2">
+<h2 class="anchored" data-anchor-id="how-n-changes-the-crowd">How <code>n</code> changes the crowd</h2>
+<p>Before changing how far the particles travel, I can change something even simpler: how many particles I release into the field.</p>
+<p><code>n</code> controls the number of starting points.</p>
+<p>The field does not change.<br>
+The walker does not change.<br>
+Each particle follows the same rules.</p>
+<p>There are simply more — or fewer — travelers moving through the same world.</p>
+<p>With a small <code>n</code>, the structure of the field feels sparse and exposed.<br>
+As <code>n</code> increases, the individual paths begin to overlap and the drawing becomes denser, richer, and more like a continuous texture.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true"><code>n = 50</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false"><code>n = 100</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false"><code>n = 250</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false"><code>n = 500</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">50</span>,                <span class="co"># very few particles = sparse, isolated trails</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/density-50-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span>,               <span class="co"># more particles = more of the field becomes visible</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/density-100-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">250</span>,               <span class="co"># overlapping trails begin to create a fuller structure</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/density-250-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># many particles = dense, layered star trails</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/density-500-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Changing <code>n</code> does not change the rules of motion. It changes how densely those rules are sampled.</p>
+<p>A sparse field gives me individual paths.<br>
+A crowded field begins to reveal a texture.</p>
+</section>
+<section id="how-n_steps-changes-the-journey" class="level2">
+<h2 class="anchored" data-anchor-id="how-n_steps-changes-the-journey">How <code>n_steps</code> changes the journey</h2>
+<p>Keeping the same field and starting geometry, I varied only <code>n_steps</code> to see how the length of the journey changes the final drawing.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true"><code>n_steps = 5</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false"><code>n_steps = 25</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false"><code>n_steps = 125</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" role="tab" aria-controls="tabset-4-4" aria-selected="false"><code>n_steps = 250</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">5</span>,             <span class="co"># very short paths</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/diagonal_005-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">25</span>,            <span class="co"># medium-length paths</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/diagonal_025-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">125</span>,           <span class="co"># long flowing paths</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/diagonal_125-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">250</span>,           <span class="co"># long flowing paths</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/diagonal_250-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-step_size-changes-the-stride" class="level2">
+<h2 class="anchored" data-anchor-id="how-step_size-changes-the-stride">How <code>step_size</code> changes the stride</h2>
+<p>If <code>n_steps</code> controls how long the journey lasts, <code>step_size</code> controls the particle’s stride.</p>
+<p>Here I kept the field, particle count, number of steps, and drawing style the same, and changed only <code>step_size</code>. Smaller values trace the field more delicately, while larger values move farther at each step and exaggerate the motion.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Tiny stride</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Medium stride</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false">Long stride</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-4" role="tab" aria-controls="tabset-5-4" aria-selected="false">Extra Long stride</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.001</span>,     <span class="co"># tiny stride = very fine, tightly sampled motion</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/spiral_tiny_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,      <span class="co"># medium stride = balanced between smoothness and movement</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/spiral_mid_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.08</span>,      <span class="co"># large stride = exaggerated jumps through the field</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/spiral_long_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="dv">4</span>,      <span class="co"># large stride = exaggerated jumps through the field</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/spiral_extra_long_stride-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>With the same journey length, changing only the stride makes the paths feel very different. Small steps hug the field more closely, while larger steps produce bolder, looser motion.</p>
+</section>
+<section id="a-tiny-system" class="level2">
+<h2 class="anchored" data-anchor-id="a-tiny-system">A tiny system</h2>
+<p>What started as <em>“I want to spill some ink”</em> turned into a surprisingly useful little programming lesson.</p>
+<p>The system now has three independent ideas:</p>
+<pre class="text"><code>STARTING POINTS
+      ↓
+   particles
+      ↓
+ FLOW FIELD
+      ↓
+   direction
+      ↓
+   WALKER
+      ↓
+    paths</code></pre>
+<p>The starting geometry answers:</p>
+<blockquote class="blockquote">
+<p><strong>Where do you begin?</strong></p>
+</blockquote>
+<p>The field answers:</p>
+<blockquote class="blockquote">
+<p><strong>Given where you are, which direction should you go?</strong></p>
+</blockquote>
+<p>And the walker answers:</p>
+<blockquote class="blockquote">
+<p><strong>How do you move through that field — how long is the journey, and how big is each step?</strong></p>
+</blockquote>
+<p>Once those responsibilities are separated, I can change one without rewriting the others.</p>
+<p>Which means there are now far too many things I want to try. 😬</p>
+<p>Different starting geometries. Different mathematical fields. Noise. Curl.</p>
+<p>Maybe even particles that pay attention to each other instead of only listening to the environment.</p>
+<p>But that’s for another ink spill.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/chichacha\.github\.io\/chi-files");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Iroshizuku Meets a Flow Field"</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Spilling imaginary fountain pen ink into an invisible field."</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Chi"</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-08-30"</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - r</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - ggplot</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">  - dataviz</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">  - generative-art</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">  - color</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> </span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: sentence</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> images/iroshizuku.svg</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: console</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/flow_field.R"</span>)</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>I really only wanted to spill some fountain pen ink.</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>Not literally. That would be expensive. 🖋️</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>I wanted to take colours inspired by Pilot's **Iroshizuku** fountain pen inks, drop them somewhere on a blank canvas, and let them flow.</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>That led me to **flow fields**.</span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## First: where do I drop the ink?</span></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>Before worrying about how anything moves, I need some starting points.</span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>For that, I went back to an old favourite: **phyllotaxis** - the mathematical arrangement associated with sunflower seeds and other plant structures.</span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: phyllotaxis</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>seeds <span class="ot">&lt;-</span> <span class="fu">make_phyllotaxis</span>(</span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,</span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="fl">0.06</span></span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a>  seeds,</span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(x0, y0)</span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>The important part is the **golden angle** - about 137.5^\circ.  </span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>Each new point rotates by that angle and moves a little farther from the center. </span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>\alpha = \pi(3-\sqrt{5}) \approx 137.5^\circ</span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>This gives me a deterministic set of locations.</span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>No flow yet.</span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>Just places where I can drop particles.</span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is a flow field?</span></span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a>This was the part I initially made much more complicated in my head than it needed to be.</span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>A flow field is simply a rule:</span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; At position </span><span class="in">`(x, y)`</span><span class="at">, which direction should I go?</span></span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a>For example, this field:</span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
+<span id="cb25-95"><a href="#cb25-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-96"><a href="#cb25-96" aria-hidden="true" tabindex="-1"></a>field_vortex <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atan2</span>(y, x) <span class="sc">+</span> pi <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a>returns a direction perpendicular to the line from the origin.</span>
+<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a>I like thinking of the field as an **invisible landscape**.</span>
+<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-105"><a href="#cb25-105" aria-hidden="true" tabindex="-1"></a>The landscape doesn't draw anything itself.</span>
+<span id="cb25-106"><a href="#cb25-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a>I have to drop something into it.</span>
+<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a>💧</span>
+<span id="cb25-110"><a href="#cb25-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-111"><a href="#cb25-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## The walker</span></span>
+<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a>A particle begins at <span class="in">`(x0, y0)`</span>.</span>
+<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a>At every step it:</span>
+<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-117"><a href="#cb25-117" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>asks the field which direction it should travel,</span>
+<span id="cb25-118"><a href="#cb25-118" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>converts that angle into horizontal and vertical movement,</span>
+<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>takes one tiny step,</span>
+<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>asks again.</span>
+<span id="cb25-121"><a href="#cb25-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-122"><a href="#cb25-122" aria-hidden="true" tabindex="-1"></a>The important bit of the walker is essentially:</span>
+<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
+<span id="cb25-130"><a href="#cb25-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-131"><a href="#cb25-131" aria-hidden="true" tabindex="-1"></a>angle <span class="ot">&lt;-</span> <span class="fu">field</span>(x, y)</span>
+<span id="cb25-132"><a href="#cb25-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-133"><a href="#cb25-133" aria-hidden="true" tabindex="-1"></a>x_new <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">cos</span>(angle) <span class="sc">*</span> step_size</span>
+<span id="cb25-134"><a href="#cb25-134" aria-hidden="true" tabindex="-1"></a>y_new <span class="ot">&lt;-</span> y <span class="sc">+</span> <span class="fu">sin</span>(angle) <span class="sc">*</span> step_size</span>
+<span id="cb25-135"><a href="#cb25-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-136"><a href="#cb25-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-137"><a href="#cb25-137" aria-hidden="true" tabindex="-1"></a><span class="in">`cos(angle)`</span> gives the horizontal component of the movement.</span>
+<span id="cb25-138"><a href="#cb25-138" aria-hidden="true" tabindex="-1"></a><span class="in">`sin(angle)`</span> gives the vertical component.</span>
+<span id="cb25-139"><a href="#cb25-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-140"><a href="#cb25-140" aria-hidden="true" tabindex="-1"></a>And <span class="in">`step_size`</span> determines how far the particle moves each time.</span>
+<span id="cb25-141"><a href="#cb25-141" aria-hidden="true" tabindex="-1"></a>So a curve isn't actually being drawn.</span>
+<span id="cb25-142"><a href="#cb25-142" aria-hidden="true" tabindex="-1"></a>I'm recording the **history of a moving particle**.</span>
+<span id="cb25-143"><a href="#cb25-143" aria-hidden="true" tabindex="-1"></a>That distinction finally made flow fields click for me.</span>
+<span id="cb25-144"><a href="#cb25-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-145"><a href="#cb25-145" aria-hidden="true" tabindex="-1"></a><span class="fu">## Drop the Iroshizuku ink and let it flow</span></span>
+<span id="cb25-146"><a href="#cb25-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-147"><a href="#cb25-147" aria-hidden="true" tabindex="-1"></a>Now I can combine the two ideas.</span>
+<span id="cb25-148"><a href="#cb25-148" aria-hidden="true" tabindex="-1"></a>**Phyllotaxis decides where the particles are born.**</span>
+<span id="cb25-149"><a href="#cb25-149" aria-hidden="true" tabindex="-1"></a>**The flow field decides what happens to them afterward.**</span>
+<span id="cb25-150"><a href="#cb25-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-151"><a href="#cb25-151" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spiral</span></span>
+<span id="cb25-152"><a href="#cb25-152" aria-hidden="true" tabindex="-1"></a>Pulls the paths around the centre while gradually drifting outward — a bit like ink swirling outward as you stir a cup</span>
+<span id="cb25-153"><a href="#cb25-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-156"><a href="#cb25-156" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-157"><a href="#cb25-157" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: spiral-flow</span></span>
+<span id="cb25-158"><a href="#cb25-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-159"><a href="#cb25-159" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-alt: "Hundreds of coloured paths beginning in a phyllotactic arrangement and curving through a spiral flow field."</span></span>
+<span id="cb25-160"><a href="#cb25-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-161"><a href="#cb25-161" aria-hidden="true" tabindex="-1"></a>spiral_paths <span class="ot">&lt;-</span> <span class="fu">make_flow_paths</span>(</span>
+<span id="cb25-162"><a href="#cb25-162" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># rule that determines which direction each particle moves</span></span>
+<span id="cb25-163"><a href="#cb25-163" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># number of particles dropped into the field</span></span>
+<span id="cb25-164"><a href="#cb25-164" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">220</span>,         <span class="co"># how many steps each particle takes = like how LONG it keeps walking</span></span>
+<span id="cb25-165"><a href="#cb25-165" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>      <span class="co"># distance travelled with each step = how FAR it moves each time</span></span>
+<span id="cb25-166"><a href="#cb25-166" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-167"><a href="#cb25-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-168"><a href="#cb25-168" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_flow_paths</span>(</span>
+<span id="cb25-169"><a href="#cb25-169" aria-hidden="true" tabindex="-1"></a>  spiral_paths,</span>
+<span id="cb25-170"><a href="#cb25-170" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.9</span>,       <span class="co"># thickness of each particle trail</span></span>
+<span id="cb25-171"><a href="#cb25-171" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># transparency: lower = more see-through</span></span>
+<span id="cb25-172"><a href="#cb25-172" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-173"><a href="#cb25-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-174"><a href="#cb25-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-175"><a href="#cb25-175" aria-hidden="true" tabindex="-1"></a>Same birth pattern.</span>
+<span id="cb25-176"><a href="#cb25-176" aria-hidden="true" tabindex="-1"></a>Different laws of physics.</span>
+<span id="cb25-177"><a href="#cb25-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-178"><a href="#cb25-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Change the field, change the world</span></span>
+<span id="cb25-179"><a href="#cb25-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-180"><a href="#cb25-180" aria-hidden="true" tabindex="-1"></a>Here's the part I find addictive.</span>
+<span id="cb25-181"><a href="#cb25-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-182"><a href="#cb25-182" aria-hidden="true" tabindex="-1"></a>I don't need to rewrite the walker.  </span>
+<span id="cb25-183"><a href="#cb25-183" aria-hidden="true" tabindex="-1"></a>I can just give it a different function.</span>
+<span id="cb25-184"><a href="#cb25-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-185"><a href="#cb25-185" aria-hidden="true" tabindex="-1"></a>The starting geometry stays the same.  </span>
+<span id="cb25-186"><a href="#cb25-186" aria-hidden="true" tabindex="-1"></a>The walking process stays the same.  </span>
+<span id="cb25-187"><a href="#cb25-187" aria-hidden="true" tabindex="-1"></a>Only the field changes — and with it, the entire world the particles move through.</span>
+<span id="cb25-188"><a href="#cb25-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-189"><a href="#cb25-189" aria-hidden="true" tabindex="-1"></a><span class="fu">### Radial fields</span></span>
+<span id="cb25-190"><a href="#cb25-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-191"><a href="#cb25-191" aria-hidden="true" tabindex="-1"></a>These fields are all centered around the origin, but they guide the particles in different ways: circling, spiralling, moving outward, or pulling inward.</span>
+<span id="cb25-192"><a href="#cb25-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-193"><a href="#cb25-193" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb25-194"><a href="#cb25-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-195"><a href="#cb25-195" aria-hidden="true" tabindex="-1"></a><span class="fu">### Vortex</span></span>
+<span id="cb25-196"><a href="#cb25-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-197"><a href="#cb25-197" aria-hidden="true" tabindex="-1"></a>Pulls the paths into circular motion — a bit like star trails in a long-exposure photograph.</span>
+<span id="cb25-198"><a href="#cb25-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-201"><a href="#cb25-201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-202"><a href="#cb25-202" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: vortex</span></span>
+<span id="cb25-203"><a href="#cb25-203" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-204"><a href="#cb25-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-205"><a href="#cb25-205" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-206"><a href="#cb25-206" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># circular motion around the centre</span></span>
+<span id="cb25-207"><a href="#cb25-207" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = sparser star trails; higher = denser sky</span></span>
+<span id="cb25-208"><a href="#cb25-208" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">220</span>,         <span class="co"># lower = shorter trails, like ending the exposure early</span></span>
+<span id="cb25-209"><a href="#cb25-209" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># lower = smoother, tighter curves; higher = bigger jumps</span></span>
+<span id="cb25-210"><a href="#cb25-210" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># lower = finer light trails; higher = bolder streaks</span></span>
+<span id="cb25-211"><a href="#cb25-211" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># lower = softer/fainter trails; higher = more opaque</span></span>
+<span id="cb25-212"><a href="#cb25-212" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-213"><a href="#cb25-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-214"><a href="#cb25-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-215"><a href="#cb25-215" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spiral</span></span>
+<span id="cb25-216"><a href="#cb25-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-217"><a href="#cb25-217" aria-hidden="true" tabindex="-1"></a>Pulls the paths around the centre while gradually drifting outward — a bit like ink swirling outward as you stir a cup.</span>
+<span id="cb25-218"><a href="#cb25-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-221"><a href="#cb25-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-222"><a href="#cb25-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: spiral</span></span>
+<span id="cb25-223"><a href="#cb25-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-224"><a href="#cb25-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-225"><a href="#cb25-225" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-226"><a href="#cb25-226" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb25-227"><a href="#cb25-227" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb25-228"><a href="#cb25-228" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">220</span>,         <span class="co"># lower = shorter spirals; higher = longer outward journeys</span></span>
+<span id="cb25-229"><a href="#cb25-229" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># lower = smoother spirals; higher = bigger jumps through the field</span></span>
+<span id="cb25-230"><a href="#cb25-230" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.9</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb25-231"><a href="#cb25-231" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb25-232"><a href="#cb25-232" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-233"><a href="#cb25-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-234"><a href="#cb25-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-235"><a href="#cb25-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### Outward</span></span>
+<span id="cb25-236"><a href="#cb25-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-237"><a href="#cb25-237" aria-hidden="true" tabindex="-1"></a>Pushes the paths away from the centre, like sparks or ink flung outward from a single point.</span>
+<span id="cb25-238"><a href="#cb25-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-241"><a href="#cb25-241" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-242"><a href="#cb25-242" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: outward</span></span>
+<span id="cb25-243"><a href="#cb25-243" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-244"><a href="#cb25-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-245"><a href="#cb25-245" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-246"><a href="#cb25-246" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_outward,  <span class="co"># motion directly away from the centre</span></span>
+<span id="cb25-247"><a href="#cb25-247" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                <span class="co"># lower = fewer outward traces; higher = denser burst</span></span>
+<span id="cb25-248"><a href="#cb25-248" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">120</span>,          <span class="co"># lower = shorter bursts; higher = longer radiating paths</span></span>
+<span id="cb25-249"><a href="#cb25-249" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,       <span class="co"># lower = smoother expansion; higher = more dramatic outward jumps</span></span>
+<span id="cb25-250"><a href="#cb25-250" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,        <span class="co"># lower = finer streaks; higher = bolder marks</span></span>
+<span id="cb25-251"><a href="#cb25-251" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>             <span class="co"># lower = softer trails; higher = stronger opacity</span></span>
+<span id="cb25-252"><a href="#cb25-252" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-253"><a href="#cb25-253" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-254"><a href="#cb25-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-255"><a href="#cb25-255" aria-hidden="true" tabindex="-1"></a><span class="fu">### Inward</span></span>
+<span id="cb25-256"><a href="#cb25-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-257"><a href="#cb25-257" aria-hidden="true" tabindex="-1"></a>Draws the paths back toward the centre, like everything on the page is being gently pulled inward.</span>
+<span id="cb25-258"><a href="#cb25-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-261"><a href="#cb25-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-262"><a href="#cb25-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: inward</span></span>
+<span id="cb25-263"><a href="#cb25-263" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-264"><a href="#cb25-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-265"><a href="#cb25-265" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-266"><a href="#cb25-266" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_inward,  <span class="co"># motion directly toward the centre</span></span>
+<span id="cb25-267"><a href="#cb25-267" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer inward traces; higher = denser convergence</span></span>
+<span id="cb25-268"><a href="#cb25-268" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">120</span>,         <span class="co"># lower = shorter inward motion; higher = longer collapsing paths</span></span>
+<span id="cb25-269"><a href="#cb25-269" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,      <span class="co"># lower = smoother inward pull; higher = more abrupt movement</span></span>
+<span id="cb25-270"><a href="#cb25-270" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer threads; higher = heavier strokes</span></span>
+<span id="cb25-271"><a href="#cb25-271" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># lower = softer layering; higher = stronger overlap near the centre</span></span>
+<span id="cb25-272"><a href="#cb25-272" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-273"><a href="#cb25-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-274"><a href="#cb25-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-275"><a href="#cb25-275" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-276"><a href="#cb25-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-277"><a href="#cb25-277" aria-hidden="true" tabindex="-1"></a><span class="fu">### Wave fields</span></span>
+<span id="cb25-278"><a href="#cb25-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-279"><a href="#cb25-279" aria-hidden="true" tabindex="-1"></a>These fields are less about the centre and more about movement across the page: swaying, slanting, colliding, and rippling.</span>
+<span id="cb25-280"><a href="#cb25-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-281"><a href="#cb25-281" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb25-282"><a href="#cb25-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-283"><a href="#cb25-283" aria-hidden="true" tabindex="-1"></a><span class="fu">### Waves</span></span>
+<span id="cb25-284"><a href="#cb25-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-285"><a href="#cb25-285" aria-hidden="true" tabindex="-1"></a>Bends the paths back and forth, like loose strands of seaweed drifting with the current.</span>
+<span id="cb25-286"><a href="#cb25-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-289"><a href="#cb25-289" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-290"><a href="#cb25-290" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: waves</span></span>
+<span id="cb25-291"><a href="#cb25-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-292"><a href="#cb25-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-293"><a href="#cb25-293" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-294"><a href="#cb25-294" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_wavy,    <span class="co"># back-and-forth motion, like seaweed drifting in a current</span></span>
+<span id="cb25-295"><a href="#cb25-295" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer strands; higher = a fuller, more tangled flow</span></span>
+<span id="cb25-296"><a href="#cb25-296" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">150</span>,         <span class="co"># lower = shorter strands; higher = longer, more continuous sweeps</span></span>
+<span id="cb25-297"><a href="#cb25-297" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,      <span class="co"># lower = smoother bends; higher = looser, more exaggerated movement</span></span>
+<span id="cb25-298"><a href="#cb25-298" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,         <span class="co"># lower = finer strands; higher = thicker, more painterly strokes</span></span>
+<span id="cb25-299"><a href="#cb25-299" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = lighter layering; higher = stronger overlapping colour</span></span>
+<span id="cb25-300"><a href="#cb25-300" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-301"><a href="#cb25-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-302"><a href="#cb25-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-303"><a href="#cb25-303" aria-hidden="true" tabindex="-1"></a><span class="fu">### Diagonal</span></span>
+<span id="cb25-304"><a href="#cb25-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-305"><a href="#cb25-305" aria-hidden="true" tabindex="-1"></a>Nudges the paths along a slanted current, as if a breeze were pushing them diagonally across the page.</span>
+<span id="cb25-306"><a href="#cb25-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-309"><a href="#cb25-309" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-310"><a href="#cb25-310" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: diagonal</span></span>
+<span id="cb25-311"><a href="#cb25-311" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-312"><a href="#cb25-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-313"><a href="#cb25-313" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-314"><a href="#cb25-314" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb25-315"><a href="#cb25-315" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb25-316"><a href="#cb25-316" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">125</span>,           <span class="co"># lower = shorter marks; higher = longer, more continuous paths</span></span>
+<span id="cb25-317"><a href="#cb25-317" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb25-318"><a href="#cb25-318" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">1</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb25-319"><a href="#cb25-319" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb25-320"><a href="#cb25-320" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-321"><a href="#cb25-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-322"><a href="#cb25-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-323"><a href="#cb25-323" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interference</span></span>
+<span id="cb25-324"><a href="#cb25-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-325"><a href="#cb25-325" aria-hidden="true" tabindex="-1"></a>Lets crossing wave patterns push against each other, creating a more tangled, woven motion.</span>
+<span id="cb25-326"><a href="#cb25-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-329"><a href="#cb25-329" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-330"><a href="#cb25-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: interference</span></span>
+<span id="cb25-331"><a href="#cb25-331" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-332"><a href="#cb25-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-333"><a href="#cb25-333" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-334"><a href="#cb25-334" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_interference,  <span class="co"># crossing wave patterns, like ripples meeting on water</span></span>
+<span id="cb25-335"><a href="#cb25-335" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                     <span class="co"># lower = more open crossings; higher = denser woven structure</span></span>
+<span id="cb25-336"><a href="#cb25-336" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">250</span>,               <span class="co"># lower = shorter fragments; higher = longer interlaced paths</span></span>
+<span id="cb25-337"><a href="#cb25-337" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.005</span>,           <span class="co"># lower = finer, smoother weaving; higher = more abrupt directional changes</span></span>
+<span id="cb25-338"><a href="#cb25-338" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.5</span>,             <span class="co"># lower = delicate threads; higher = heavier woven strokes</span></span>
+<span id="cb25-339"><a href="#cb25-339" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>                  <span class="co"># lower = softer overlaps; higher = stronger visual interference</span></span>
+<span id="cb25-340"><a href="#cb25-340" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-341"><a href="#cb25-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-342"><a href="#cb25-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-343"><a href="#cb25-343" aria-hidden="true" tabindex="-1"></a><span class="fu">### Ripple</span></span>
+<span id="cb25-344"><a href="#cb25-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-345"><a href="#cb25-345" aria-hidden="true" tabindex="-1"></a>Pushes the paths through expanding rings, a bit like ripples spreading outward across water.</span>
+<span id="cb25-346"><a href="#cb25-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-349"><a href="#cb25-349" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-350"><a href="#cb25-350" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: ripple</span></span>
+<span id="cb25-351"><a href="#cb25-351" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-352"><a href="#cb25-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-353"><a href="#cb25-353" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-354"><a href="#cb25-354" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_ripple,   <span class="co"># radial wave motion, like ripples spreading across water</span></span>
+<span id="cb25-355"><a href="#cb25-355" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                <span class="co"># lower = fewer visible ripple traces; higher = denser layering</span></span>
+<span id="cb25-356"><a href="#cb25-356" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,          <span class="co"># lower = shorter paths; higher = longer ripple-following trails</span></span>
+<span id="cb25-357"><a href="#cb25-357" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.008</span>,      <span class="co"># lower = smoother ripples; higher = more exaggerated movement</span></span>
+<span id="cb25-358"><a href="#cb25-358" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,        <span class="co"># lower = finer rings; higher = bolder ripple marks</span></span>
+<span id="cb25-359"><a href="#cb25-359" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>             <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb25-360"><a href="#cb25-360" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-361"><a href="#cb25-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-362"><a href="#cb25-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-363"><a href="#cb25-363" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-364"><a href="#cb25-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-365"><a href="#cb25-365" aria-hidden="true" tabindex="-1"></a>The particles themselves have not changed.  </span>
+<span id="cb25-366"><a href="#cb25-366" aria-hidden="true" tabindex="-1"></a>The walker has not changed.  </span>
+<span id="cb25-367"><a href="#cb25-367" aria-hidden="true" tabindex="-1"></a>Only the field has changed — and that is enough to make each world feel different.</span>
+<span id="cb25-368"><a href="#cb25-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-369"><a href="#cb25-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-370"><a href="#cb25-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## How `n` changes the crowd</span></span>
+<span id="cb25-371"><a href="#cb25-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-372"><a href="#cb25-372" aria-hidden="true" tabindex="-1"></a>Before changing how far the particles travel, I can change something even simpler: how many particles I release into the field.</span>
+<span id="cb25-373"><a href="#cb25-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-374"><a href="#cb25-374" aria-hidden="true" tabindex="-1"></a><span class="in">`n`</span> controls the number of starting points.</span>
+<span id="cb25-375"><a href="#cb25-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-376"><a href="#cb25-376" aria-hidden="true" tabindex="-1"></a>The field does not change.  </span>
+<span id="cb25-377"><a href="#cb25-377" aria-hidden="true" tabindex="-1"></a>The walker does not change.  </span>
+<span id="cb25-378"><a href="#cb25-378" aria-hidden="true" tabindex="-1"></a>Each particle follows the same rules.</span>
+<span id="cb25-379"><a href="#cb25-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-380"><a href="#cb25-380" aria-hidden="true" tabindex="-1"></a>There are simply more — or fewer — travelers moving through the same world.</span>
+<span id="cb25-381"><a href="#cb25-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-382"><a href="#cb25-382" aria-hidden="true" tabindex="-1"></a>With a small <span class="in">`n`</span>, the structure of the field feels sparse and exposed.  </span>
+<span id="cb25-383"><a href="#cb25-383" aria-hidden="true" tabindex="-1"></a>As <span class="in">`n`</span> increases, the individual paths begin to overlap and the drawing becomes denser, richer, and more like a continuous texture.</span>
+<span id="cb25-384"><a href="#cb25-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-385"><a href="#cb25-385" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb25-386"><a href="#cb25-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-387"><a href="#cb25-387" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n = 50`</span></span>
+<span id="cb25-388"><a href="#cb25-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-391"><a href="#cb25-391" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-392"><a href="#cb25-392" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: density-50</span></span>
+<span id="cb25-393"><a href="#cb25-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-394"><a href="#cb25-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-395"><a href="#cb25-395" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-396"><a href="#cb25-396" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb25-397"><a href="#cb25-397" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">50</span>,                <span class="co"># very few particles = sparse, isolated trails</span></span>
+<span id="cb25-398"><a href="#cb25-398" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb25-399"><a href="#cb25-399" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb25-400"><a href="#cb25-400" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb25-401"><a href="#cb25-401" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb25-402"><a href="#cb25-402" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-403"><a href="#cb25-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-404"><a href="#cb25-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-405"><a href="#cb25-405" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n = 100`</span></span>
+<span id="cb25-406"><a href="#cb25-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-409"><a href="#cb25-409" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-410"><a href="#cb25-410" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: density-100</span></span>
+<span id="cb25-411"><a href="#cb25-411" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-412"><a href="#cb25-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-413"><a href="#cb25-413" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-414"><a href="#cb25-414" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb25-415"><a href="#cb25-415" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span>,               <span class="co"># more particles = more of the field becomes visible</span></span>
+<span id="cb25-416"><a href="#cb25-416" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb25-417"><a href="#cb25-417" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb25-418"><a href="#cb25-418" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb25-419"><a href="#cb25-419" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb25-420"><a href="#cb25-420" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-421"><a href="#cb25-421" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-422"><a href="#cb25-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-423"><a href="#cb25-423" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n = 250`</span></span>
+<span id="cb25-424"><a href="#cb25-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-427"><a href="#cb25-427" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-428"><a href="#cb25-428" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: density-250</span></span>
+<span id="cb25-429"><a href="#cb25-429" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-430"><a href="#cb25-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-431"><a href="#cb25-431" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-432"><a href="#cb25-432" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb25-433"><a href="#cb25-433" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">250</span>,               <span class="co"># overlapping trails begin to create a fuller structure</span></span>
+<span id="cb25-434"><a href="#cb25-434" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb25-435"><a href="#cb25-435" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb25-436"><a href="#cb25-436" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb25-437"><a href="#cb25-437" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb25-438"><a href="#cb25-438" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-439"><a href="#cb25-439" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-440"><a href="#cb25-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-441"><a href="#cb25-441" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n = 500`</span></span>
+<span id="cb25-442"><a href="#cb25-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-445"><a href="#cb25-445" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-446"><a href="#cb25-446" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: density-500</span></span>
+<span id="cb25-447"><a href="#cb25-447" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-448"><a href="#cb25-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-449"><a href="#cb25-449" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-450"><a href="#cb25-450" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_vortex,  <span class="co"># same circular field in every tab</span></span>
+<span id="cb25-451"><a href="#cb25-451" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># many particles = dense, layered star trails</span></span>
+<span id="cb25-452"><a href="#cb25-452" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">180</span>,         <span class="co"># fixed so journey length does not change</span></span>
+<span id="cb25-453"><a href="#cb25-453" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.006</span>,     <span class="co"># fixed so stride does not change</span></span>
+<span id="cb25-454"><a href="#cb25-454" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">1.2</span>,       <span class="co"># fixed drawing style</span></span>
+<span id="cb25-455"><a href="#cb25-455" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.6</span>            <span class="co"># fixed transparency</span></span>
+<span id="cb25-456"><a href="#cb25-456" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-457"><a href="#cb25-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-458"><a href="#cb25-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-459"><a href="#cb25-459" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-460"><a href="#cb25-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-461"><a href="#cb25-461" aria-hidden="true" tabindex="-1"></a>Changing <span class="in">`n`</span> does not change the rules of motion. It changes how densely those rules are sampled.</span>
+<span id="cb25-462"><a href="#cb25-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-463"><a href="#cb25-463" aria-hidden="true" tabindex="-1"></a>A sparse field gives me individual paths.  </span>
+<span id="cb25-464"><a href="#cb25-464" aria-hidden="true" tabindex="-1"></a>A crowded field begins to reveal a texture.</span>
+<span id="cb25-465"><a href="#cb25-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-466"><a href="#cb25-466" aria-hidden="true" tabindex="-1"></a><span class="fu">## How `n_steps` changes the journey</span></span>
+<span id="cb25-467"><a href="#cb25-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-468"><a href="#cb25-468" aria-hidden="true" tabindex="-1"></a>Keeping the same field and starting geometry, I varied only <span class="in">`n_steps`</span></span>
+<span id="cb25-469"><a href="#cb25-469" aria-hidden="true" tabindex="-1"></a>to see how the length of the journey changes the final drawing.</span>
+<span id="cb25-470"><a href="#cb25-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-471"><a href="#cb25-471" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb25-472"><a href="#cb25-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-473"><a href="#cb25-473" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n_steps = 5`</span></span>
+<span id="cb25-474"><a href="#cb25-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-477"><a href="#cb25-477" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-478"><a href="#cb25-478" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: diagonal_005</span></span>
+<span id="cb25-479"><a href="#cb25-479" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-480"><a href="#cb25-480" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-481"><a href="#cb25-481" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb25-482"><a href="#cb25-482" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb25-483"><a href="#cb25-483" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">5</span>,             <span class="co"># very short paths</span></span>
+<span id="cb25-484"><a href="#cb25-484" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb25-485"><a href="#cb25-485" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb25-486"><a href="#cb25-486" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb25-487"><a href="#cb25-487" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-488"><a href="#cb25-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-489"><a href="#cb25-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-490"><a href="#cb25-490" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n_steps = 25`</span></span>
+<span id="cb25-491"><a href="#cb25-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-494"><a href="#cb25-494" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-495"><a href="#cb25-495" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: diagonal_025</span></span>
+<span id="cb25-496"><a href="#cb25-496" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-497"><a href="#cb25-497" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-498"><a href="#cb25-498" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb25-499"><a href="#cb25-499" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb25-500"><a href="#cb25-500" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">25</span>,            <span class="co"># medium-length paths</span></span>
+<span id="cb25-501"><a href="#cb25-501" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb25-502"><a href="#cb25-502" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb25-503"><a href="#cb25-503" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb25-504"><a href="#cb25-504" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-505"><a href="#cb25-505" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-506"><a href="#cb25-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-507"><a href="#cb25-507" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n_steps = 125`</span></span>
+<span id="cb25-508"><a href="#cb25-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-511"><a href="#cb25-511" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-512"><a href="#cb25-512" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: diagonal_125</span></span>
+<span id="cb25-513"><a href="#cb25-513" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-514"><a href="#cb25-514" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-515"><a href="#cb25-515" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb25-516"><a href="#cb25-516" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb25-517"><a href="#cb25-517" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">125</span>,           <span class="co"># long flowing paths</span></span>
+<span id="cb25-518"><a href="#cb25-518" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb25-519"><a href="#cb25-519" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb25-520"><a href="#cb25-520" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb25-521"><a href="#cb25-521" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-522"><a href="#cb25-522" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-523"><a href="#cb25-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-524"><a href="#cb25-524" aria-hidden="true" tabindex="-1"></a><span class="fu">### `n_steps = 250`</span></span>
+<span id="cb25-525"><a href="#cb25-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-528"><a href="#cb25-528" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-529"><a href="#cb25-529" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: diagonal_250</span></span>
+<span id="cb25-530"><a href="#cb25-530" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-531"><a href="#cb25-531" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-532"><a href="#cb25-532" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_diagonal,  <span class="co"># slanted wave-like motion across the page</span></span>
+<span id="cb25-533"><a href="#cb25-533" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,                 <span class="co"># lower = fewer paths; higher = denser layering</span></span>
+<span id="cb25-534"><a href="#cb25-534" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">250</span>,           <span class="co"># long flowing paths</span></span>
+<span id="cb25-535"><a href="#cb25-535" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,        <span class="co"># lower = smoother motion; higher = larger jumps</span></span>
+<span id="cb25-536"><a href="#cb25-536" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="dv">2</span>,           <span class="co"># lower = finer strands; higher = thicker strokes</span></span>
+<span id="cb25-537"><a href="#cb25-537" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>              <span class="co"># lower = lighter layering; higher = stronger overlap</span></span>
+<span id="cb25-538"><a href="#cb25-538" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-539"><a href="#cb25-539" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-540"><a href="#cb25-540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-541"><a href="#cb25-541" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-542"><a href="#cb25-542" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-543"><a href="#cb25-543" aria-hidden="true" tabindex="-1"></a><span class="fu">## How `step_size` changes the stride</span></span>
+<span id="cb25-544"><a href="#cb25-544" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-545"><a href="#cb25-545" aria-hidden="true" tabindex="-1"></a>If <span class="in">`n_steps`</span> controls how long the journey lasts, <span class="in">`step_size`</span> controls the particle's stride.</span>
+<span id="cb25-546"><a href="#cb25-546" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-547"><a href="#cb25-547" aria-hidden="true" tabindex="-1"></a>Here I kept the field, particle count, number of steps, and drawing style the same, and changed only <span class="in">`step_size`</span>. Smaller values trace the field more delicately, while larger values move farther at each step and exaggerate the motion.</span>
+<span id="cb25-548"><a href="#cb25-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-549"><a href="#cb25-549" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb25-550"><a href="#cb25-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-551"><a href="#cb25-551" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tiny stride</span></span>
+<span id="cb25-552"><a href="#cb25-552" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-555"><a href="#cb25-555" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-556"><a href="#cb25-556" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: spiral_tiny_stride</span></span>
+<span id="cb25-557"><a href="#cb25-557" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-558"><a href="#cb25-558" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-559"><a href="#cb25-559" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb25-560"><a href="#cb25-560" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb25-561"><a href="#cb25-561" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb25-562"><a href="#cb25-562" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.001</span>,     <span class="co"># tiny stride = very fine, tightly sampled motion</span></span>
+<span id="cb25-563"><a href="#cb25-563" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb25-564"><a href="#cb25-564" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb25-565"><a href="#cb25-565" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-566"><a href="#cb25-566" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-567"><a href="#cb25-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-568"><a href="#cb25-568" aria-hidden="true" tabindex="-1"></a><span class="fu">### Medium stride</span></span>
+<span id="cb25-569"><a href="#cb25-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-572"><a href="#cb25-572" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-573"><a href="#cb25-573" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: spiral_mid_stride</span></span>
+<span id="cb25-574"><a href="#cb25-574" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-575"><a href="#cb25-575" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-576"><a href="#cb25-576" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb25-577"><a href="#cb25-577" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb25-578"><a href="#cb25-578" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb25-579"><a href="#cb25-579" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.01</span>,      <span class="co"># medium stride = balanced between smoothness and movement</span></span>
+<span id="cb25-580"><a href="#cb25-580" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb25-581"><a href="#cb25-581" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb25-582"><a href="#cb25-582" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-583"><a href="#cb25-583" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-584"><a href="#cb25-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-585"><a href="#cb25-585" aria-hidden="true" tabindex="-1"></a><span class="fu">### Long stride</span></span>
+<span id="cb25-586"><a href="#cb25-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-589"><a href="#cb25-589" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-590"><a href="#cb25-590" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: spiral_long_stride</span></span>
+<span id="cb25-591"><a href="#cb25-591" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-592"><a href="#cb25-592" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-593"><a href="#cb25-593" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb25-594"><a href="#cb25-594" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb25-595"><a href="#cb25-595" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb25-596"><a href="#cb25-596" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="fl">0.08</span>,      <span class="co"># large stride = exaggerated jumps through the field</span></span>
+<span id="cb25-597"><a href="#cb25-597" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb25-598"><a href="#cb25-598" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb25-599"><a href="#cb25-599" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-600"><a href="#cb25-600" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-601"><a href="#cb25-601" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-602"><a href="#cb25-602" aria-hidden="true" tabindex="-1"></a><span class="fu">### Extra Long stride </span></span>
+<span id="cb25-605"><a href="#cb25-605" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-606"><a href="#cb25-606" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: spiral_extra_long_stride</span></span>
+<span id="cb25-607"><a href="#cb25-607" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb25-608"><a href="#cb25-608" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_flow_field</span>(</span>
+<span id="cb25-609"><a href="#cb25-609" aria-hidden="true" tabindex="-1"></a>  <span class="at">field =</span> field_spiral,  <span class="co"># circular motion with a gentle outward drift</span></span>
+<span id="cb25-610"><a href="#cb25-610" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">500</span>,               <span class="co"># lower = fewer ink trails; higher = denser layering</span></span>
+<span id="cb25-611"><a href="#cb25-611" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> <span class="dv">50</span>,          <span class="co"># fixed here so only step_size changes</span></span>
+<span id="cb25-612"><a href="#cb25-612" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_size =</span> <span class="dv">4</span>,      <span class="co"># large stride = exaggerated jumps through the field</span></span>
+<span id="cb25-613"><a href="#cb25-613" aria-hidden="true" tabindex="-1"></a>  <span class="at">linewidth =</span> <span class="fl">0.8</span>,       <span class="co"># lower = finer strands; higher = thicker ink strokes</span></span>
+<span id="cb25-614"><a href="#cb25-614" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.7</span>            <span class="co"># lower = softer layering; higher = stronger overlap</span></span>
+<span id="cb25-615"><a href="#cb25-615" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-616"><a href="#cb25-616" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-617"><a href="#cb25-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-618"><a href="#cb25-618" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-619"><a href="#cb25-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-620"><a href="#cb25-620" aria-hidden="true" tabindex="-1"></a>With the same journey length, changing only the stride makes the paths feel very different. Small steps hug the field more closely, while larger steps produce bolder, looser motion.</span>
+<span id="cb25-621"><a href="#cb25-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-622"><a href="#cb25-622" aria-hidden="true" tabindex="-1"></a><span class="fu">## A tiny system</span></span>
+<span id="cb25-623"><a href="#cb25-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-624"><a href="#cb25-624" aria-hidden="true" tabindex="-1"></a>What started as *"I want to spill some ink"* turned into a surprisingly useful little programming lesson.</span>
+<span id="cb25-625"><a href="#cb25-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-626"><a href="#cb25-626" aria-hidden="true" tabindex="-1"></a>The system now has three independent ideas:</span>
+<span id="cb25-627"><a href="#cb25-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-628"><a href="#cb25-628" aria-hidden="true" tabindex="-1"></a><span class="in">```text</span></span>
+<span id="cb25-629"><a href="#cb25-629" aria-hidden="true" tabindex="-1"></a><span class="in">STARTING POINTS</span></span>
+<span id="cb25-630"><a href="#cb25-630" aria-hidden="true" tabindex="-1"></a><span class="in">      ↓</span></span>
+<span id="cb25-631"><a href="#cb25-631" aria-hidden="true" tabindex="-1"></a><span class="in">   particles</span></span>
+<span id="cb25-632"><a href="#cb25-632" aria-hidden="true" tabindex="-1"></a><span class="in">      ↓</span></span>
+<span id="cb25-633"><a href="#cb25-633" aria-hidden="true" tabindex="-1"></a><span class="in"> FLOW FIELD</span></span>
+<span id="cb25-634"><a href="#cb25-634" aria-hidden="true" tabindex="-1"></a><span class="in">      ↓</span></span>
+<span id="cb25-635"><a href="#cb25-635" aria-hidden="true" tabindex="-1"></a><span class="in">   direction</span></span>
+<span id="cb25-636"><a href="#cb25-636" aria-hidden="true" tabindex="-1"></a><span class="in">      ↓</span></span>
+<span id="cb25-637"><a href="#cb25-637" aria-hidden="true" tabindex="-1"></a><span class="in">   WALKER</span></span>
+<span id="cb25-638"><a href="#cb25-638" aria-hidden="true" tabindex="-1"></a><span class="in">      ↓</span></span>
+<span id="cb25-639"><a href="#cb25-639" aria-hidden="true" tabindex="-1"></a><span class="in">    paths</span></span>
+<span id="cb25-640"><a href="#cb25-640" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-641"><a href="#cb25-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-642"><a href="#cb25-642" aria-hidden="true" tabindex="-1"></a>The starting geometry answers:</span>
+<span id="cb25-643"><a href="#cb25-643" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-644"><a href="#cb25-644" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Where do you begin?**</span></span>
+<span id="cb25-645"><a href="#cb25-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-646"><a href="#cb25-646" aria-hidden="true" tabindex="-1"></a>The field answers:</span>
+<span id="cb25-647"><a href="#cb25-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-648"><a href="#cb25-648" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Given where you are, which direction should you go?**</span></span>
+<span id="cb25-649"><a href="#cb25-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-650"><a href="#cb25-650" aria-hidden="true" tabindex="-1"></a>And the walker answers:</span>
+<span id="cb25-651"><a href="#cb25-651" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-652"><a href="#cb25-652" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **How do you move through that field — how long is the journey, and how big is each step?**</span></span>
+<span id="cb25-653"><a href="#cb25-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-654"><a href="#cb25-654" aria-hidden="true" tabindex="-1"></a>Once those responsibilities are separated, I can change one without rewriting the others.</span>
+<span id="cb25-655"><a href="#cb25-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-656"><a href="#cb25-656" aria-hidden="true" tabindex="-1"></a>Which means there are now far too many things I want to try. 😬</span>
+<span id="cb25-657"><a href="#cb25-657" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-658"><a href="#cb25-658" aria-hidden="true" tabindex="-1"></a>Different starting geometries.</span>
+<span id="cb25-659"><a href="#cb25-659" aria-hidden="true" tabindex="-1"></a>Different mathematical fields.</span>
+<span id="cb25-660"><a href="#cb25-660" aria-hidden="true" tabindex="-1"></a>Noise.</span>
+<span id="cb25-661"><a href="#cb25-661" aria-hidden="true" tabindex="-1"></a>Curl.</span>
+<span id="cb25-662"><a href="#cb25-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-663"><a href="#cb25-663" aria-hidden="true" tabindex="-1"></a>Maybe even particles that pay attention to each other instead of only listening to the environment.</span>
+<span id="cb25-664"><a href="#cb25-664" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-665"><a href="#cb25-665" aria-hidden="true" tabindex="-1"></a>But that's for another ink spill.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Made with 💗 Powered by 🪄 <a href="https://quarto.org/">Quarto</a> ✨ and fueled by ☕️ 🍝 and procrastination</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
