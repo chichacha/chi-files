@@ -1470,7 +1470,7 @@ font-style: inherit;"># lower = softer layering; higher = stronger overlap</span
   <category>color</category>
   <guid>https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/</guid>
   <pubDate>Sun, 30 Aug 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/images/iroshizuku.svg" medium="image" type="image/svg+xml"/>
+  <media:content url="https://chichacha.github.io/chi-files/posts/iroshizuku-meets-flow-field/images/cover_image.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
   <title>Making Iroshizuku Interactive with Observable</title>
