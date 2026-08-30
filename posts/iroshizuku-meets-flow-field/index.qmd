@@ -17,7 +17,7 @@ format:
 editor: 
   markdown: 
     wrap: sentence
-image: images/iroshizuku.svg
+image: images/cover_image.png
 editor_options: 
   chunk_output_type: console
 ---
